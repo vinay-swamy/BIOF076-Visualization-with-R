@@ -1,0 +1,65 @@
+---
+title: "Welcome to to BIOF076"
+author: "Vinay Swamy"
+date: "8/26/2020"
+output: beamer_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Important Course info
+
+
+### Important links
+- github
+- website
+- zoom
+- email?
+
+## Course Overview 
+
+- Day 1 ...
+- Day 2 ...
+- Day 3 ...
+- Day 4 ...
+- Day 5 ...
+
+## What is R and why is it good for making visualizations
+
+
+
+## What is R and why is it good for making visualizations
+
+- R is a programming language designed for statistics 
+- Researchers who need to use statistics used R because it is free and open source unlike Stata or SPSS
+- Researchers need to make plots and figures to put in publications, so they began developing plotting packages for R
+- As biology is growing more and more computational across time, more biologists are using R for analysis and visualization
+
+
+# Example Visualization 
+
+![](../src/fetal_retina_diff_exp-1.png)
+
+- this is an example of a figure made entirely in R. At the end of this course you'll be able to make something like this
+
+
+## R is use fult for making interactive visualizations
+
+
+stof 
+
+## installing R on a mac
+
+https://cloud.r-project.org/bin/macosx/R-3.6.3.nn.pkg
+
+
+
+## git and GitHub
+- it is a version control software, 
+- Github is where you can publically host a repository
+
+
+
+
