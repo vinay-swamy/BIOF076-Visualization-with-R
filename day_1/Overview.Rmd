@@ -1,0 +1,85 @@
+---
+title: "Welcome to to BIOF076"
+author: "Vinay Swamy"
+date: "8/26/2020"
+output: 
+    ioslides_presentation:
+        transition: 0
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Important links
+- github
+- website
+- zoom
+- email?
+
+## Course Overview 
+
+- Day 1 ...
+- Day 2 ...
+- Day 3 ...
+- Day 4 ...
+- Day 5 ...
+
+## What is R and why is it good for making visualizations
+
+- R is a programming language designed for statistics 
+- Researchers who need to use statistics used R because it is free and open source unlike Stata or SPSS
+- Researchers need to make plots and figures to put in publications, so they began developing plotting packages for R
+- As biology is growing more and more computational across time, more biologists are using R for analysis and visualization
+
+
+## Example Visualization 
+<div class="columns-2">
+```{r}
+knitr::include_graphics('../src/fetal_retina_diff_exp-1.png', dpi=1000)
+```
+
+
+
+- this is an example of a figure made entirely in R. 
+- At the end of this course you'll be able to make something like this
+</div>
+
+## R is useful for making interactive visualizations
+
+
+stof 
+
+## installing R on a mac
+
+Mac
+https://cloud.r-project.org/bin/macosx/R-3.6.3.nn.pkg
+
+Windows 
+https://cloud.r-project.org/bin/windows/base/old/3.6.3/R-3.6.3-win.exe
+
+Linux (requires compilation)
+https://cloud.r-project.org/src/base/R-3/R-3.6.3.tar.gz
+
+## Rstudio 
+
+- Rstudio is a development environment for R
+- We will write all of our code in Rstudio
+
+
+
+
+## GitHub
+-  git is a version control software 
+- a git repo enables is essentially a folder in which all files are tracked
+- Github is where you can publically host a repositor
+
+
+## setting up a GitHub Account
+
+- github link 
+
+##
+
+
+

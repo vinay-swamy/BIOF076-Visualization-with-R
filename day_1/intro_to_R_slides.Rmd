@@ -1,0 +1,189 @@
+---
+title: "Intro to R"
+author: "Vinay Swamy"
+date: "8/26/2020"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Programming fundamentals
+
+- The goal of this session is to acquaint you with some common programming concepts and how to use them in R
+
+## How does code work 
+- We write commands in a certain format, and a program reads those commands and does things
+- The format we write in is called syntax, and the program is called the interpreter
+- Syntax is extremely important - if we dont format our commands correctly, the interpreter won't understand how to run the commands properly
+
+
+## Variable 
+
+- Formally, a variable is named location in memory. Memory in this instance refers to RAM, not storage/disk
+- We use variables to store data so we have easy access to it 
+```{r}
+my_variable=5
+```
+- in R there are two ways to assign data to variable, with `=` as above, or `<-`. They mean slightly different things, but are essentially the same. Most people us the `<-`. The keyboard shortcut for `<-` is alt/option + -
+- the name of a variable msut be a continous string of letters and numbers, and must start with a letter, and contain the any of these symbols `. - _`. NO SPACES
+- `my_var <- 5` good
+- `my var <- 5` bad
+- `1var <- 5` bad
+- creating a variable is often called "declaring"
+- once a variable is declared, it will keep that value and exist until the R session is ended
+
+## Types of Variables
+
+- In R, there are 4 major types of variables: Numeric, character, factor, and Logical, but we'll conver the first two for now
+ - numeric: any number `x <- 1`,  `x <- .5`
+ - character: any character or characters `x <- "H"`, `x <- 'H'`, `x<- 'Hello'`. All characters must be enclosed by either `'` or `"`, but has to be the same for each side 
+
+example
+- `x <- 'hello'` good
+- `x <- hello`  bad
+
+- In Rstudio, we can see the variable under the enviroment panel 
+<insert image>
+
+## Vectors
+- A vector is a type of variable that stores multiple values. Each individual item in a vector is called an Element. Note the syntax for defining a vector
+```{r}
+Vector <- c(1,2,3)
+```
+
+-Lets move to ther exercise notebook 
+
+Vectors can be joined, or concatentated similar to how they created
+
+```{r}
+l1 <- c(1, 2, 3)
+l2 <- c(-1,-2,-3)
+
+joined <- c(l1, l2 )
+```
+
+## indexing 
+
+- Often times, we will want to access specific elements within a list. We can do this with indexing 
+- an Index is an element's specific position within a list
+
+- each element in a vector can be indexed by its numerical position relative the start of the list 
+![](../src/list_index.png)
+So to acces the second element of this list, I would use the following
+
+```{r}
+vec <- c('a', 'b', 'c', 'd')
+vec[2]
+```
+
+We can uses vector corresponds to multiple locations to select multiple elements at once . 
+
+```{r}
+locs <- c(2, 4)
+vec[locs]
+
+```
+
+to selec a continous range of values, we can use the `:` operator 
+
+```{r}
+vec[1:3]
+```
+
+Note that the start *and* stop of the range are included when using this notation. This and starting array indexing at 1 are a couple quirks in R that separate it from other programming languages
+
+## Type coercsion
+
+- In many languages, its against the rules to have elements of different types in the same vector, ie having a numeric and a charachter in the same vector
+- In R, its not technically against the rules, but when you declare a vector with 2 types, it will force one element to converted to the type with the highest priority. For the two data types we have covered, character > numeric
+
+## Math in R
+
+- As R was designed for statistics, you can do a lot of math. All the normal math rules apply 
+```{r}
+2+2
+```
+```{r}
+5-2
+```
+```{r}
+((8*4) + 3)/5
+```
+
+mathmetical operations can be directly applied to vectors. All operations are done element wise 
+
+```{r}
+c(1, 2, 3) + 5
+```
+
+for operations with 2 vectors, vectors must be of the same length, or longer vector length must be a multiple of shorter vector length
+```{r}
+c(1, 2, 3) * c(1, 2, 3)
+```
+
+
+```{r}
+c(1, 2, 3) * c(1, 2, 3, 4)
+```
+
+
+```{r}
+c(0, 2) * c(1, 2, 3, 4)
+```
+
+characters cannot be added together
+
+```{r}
+'h'+'i'
+```
+
+
+## Functions 
+
+- functions are pieces of code that perform actions. There are many functions that are availble within base R. For example consider the `sum` function, which sums all elements in a numeric vector. Note the syntax
+```{r}
+vec <- c(1, 2, 3, 4, 5)
+sum(vec)
+```
+
+- using a function is often refered to as "calling". we call functions by passing arguments inside the parenthesis. In this case, we passed the `vec` variable to the `sum` function. A function can multiple arguments, or none. 
+
+## useful functions in base R
+- `sum`
+- `mean`
+- `paste`
+- `length`
+- `print`
+
+
+## Defining a function
+- sometime there won't be a predefined function for the task you want to complete, and you'll have to write your own 
+
+- here is an example for adding two numbers together. Note the syntax - assigning a name to the function (`add`), defining arguments for the function( `num_1` & `num_2`), and then writing the actual code for the function within the brackets. Once we have generated the final value we want for our function, we can pass it back to the main environment using the `return` function
+
+```{r}
+add <- function(num_1, num_2){
+    result <- num_1 + num_2
+    return(result)
+}
+
+add(1,1)
+```
+
+though you dont always need to use the `return` function, is best practice to do so. If you want to return nothing, you can call `return` with no arugments
+
+```{r}
+add <- function(num_1, num_2){
+    result <- num_1 + num_2
+    print('this is the sum')
+    print(result)
+    return()
+}
+add(1,1)
+```
+
+NULL, which is essentually an empty value, is returned by calling `return` with no arguments.
+
+

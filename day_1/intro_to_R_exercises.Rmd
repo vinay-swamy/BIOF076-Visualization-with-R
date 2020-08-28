@@ -1,0 +1,162 @@
+---
+title: "Intro to R exercises"
+output: html_notebook
+---
+
+This is an R notebook. It's a useful way to run code interactively. the blocks marked by the ticks are called chunks. press the play button to the top right of the chunk to run code. The title of the chunk is the test in the bracket. I will try to refer to chunks by their title. 
+
+```{r welcome}
+"Welcome to R"
+```
+
+These first few chunks are working with variables. Run the chunk below. You should see a variable in the environment panel called "examlpe", storing the character "test"
+
+```{r example_1}
+example <- 'test'
+```
+
+Now run this chunk
+
+```{r example_2}
+example <- test
+```
+
+this is an example of an error message, and you're gonna see a lot of them this week. Learning how to diagnose a problem from an error message is a key programming skill. In this case, the interpreter thinks that `test` is another variable(because there are no quotes), and so is looking for a variable named test, but cant find one. 
+
+Sometimes, Rstudio is able to detect syntax errors, in this case a missing comma 
+```{r}
+x <- c(1 1)
+```
+
+
+Try these exercises ( dont type in the same line as the "```" ticks )
+
+Assign the number `5` to a variable named `x`
+
+```{r ex_1}
+
+
+```
+
+Assign the word 'hello' to a variable named `greeting`
+
+
+Make a vector containing the numbers 3, 4, 5, and 6 
+
+```{r ex_2}
+
+```
+
+Note at that the Environment section, vectors also display their length and associated data type.
+
+Make 2 vectors, the first with numbers 2,5,7,2 and the second with 3,4,523, and then join them together 
+```{r ex_3}
+
+```
+
+
+select the first element from the following vector
+
+```{r ex_4}
+char_vec <- c('This', 'probably', 'is', 'a', 'little', 'boring')
+
+```
+
+select the last element from `char_vec`
+
+```{r ex_5}
+
+```
+
+select the the 1st, 3rd, and 5th elements from `char_vec`
+
+```{r ex_6}
+
+```
+
+select all valus between the 2nd and 5th elements from `char_vec`
+
+```{r ex_7}
+
+```
+
+
+Now, make a vector with the letter 'H', and the number 213
+
+```{r ex_8}
+
+```
+
+Pay close attention to this variable in the Environment section
+
+## Function exercises
+
+-all base functions in R have documentation on how to use them to access this, use the `?` operator like so. A  help window should be open on the right hand side of the screen. If you scroll to the bottom of the help section, there will always be an example of how to use it 
+
+```{r example_3}
+?sum
+```
+
+
+run this chunk to first clear the environment
+```{r}
+rm(list = ls())
+```
+
+calculate the mean for this vector (try using the `mean` function)
+
+```{r ex_9}
+vec <- c(23444, -12342, 23454, 64324, -45315)
+
+```
+
+The vector below is randomly generated numeric vector of length between 1 and 100. Use `length` to find the length of `random_vector`. run it a couple times to see it change
+
+```{r ex_10}
+random_vector <- rnorm(sample(1:100))
+```
+
+use `paste` to concatente these two characters 
+
+```{r ex_11}
+char1 <- 'hello'
+char2 <- 'world'
+```
+
+Now, change the separator between the two characters from a space to `-`. try running `?paste` for help
+
+```{r ex_12}
+char1 <- 'hello'
+char2 <- 'world'
+```
+
+calculate the mean for each vector, and then add together using  the `+` operator
+
+```{r ex_13}
+v1 <- c(1,4,23)
+v2 <- c(4,56,23,12)
+v3 <- c(123,4, -40, -50, 34)
+
+```
+
+now calculate the mean for each above vector, but use the `sum` function.(hint: you need to make a vector)
+
+```{r ex_14}
+
+
+```
+
+write your own function that takes a number as an input, and adds the number `5` to it
+
+```{r ex_15}
+
+```
+
+write your own function that takes a vector and returns the last element (hint: use the `length` function). Test it on  `v1`, `v2`, and `v3` defined earlier
+
+```{r ex_16}
+
+```
+
+
+
