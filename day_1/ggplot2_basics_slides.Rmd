@@ -1,0 +1,298 @@
+---
+title: "Introduction to ggplot2"
+author: "Vinay Swamy"
+date: "9/4/2020"
+output: ioslides_presentation
+---
+
+## Libraries in R
+
+- up until now we either been using functions included within the base R environment and if function is not available in base R, we have written our own. 
+- However, we can get functions from other sources, called libraries
+
+- libraries are collection of functions, generaly specialized task ; for example the package `ggplot2`, which we will be heavily using throughout this course is a library that contains functions for makes plots.
+
+- To use a library, load it using the `library` function
+```{r}
+library(RBedtools)
+```
+- once a library is loaded, all its functions will be availabl to you
+
+## ggplot2 - better plotting than base R
+- making plots has always been a core function of R, and as such the base environment contains its own functions for plotting
+```{r}
+x <- rnorm(10)
+y <- rnorm(10)
+plot(x, y)
+
+```
+- while this may look simple, the base R plotting functions are much harder to use for complicated plots and the syntax is fairly inconsistent across different kinds of plots
+
+
+## the grammar of graphics
+- the ggplot2 plotting libraries are written under the core philosphy of the "Grammar of Graphics"
+- the "Grammar of Graphics" is a framework that enables users to concisely describe any element of a graphic or plot
+- this grammar should be uniformly defined across functions for making any kind of plot
+
+- lets look through a couple of examples. I'll be exploring the Iris data set which comes pre loaded with R. It contains data about the flowers of different iris species 
+
+```{r, echo=F, include=FALSE}
+library(tidyverse)
+```
+
+
+```{r}
+library(ggplot2)
+data(iris)
+iris
+```
+
+- a scatter plot, like before
+
+```{r}
+
+ggplot(data=iris) +
+    geom_point(aes(x=Petal.Length, y=Sepal.Length )) +
+    theme_minimal()
+
+```
+
+- how about a scatter plot, but colored by the type of flower
+
+```{r}
+ggplot(data=iris) +
+    geom_point(aes(x=Petal.Length, y=Sepal.Length, color = Species)) +
+    theme_minimal()
+```
+
+- similarly, lets plot a boxplot
+
+```{r}
+ggplot(data=iris) +
+    geom_boxplot(aes(y=Petal.Length)) +
+    theme_minimal()
+```
+
+- how about a boxplot separated by flower 
+
+```{r}
+ggplot(data=iris) +
+    geom_boxplot(aes(x=Species, y=Petal.Length)) +
+    theme_minimal()
+```
+
+## the anatomy of a `ggplot`
+- ggplots are composed of three core types of layers
+- - the base layer, defined with `ggplot`. This layer creates an empty plot that will be filled with other layers. In this layer we provide the data we will use to plot. This is almost always a data.frame
+- - the plotting layer, which are functions with the `geom_` prefix. Each `geom` has specific properties that can be set, either with a manual value, or an aesthetic mapping.
+- the `theme` layer which controlls a large amount of graphical parameters, like axis titles, legend size, plot titles etc. ggplot provides pre configured themes like `theme_minimal` for easy use
+- note that we *add* layers together
+
+
+## aethetic mappings for plots.
+- each `geom_` layer has multiple aesthetic parameters that can be modified. these can be viewed with the `?` command ( x and y are bolded in the picture below)
+![](../src/geom_aes.png)
+
+- we can set these aesthetic parameters in two ways, manually assigning values, or the `aes` function
+
+##  the `aes` function
+- `aes` generates a mapping between columnns in the data specified in the `ggplot` to aesthetic paramters of the `geom`
+
+```{r}
+colnames(iris)
+```
+```{r}
+ggplot(data=iris) + 
+    geom_point(aes(x=Sepal.Length,y=Sepal.Width))
+```
+
+- note that we don't use single/double quotes around the name of the column; the `aes` function supports quasi-quotatation - we'll learn more about this later 
+
+## aethetic mappings for plots 
+
+- aesthetic mappings can also be provided a manual mapping; this must be a single value
+```{r}
+ggplot(data=iris) + 
+    geom_point(aes(x=Sepal.Length,y=Sepal.Width), color = 'blue')
+```
+
+- note that manual values are specified within the `geom_` function, NOT the `aes` function, and that colors must be passed as strings
+- choosing colors is an extensive topic in making plots; but for now, stick to simple colors- red, orange, yellow, green, blue, black, white and grey.
+
+## aethetic mappings for plots - themes
+- the `theme` function allows you to tweak a large number of graphical settings for a plot, but we will ocver this later. For now use one of the default themes(`theme_minimal`, `theme_gray`, `theme_void`, `theme_classic` ), or no theme.
+
+## line graphs 
+- a commply used type of graph is a line graph; geom line draws a line through all points in there numerical order 
+
+```{r}
+data("economics")
+economics
+```
+
+```{r}
+ggplot(economics) + 
+    geom_line(aes(x=uempmed, y=unemploy))
+```
+
+- multiple lines can be drawn, by specifiying a catagorical column, and a method to distinguish separate lines 
+
+```{r}
+data("economics_long")
+economics_long
+```
+
+using `color` as the method
+
+```{r}
+ggplot(economics_long, aes(x=date, y=value01,color= variable)) +
+  geom_line()
+```
+
+or by `linetype`
+
+```{r}
+ggplot(economics_long) +
+  geom_line(aes(x=date, y=value01,linetype= variable))
+```
+
+## fitting a line to data
+- sometimes instead of just connecting data, we want to generate a line that mathetically best describes the data 
+- this is done with the `geom_smooth`, which can be used as an almost drop-in replacement for `geom_line`, except that a fitting method must be passed to `geom_case`
+
+-fitting with `lm`, a standard linear regression
+
+```{r}
+ggplot(economics_long) +
+  geom_smooth( aes(x=date, y=value01,color= variable), method = 'lm')
+```
+
+- using `loess` smoothing
+
+```{r}
+ggplot(economics_long) +
+  geom_smooth( aes(x=date, y=value01,color= variable), method = 'loess')
+```
+
+-note that these just draw curves, not points. We'll talk about how to do both in another lecture.
+
+
+## Bargraphs
+
+-Bargraphs are one of the more common types of plots. There are two methods for generating bargraphs with ggplot - `geom_bar`, used for counting categorical data, and `geom_col`, used for numerical data.
+- `geom_bar` takes a discrete vector and generates counts for each unique item in the vector; 
+- `geom_col` plots numerical values, and requires a 1:1 catagory-value mapping
+- a bargraph with geom_col
+
+```{r}
+data("diamonds")
+ggplot(diamonds) + 
+    geom_bar(aes(x=cut))
+    
+
+```
+
+
+- sometimes it can be useful to visualize groups within groups, and create a grouped bar chart, which you can generate by setting the `fill` aesthetic to a categorical variable that is different than the `x` aesthetic. The type of grouped bar chart can be set based on the `position` argument for `geom_bar`
+
+-this is a stacked barplot
+
+```{r}
+ggplot(diamonds) + 
+    geom_bar(aes(x=cut, fill = as.character(color)),position = 'stack' )
+```
+
+- this is a dodged barplot
+
+```{r}
+ggplot(diamonds) + 
+    geom_bar(aes(x=cut, fill = as.character(color)), position = 'dodge')
+```
+
+this is ratio barplot. This similar(and far superior to) to a piechart, where each section corresponds its fraction of the total 
+```{r}
+ggplot(diamonds) + 
+    geom_bar(aes(x=cut, fill = as.character(color)),position = 'fill')
+```
+
+`geom_col` is useful for when you want to plot a numerical value; this is done by providing a categorical columns for the `x` aesthetic, and a numerical column to generate the y axis from
+
+```{r}
+p_data <- data.frame(specie = unique(iris$Species), flower.diameter = c(100,200,300))
+res <- rbind(p_data, p_data)
+res$Flower.time <- rep(c('spring', 'summer'), 3)
+res
+```
+
+```{r}
+ggplot(res)+
+    geom_col(aes(x=specie, y=flower.diameter))
+```
+
+- the same grouped bar plots can be used for geom col as well
+
+```{r}
+ggplot(res)+
+    geom_col(aes(x=specie, y=flower.diameter, fill=Flower.time), position = 'stack')
+```
+
+```{r}
+ggplot(res)+
+    geom_col(aes(x=specie, y=flower.diameter, fill=Flower.time), position = 'dodge')
+```
+
+## Visualizing the distributions of data
+- any continous/numerical data has a distribution, which graphically is the shape of the data. There are important aspects of distributions that we often want to visualize, like its median, mean, and variance.
+
+Let's look at some of the common types of plots to visualize the distributions of data
+
+## Boxplots
+
+- boxplots are a common type of plot useful for showing the distribution of data. 
+- The bottom and top of the box represent 25th and 75th percentile of the data. The middle line shows the 50th percentile, also known as the median
+-The range(max-min) between the 75th and 25th range is called the interquartile range (IQR). The whiskers/tails on either end show data <= 1.5*IQR . Dots outside of this are conisdered outliers.
+
+```{r}
+ggplot(data=iris) +
+    geom_boxplot(aes(x=Species, y=Petal.Length)) + 
+    theme_minimal()
+```
+
+- boxplots are useful for roughly showing the distribution of data, especially the variance
+- not sensitve to outliers 
+- particularly useful for comparing multiple distributions
+
+
+## Histograms and Density plots 
+
+```{r, include=F}
+hist_data_small <- tibble(`D1` = rnorm(1000, -2, 2), `D2` = rnorm(1000, 2, 2)) %>% tidyr::pivot_longer(D1:D2, 'dist')
+```
+
+- histograms are much better ar visualizing the distribution of data. Historgrams are generated by splitting series of numeric values into bins, calculating the number of observations in that bin, and plotting a bar for the count of each bin
+
+```{r}
+ggplot(hist_data) + 
+    geom_histogram(aes(x=value), bins = 30)
+```
+-More bins makes higher resolution plots
+```{r}
+ggplot(hist_data) + 
+    geom_histogram(aes(x=value),bins = 100)
+```
+- histograms are useeful for seeing the complete shape of the data, but geneally its hard to compare two histograms on the same plot. We'll go over this in an exercise
+
+
+## Violin plots
+- Violin plots are a cross betwene histograms and box plots
+
+```{r}
+ggplot(data=iris) +
+    geom_violin(aes(x=Species, y=Petal.Length, fill = Species)) + 
+    theme_minimal()
+
+```
+-in a violin plot, the width of the plot corresponds to the (smoothed) number of obsevations of a given value; in this case, `Petal.Length`. This allows you to easily compare distributions between multiple variables
+
+
+

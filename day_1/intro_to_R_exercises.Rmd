@@ -159,4 +159,98 @@ write your own function that takes a vector and returns the last element (hint: 
 ```
 
 
+## working with lists 
+
+You can explore the values in list in the environment viewer. click the arrow on the left hand side to view values in the list
+
+```{r example_}
+list_to_view <- list(a='v', 
+                     b=c(1,4,6,7,5), 
+                     x=c('c', 'd'))
+```
+
+
+Decalre a list with two using two vectors below. when declaring the list, name the `a` vector condition_a, and the `b` vector condition_b
+
+
+```{r ex_17}
+a <- c(0,1,2,3,4)
+b <- c(0,2,4,6,8)
+
+```
+"
+using the `names` function, change the names of condition_a to "wild_type", and condition_b to "knock_out"
+
+```{r ex_18}
+
+```
+
+
+change the last value in wild_type from 0 to -1 (hint: you will need to first access wild_type within the list, and then acces the first element within wild_type)
+
+```{r ex_19}
+
+```
+
+
+## Data.frame exercises
+
+- this is a small data frame we'll be working with. The numbers are all made up
+
+```{r}
+faang_data <- data.frame(name = c('Facebook', 'apple', 'amazon', 'netflix', 'google'), 
+                         revenue = c(3000000000, 4000000000, 5000000000, 3000000000, 3000000000),
+                         n_employees=c(2000, 8000, 10000, 5000, 12000),
+                         ceo = c('mark', 'tim', 'jeff', 'reed hastings', 'sundar pichai' ),
+                         service = c('ads', 'tech', 'shipping', 'streaming', 'ads')
+                         )
+
+
+```
+
+Rstudio has a built in data frame viewer to allow you to inspect data. click on the `faang_data` variable in the environment panel 
+
+click on the column names to order by that column. Use the filter button to subset the data. This does not change the actual data, but is used only for exploration.
+
+Rstudio also has autocomplete capabilities, which you can access by pressing `tab`. try in this chunk - place the cursor next to `$` and press tab. you should see the column names for the `faang_data` dataframe 
+
+```{r}
+faang_data$
+```
+
+The autocomplete generally works pretty well and will save you a lot of time.
+
+## excercises
+
+- convert all the `factor` variables in `faang_data` to `character` using `as.character`. if you are unsure which variables are factors, run `str(faang_data)`  or use the variable explorer
+
+```{r ex_20}
+
+
+
+```
+
+- calculate the revenue per employee and store it in new columns
+
+```{r ex_21}
+
+```
+
+- the `which.max` function returns the index for the maximum value in a vector. Use this to identify the company with the highest revenue and select its ceo
+
+```{r ex_22}
+
+```
+
+- use the `paste` function to add the last names to the ceos missing last names. ( Mark zuckerberg, tim cook, and jeff bezos in case you do not know)
+
+```{r ex_23}
+
+```
+
+write a function that takes a column name as input and returns the mean, and use it to calculate the mean of the `revenue` and `n_employees` columns in `faang_data`
+
+```{r}
+
+```
 

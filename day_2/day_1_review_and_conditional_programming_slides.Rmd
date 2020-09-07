@@ -1,0 +1,111 @@
+---
+title: "Day_1_review_and_conditional_programming_slides"
+author: "Vinay Swamy"
+date: "9/7/2020"
+output: ioslides_presentation
+---
+
+
+## Control flow and conditional programming
+
+- before we get to cleaning data, there are a couple more programming concepts we need to cover.
+- Some times when solving a problem,  we want to account for two(or more) different outcomes, but at any given time we only want one of them to happens. This is called conditional programming
+
+
+## `if` statements 
+
+- controlling code is done using if statements. Consider the following examples
+```{r}
+is_greater_than_five <- function(number){
+    if(number > 05){
+        return('Greater than five')
+    } 
+   
+    return('the number is less than five')
+
+}
+```
+```{r}
+is_greater_than_five(10)
+```
+```{r}
+is_greater_than_five(4)
+```
+
+s
+## `if` statements
+
+- this is the  general structure of an if statement
+
+```
+if(LOGICAL_VALUE){
+    Everything within these brackets 
+    is executed
+}
+
+This is outside the If statement.
+```
+
+## `logical` values
+
+- the `logical` is the final data type in R.
+- There are 2 possible values a `logical`: `TRUE` and `FALSE`
+- Generally, `logical`s are generated when we want to check whether a certain condition is met using a logical operator or function
+- you are likely already familiar with two logical operators, `>` and `<` . These function just like they do in math
+
+
+```{r}
+x <- 5
+x>3
+```
+
+```{r}
+x <- 2
+x>3
+```
+
+- all logical operators are vecotorized, meaning they can apply they can be applied directly to all elements in a vector
+
+```{r}
+x <- c(1, 9, 6, 2, 3, 6)
+x>5
+
+```
+
+vecotors of the same length can also be compared, but this creates an element wise comparision and returns a vector
+```{r}
+x <- c(1, 9, 6, 2, 3, 6)
+y <- c(2, 4, 10, 5, 1, -4)
+comp <-  x>y
+comp
+```
+```{r}
+str(comp)
+```
+
+## the `==` operator
+- the `==` is the equality opeator, and checks whether two values are **exactly** the same 
+
+```{r}
+5==5
+```
+```{r}
+5  == 4.9999
+```
+```{r}
+x <- c(1, 9, 6, 2, 3, 6)
+x==6
+```
+
+## the `!` operator
+
+-this operator inverts an existing logical vector; all trues become false, and all falses become true
+- `T` can be used for `TRUE` and `F` can be used for `FALSE`
+```{r}
+x <- c(T,F,T,T,F)
+x
+```
+```{r}
+!x
+```
+

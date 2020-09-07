@@ -1,0 +1,51 @@
+---
+title: "Manipulating data"
+author: "Vinay Swamy"
+date: "9/4/2020"
+output: ioslides_presentation
+---
+
+
+## Data usually does not come with a bow on top
+
+- almost all real world data won't be ready for plotting; usually steps to *clean* and *tidy* the data are required
+- clean data as all the data with the right data types, ie numbers are `numeric`, strings are `characters`
+- tidy data has data organized such that each complete row is a unique observation.
+- thankfully there are quite a bit of resources for doing this within R
+
+
+## Libraries in R
+
+- up until now we either been using functions included within the base R environment and if function is not available in base R, we have written our own. 
+- However, we can get functions from other sources, called libraries
+
+- libraries are collection of functions, generaly specialized task ; for example the package `ggplot2`, which we will be heavily using throughout this course is a library that contains functions for makes plots.
+
+- To use a library, load it using the `library` function
+```{r}
+library(RBedtools)
+```
+- most libraries are be hosted on CRAN, and can be installed in R using the `install.packages` function
+
+## the Tidyverse
+
+- the tidyverse is a collection of packages that provide *fast, well documented* functions for data science.
+- This inlucdes reading and writing data, organizing and "tidying" data, and plotting data
+```{r}
+library(tidyverse)
+```
+
+- tibble: a new data type analgous to a `data.frame`, but with more consistent indexing, and no type coerscion
+- dplyr: a series of functions for subsetting, filtering, changing, and summarizing dataframes/tibbles
+- tidyr: functions for tidying data(more on that later)
+- stringr: library for efficiently working with strings
+- readr: efficiently read/write data
+- forcats: library for efficiently working with factors
+- purrr: adds common programming methods from other languages into
+
+
+
+
+
+
+

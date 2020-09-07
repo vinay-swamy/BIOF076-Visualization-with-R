@@ -38,7 +38,7 @@ my_variable=5
 
 - In R, there are 4 major types of variables: Numeric, character, factor, and Logical, but we'll conver the first two for now
  - numeric: any number `x <- 1`,  `x <- .5`
- - character: any character or characters `x <- "H"`, `x <- 'H'`, `x<- 'Hello'`. All characters must be enclosed by either `'` or `"`, but has to be the same for each side 
+ - character: any letters or characters `x <- "H"`, `x <- 'H'`, `x<- 'Hello'`. All characters must be enclosed by either `'` or `"`, but has to be the same for each side; a word enclosed by `'` like `'outside'` is called a string
 
 example
 - `x <- 'hello'` good
@@ -86,13 +86,29 @@ vec[locs]
 
 ```
 
-to selec a continous range of values, we can use the `:` operator 
+to selec a continous range of values, we can use the `:` operator. this is called slicing
 
 ```{r}
 vec[1:3]
 ```
 
 Note that the start *and* stop of the range are included when using this notation. This and starting array indexing at 1 are a couple quirks in R that separate it from other programming languages
+
+## updating values in a vector
+
+- We can use indexing to change the values in a vector, by first indexing a location, and then setting its value. This is called "modifying in-place"
+
+```{r}
+vec[1] <- 'Z'
+vec
+```
+- This permanently changes the vector, so be careful about changing vectors like this
+
+
+```{r}
+
+```
+
 
 ## Type coercsion
 
@@ -156,6 +172,8 @@ sum(vec)
 - `paste`
 - `length`
 - `print`
+- `as.numeric`
+- `as.character`
 
 
 ## Defining a function
@@ -172,6 +190,40 @@ add <- function(num_1, num_2){
 add(1,1)
 ```
 
+
+## passing arguments to functions
+
+- We have to pass data to functions that is already defined, or that we define on the spot
+
+```{r}
+# defined on the sport
+add(3, 4)
+```
+
+
+```{r}
+a <- 3
+b <- 4
+add(a, b)
+```
+- here, R looks for two variables in the environment named `a` and `b`, and uses them as the arguments for add. In both cases, the values given to `add` are assigned to the arguments `num_1` and `num_2`  in the order they are given. 
+
+- We can also explictly set the arguments of a function. When we do this, order does not matter.
+
+```{r}
+subtract <- function(num1, num2){
+    return(num1-num2)
+}    
+    
+subtract(10,6)
+
+```
+
+```{r}
+subtract(num2=6,num1=10)
+```
+
+
 though you dont always need to use the `return` function, is best practice to do so. If you want to return nothing, you can call `return` with no arugments
 
 ```{r}
@@ -185,5 +237,283 @@ add(1,1)
 ```
 
 NULL, which is essentually an empty value, is returned by calling `return` with no arguments.
+
+## Other Data Structures
+
+- A data structure is fancy container to hold data. We have been using one  - the vector
+- while vectors are useful for storing individual values, they have some drawback
+- vectors cannot be nested, meaning you can't have a vector of vectors
+- for example, say you have q-PCR measurements from an experiment - want to store a vector of measurements, as well as the condition for each experiment, and you would like to store that information as a variable in R 
+-Solution-  use a list
+
+## lists 
+
+- lists are fancy vectors - but can store multiple datatypes and data structures 
+- lists are declared using the `list` function. For example
+
+```{r}
+simple_list <- list(1, 'a')
+print(simple_list)
+```
+
+a list with both a character and a vector
+```{r}
+list_with_vector <- list('condition A', c(1, 23, 4, 56, 7, 66))
+print(list_with_vector)
+```
+
+## indexing with lists 
+- indexing with lists is slightly different than vectors. when using `[]` a smaller list is return, depending how much indices you requested. We can check this with the `str` function, which allows you to see a variables data type
+
+```{r}
+list_with_vector[1]
+```
+```{r}
+str(list_with_vector[1])
+```
+
+
+-to access the element stored in a specific index, use double brackets `[[]]`
+
+```{r}
+list_with_vector[[1]]
+```
+
+
+```{r}
+str(list_with_vector[[1]])
+```
+
+- lists can contain other lists. this can get a little confusing
+
+```{r}
+big_list <- list(simple_list, list_with_vector)
+big_list
+```
+## Names
+
+- we can assign labels to indices for lists and vectors, in order to make it easier to access data
+- consider the above example about measurements on X. instead of storing a seperate entry for the condition, we can set the name of the vector within the list, and access that element by its name, similar to indexing 
+
+```{r}
+experiment <- list(condition_a = c(1,2,3,4,5,5,6), 
+                   condition_b = c(0,0,0,0,2,3,0))
+
+experiment[['condition_a']]
+```
+
+vectors can also be given name
+
+```{r}
+named_vector <- c('first'=1,'second'=3, 'third'=5 )
+named_vector['third']
+```
+
+Note that named lists/vectors stil retain their numerical index
+
+```{r}
+named_vector[3]
+```
+
+
+
+
+```{r}
+experiment <- list(c(1,2,3,4,5,5,6), 
+                   c(0,0,0,0,2,3,0))
+experiment
+```
+```{r}
+names(experiment) <- c('condition_a', 'condition_b')
+experiment
+```
+-Note: when using `names` the vector of names must be the same length as the target list/vector
+
+## list accessor
+
+- another way to access named data from a list is with the `$` operator 
+
+```{r}
+experiment$condition_a
+```
+
+
+
+## dataframes
+
+- Often we want to work with tabular data. this is somthing you would commonly open in excel - a file with rows and columns 
+-under the hood, a data frame is essentially a list of vectors, where each vector represents a column
+-df is often used as shorthand for dataframe
+
+```{r}
+example_df <- data.frame(col_a = c(1, 2, 3 ), col_b = c('a', 'b', 'c'), stringsAsFactors = F)
+example_df
+```
+
+As you can see, data frames are composed of rows and columns 
+
+## indexing dataframes
+
+- indexing data frames using the following syntax: df[row_index(s), column_index(s)]
+
+```{r}
+example_df[1,1]
+```
+
+- use slices and lists to select multiple values
+
+```{r}
+example_df[c(1, 3), 1:2]
+```
+- to select an entire row, select the desired rows, and leave the column part blank
+
+```{r}
+example_df[2,]
+
+
+```
+- works the same for columnsm but instead of returning a dataframe, vector is returned
+
+```{r}
+example_df[,1]
+```
+
+- columns can also be accessed with the `$` plus there column name
+
+```{r}
+example_df$col_b
+```
+
+-columns can also be accesed by there column name 
+```{r}
+example_df[,'col_b']
+```
+
+
+## modifying data frames
+- data frames can be changed similar to lists
+
+```{r}
+example_df
+```
+-using the accesor operator
+```{r}
+example_df$col_b <- c('x', 'y', 'z')
+example_df
+```
+- or the column name
+```{r}
+example_df[,'col_b'] <- c('dog', 'cat', 'chicken')
+```
+- do not try an edit a row in place; this is bad habit, as columns can have different data type. If you must edit a row in place, edit each element within the row, one at a time
+```{r}
+example_df[2, 'col_a'] <- -1
+example_df[2, 'col_b'] <- 'kitten'
+example_df
+```
+
+- new columns can be added by declaing a new index name or similarly with the accessor function
+```{r}
+example_df[,'col_c'] <- c(-1,-2,-3)
+example_df
+```
+```{r}
+example_df$col_d <- c('apple', 'facebook', 'google')
+example_df
+```
+
+## Factors
+
+- Factors are another data type, like `numeric`, or `character`. Factors are designed to be representations of characters that take up low memory
+- in factor vector, each unique value is mapped to a number. this mapping is not displayed, and is used under-the-hood. Factors are used because its easier to store numbers in memory than characters
+
+```{r}
+char_vec <- c('a', 'a', 'a', 'b', 'b', 'c')
+char_vec 
+```
+```{r}
+char_vec_factor <- factor(char_vec)
+char_vec_factor
+```
+
+-while they look similar they have very different properties. 
+
+```{r}
+as.numeric(char_vec)
+```
+```{r}
+as.numeric(char_vec_factor)
+```
+
+-data frames by default convert all character vectors to factors. This can be disabled when declaring a data frame using the argument`stringsAsFactors=F`
+
+```{r}
+example_df <- data.frame(col_a = c(1, 2, 3 ), col_b = c('a', 'b', 'c'))
+str(example_df)
+```
+
+
+```{r}
+example_df_no_fctr <- data.frame(col_a = c(1, 2, 3 ), col_b = c('a', 'b', 'c'), stringsAsFactors = F)
+str(example_df_no_fctr)
+```
+
+- There are also functions for convert vectors to factors- `as.factor`, or to character `as.character`
+- confusion between factors and characters is a very common mistake
+
+## missing values
+- Sometimes, the data we work with will have missing values. We represent these values as NA, and consider the values as missing.
+
+```{r}
+as.numeric(char_vec)
+```
+
+- NA can be any data type. Functions will sometimes return NA to indcate that the function ran successfully, but the value produced is not what it should be. 
+-In the example above, when we tried to convert a character vector to, R does not know how to convert those specific letters to numbers, but for some letter it does 
+
+```{r}
+character_numerals <- c('1', '2', '3', '4')
+str(character_numerals)
+```
+```{r}
+str(as.numeric(character_numerals))
+```
+
+- Theres another missing values, `NaN`. This stands for "Not a Number", and specifically represents an undefined mathmatical value like 0/0.
+
+```{r}
+0/0
+```
+
+## math with data frames
+-Math with data frames works similarly to vectors, where mathmatical operations happen elementwise
+```{r}
+numeric_df <- data.frame(left=c(0,0,0,0), right = c(1,2,4,5))
+
+numeric_df + 1
+```
+
+
+```{r}
+numeric_df ^2
+```
+
+df + df
+
+```{r}
+numeric_df + numeric_df
+```
+
+vector + df
+
+```{r}
+numeric_df$right + numeric_df
+```
+
+```{r}
+numeric_df / numeric_df$left
+```
+
+Note that the value infinity exists in R, and called `Inf`
 
 
