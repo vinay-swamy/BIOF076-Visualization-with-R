@@ -166,6 +166,13 @@ change the outline of the box based on the treatment
 ```
 
 
+change the width of all boxplots 
+```{r}
+
+```
+
+
+
 Now change the width of the lines within the boxplot; which parameter to change might not be clear from the documentation, so this may take some trial error
 ```{r}
 
@@ -211,7 +218,47 @@ now plot histograms, again shaded by location
 
 ```
 
-now plot make violin plots for each location;
+now plot make violin plots for each location; take note of the distributions 
+
+```{r}
+
+```
+
+
+## Practice with themes 
+
+We're going to work with one of the plots we made earlier 
+
+
+```{r}
+ggplot(mpg) + 
+  geom_bar(aes(x=manufacturer, fill = class)) 
+
+```
+
+
+Assign descriptive axis labels and a plot title to the plot
+
+```{r}
+
+```
+
+
+fix the labels similar to how it was done in the example
+
+```{r}
+
+```
+
+
+change the y axis title so it is parallel to the x axis title 
+
+```{r}
+
+```
+
+change the font of the title to AvantGarde, the color to red, and make it italizced
+
 
 ```{r}
 

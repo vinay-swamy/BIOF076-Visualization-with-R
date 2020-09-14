@@ -53,9 +53,8 @@ example
 Vector <- c(1,2,3)
 ```
 
--Lets move to ther exercise notebook 
 
-Vectors can be joined, or concatentated similar to how they created
+- Vectors can be joined, or concatentated similar to how they created
 
 ```{r}
 l1 <- c(1, 2, 3)
@@ -372,6 +371,11 @@ example_df[2,]
 
 
 ```
+- or multiple rows 
+```{r}
+example_df[2:3,]
+```
+
 - works the same for columnsm but instead of returning a dataframe, vector is returned
 
 ```{r}

@@ -1,0 +1,69 @@
+---
+title: "Working with the Tidyverse"
+output: html_notebook
+---
+
+We're going to practice using some of the functions in the `dplyr` library. First, lets install the `tidyverse` packages
+```{r}
+install.packages('tidyverse')
+```
+
+You will be using the pipe function all lot; I recommend setting a key board short cut for it. Go to Tools > modify keyboard searchcuts > search for "pipe"  >  click to change the command. I find `alt + 2` or `option + 2` work well.
+
+load the `dplyr` library
+```{r}
+
+```
+
+in the `starwars` dataset, keep only values about Humans from the homewrold Tatooine. Store the result in variable 
+
+```{r}
+
+```
+
+select only the height `Name` and height columns from the previous result
+
+```{r}
+
+```
+
+repeat the first two excerises, but chain them together using pipes (` %>% `)
+
+```{r}
+
+```
+
+keep adding to the chained commands, and convert the Height column to inches. the height column is currently in cm and  1 cm is 0.393701 inches 
+```{r}
+dir('../src')
+```
+
+
+
+reshape the `iris` data frame in to long format with `pivot_longer` ; calculate the max an min for each column using `group_by` and `summarise`
+
+## Tying it all together
+Lets practice what we'ved learned on real data;
+
+In the main folder for this project, there is a subfolder called `src`; inside this is the file "tx_expression_subset.tsv.gz". This is some data from a real RNA-seq experiment and contains transcript expression values; there are two columns for the gene and transcript name, and the rest of the columns are the samples each transcript is expressed in.
+In order, do the following;
+ - read the data into R, using the absolute path for the file as the input file
+ - reshape all the data except the `gene_name` and `transcript_id` columns into long format
+ - calculate per sample total gene expression - for each gene in each sample calculate the sum of all associated transcripts(hint: you will need to group by multiple columns)
+ - filter the data so you only have data for the following genes: DCX , GRM3 , MYO7A
+ - make a boxplot of expression values for these genes; color each box plot by gene expression
+
+```{r}
+
+```
+ 
+
+
+
+
+
+
+
+
+
+

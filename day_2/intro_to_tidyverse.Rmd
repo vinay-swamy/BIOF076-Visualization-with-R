@@ -13,20 +13,6 @@ output: ioslides_presentation
 - tidy data has data organized such that each complete row is a unique observation.
 - thankfully there are quite a bit of resources for doing this within R
 
-
-## Libraries in R
-
-- up until now we either been using functions included within the base R environment and if function is not available in base R, we have written our own. 
-- However, we can get functions from other sources, called libraries
-
-- libraries are collection of functions, generaly specialized task ; for example the package `ggplot2`, which we will be heavily using throughout this course is a library that contains functions for makes plots.
-
-- To use a library, load it using the `library` function
-```{r}
-library(RBedtools)
-```
-- most libraries are be hosted on CRAN, and can be installed in R using the `install.packages` function
-
 ## the Tidyverse
 
 - the tidyverse is a collection of packages that provide *fast, well documented* functions for data science.
@@ -42,10 +28,208 @@ library(tidyverse)
 - readr: efficiently read/write data
 - forcats: library for efficiently working with factors
 - purrr: adds common programming methods from other languages into
+- using `library(tidyverse)` makes it easy to load these all at once; but you can load them individually if you choose
+
+## the `readr` package
+- easiest to use, this is for reading external data *into* R, and writing data within R *to* the disk;
 
 
+## reading data 
+- generally tabular data is arranges where each element within a row is seperated by a delimiter, and whole rows are separated by a newline
+- the delimiter are commonly tabs `\t`, or commas, `,`. The demlimiter is relflected in the file extensions of tabular data, ie "tab separated values" is a `.tsv` file, and "comma separated values are `.csv`
+- the `read_...` functions all work the same way - just provide the name of the file
+
+```{r}
+write_tsv(head(mtcars), path =  'dummy.tsv')
+write_csv(head(iris), path = 'dummy.csv')
+write_delim(head(airquality) ,'dummy.txt', delim ='|')
+```
+
+```{r}
+data <- read_tsv('dummy.tsv')
+data
+```
+```{r}
+data <- read_csv('dummy.csv')
+data
+```
+- use read_delim to use a custom delimiter
+```{r}
+data <- read_delim('dummy.txt', delim = '|')
+data
+```
+
+## the working directory
+- the working directory is the location on your computer that R looks for files in, or writes files too.
+- your can find the working directory using the `getwd` function
+```{r}
+getwd()
+```
+
+-each `/` represents a different folder. In this, R is looking and writing to the `day_2` directory
+-you can change the working directory by using `setwd`(this doesnt work super great inside an R notebook)
+```{r, warning=FALSE}
+setwd('/Users/swamyvs/')
+```
+- use the `dir` function to show what files and folders are in the the working directory
+```{r, warning=FALSE}
+setwd("/Users/swamyvs/personal/BIOF076-Visualization-with-R/day_2")
+dir()
+```
+
+## filepaths 
+- a filepath is the location of file on your computer, and these can be relative, or absolute 
+- for example, the file `dummy.csv` I read  earlier has just the filename as the path, because its relative to our working directory, which is `/Users/swamyvs/personal/BIOF076-Visualization-with-R/day_2`.
+```{r}
+setwd('../')
+read_tsv('dummy.tsv')
+```
+
+- here, I set the working directory up on level with `../`,  which means "go up one level", and the file `dummy.tsv` could not be found.
+- but if I use the absolute path as the input filename, it works no matter what the directory is.
+```{r, warning=F}
+setwd('/')
+dir() %>% print
+read_tsv('/Users/swamyvs/personal/BIOF076-Visualization-with-R/day_2/dummy.tsv' ) %>% print
+```
+
+-always be careful of your filepaths; whenever possible use the absolute paths. When typing a file path in Rstudio, use `tab` to autocomplete the paths.
+
+## the `dplyr` package
+- "dplyr stands for "data plier", and is a package centered around manipulating tabular data. It provides effcient "verbs" to subset data, change it , and filter it. There are a large number of useful functions that are within the package, but we're going to focus on a core few. 
+- None of the `dplyr` functions modify data in-place, so always must store the output in a new variable if you want to use the result again 
+
+## `select`
+
+- `select` - subset dataframes based on column names; select always returns a data frame regardless of columns
+```{r}
+data(mpg)
+mpg
+```
+```{r}
+select(mpg, model)
+```
+- note that i did not use quotes for the `model` column; like `ggplot`, dplyr support quasi-quotation, so column names can be used with out quoting them 
+- you can select multipl columns, either by specifying a specific column, or a range
+```{r}
+select(mpg, model, class)
+```
+```{r}
+select(mpg, displ:trans)
+```
+- `select` can also be used to drop columns
+```{r}
+select(mpg, -manufacturer, -class)
+```
 
 
+## the `filter` function
+- `filter` allows you to find data that match certain conditions, by using logical filtering
+```{r}
+data("airquality")
+airquality
+```
+```{r}
+df <-  filter(airquality, Month == 5)
+df
+```
+
+- multiple logical filters can be passed
+```{r}
+df <- filter(airquality, Month == 5, Wind  > 10)
+df
+```
+
+- functions returning a logical vector can also be used
+```{r}
+df <- filter(airquality, !is.na(Solar.R))
+df
+```
+
+
+## the `mutate` function
+- the mutate function lets you add columns to the data
+
+```{r}
+df <- mutate(airquality, temp_zone = ifelse(Temp > 75, 'HIGH', 'LOW'))
+df
+```
+"
+## `dplyr` functions as "verbs"
+- Its best to think of each of these functions as an action or "verb" that we perform on the. For example within the `airquality` data  "I want to keep only the rows correspond to the months 5, or 6, keep only the temp and species column, and change the month column so that we use the character names for the month instead of the nuemric names"
+```{r}
+df <- filter(airquality, Month %in% c(5, 6))
+df <- select(df, Month, Temp)
+df <- mutate(df, Month = ifelse(Month == 5, 'May', 'June'))
+df
+```
+
+## using pipes
+
+```{r}
+df <- filter(airquality, Month %in% c(5, 6))
+df <- select(df, Month, Temp)
+df <- mutate(df, Month = ifelse(Month == 5, 'May', 'June'))
+df
+```
+
+- Looking at this code, we can see that we are performing repeated actions on the same data, where the output of one function is the input for the next function. `dplyr` provides a method for chaining multiple functions together, automatically redirecting the output of one function into an other function, through something called a pipe: ` %>% `
+
+
+```{r}
+fd <- filter(airquality, Month %in% c(5, 6)) %>% 
+    select( Month, Temp) %>%
+    mutate( Month = ifelse(Month == 5, 'May', 'June'))
+```
+- pipes can make it easier to understand your code, and help iternatively build a query for some data 
+
+## wide vs long data 
+
+- two common ways for formatting data are "wide" and "long"
+```{r}
+data("economics")
+economics
+```
+- this is an example of wide data -- each data point is date, with multiple observations per date. Data in this format is generally used for building models like regression or machine leanrning model
+
+```{r include=F}
+data("economics_long")
+economics_long %>% arrange(date)
+```
+- this is the same data, but in "long format". Here, each row is a distinct observation; note that the date column is repeated multiple times for different variable. 
+- the reason long format is prefered is that it reduces the number of columns in a data set; rememember that each column is a vector under the hood; computationally its more efficient to perform the same operation over a single large vector, rather than a series of smaller vectors/columns
+
+## converting from wide to long;
+- the `tidyr` package has a useful function called `pivot_longer` that allows you to convert from wide to long
+
+```{r}
+economics
+```
+
+```{r}
+economics %>% pivot_longer(cols = c(pop, pce, psavert, uempmed, unemploy), names_to = 'variable', values_to = 'obs')
+```
+- same thing a different way
+```{r}
+#every column except the data column
+economics %>% pivot_longer(cols = -date,  names_to = 'variable', values_to = 'obs')
+```
+
+## grouping and summarising data 
+- we often want to generate summary statistics for subcharacterics/subpopulations of our data; for example, calculating the the average value by day  in  `econmics_long` data. we do this by using the `group_by` and `summarise` functions from `dplyr`
+
+```{r}
+economics_long %>% arrange(date)
+```
+```{r}
+economics_long %>% group_by(date) %>% summarise(avg_value_per_day = mean(value))
+```
+- when grouping and summarising data, always remember that what ever function your use to summarise `mean`, `max` etc, must return a single value
+
+
+```{r}
+
+```
 
 
 

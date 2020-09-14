@@ -1,16 +1,68 @@
 ---
-title: "Day_1_review_and_conditional_programming_slides"
+title: "Visualization with R day 2"
 author: "Vinay Swamy"
 date: "9/7/2020"
 output: ioslides_presentation
 ---
 
+## Review 
+
+## Data Types
+- We have covered 3 data types in R. What are they, and what is each on used for 
+
+
+## Data Types
+- `numeric` - used for numerical data ; `character` used for strings/text
+
+## List vs Vector
+
+- What is the major difference between a list and a vector
+
+## List vs Vector
+
+- vectors must be a single data type; lists can contain multiple data types, and can contain multiple data stuctures, ie lists of lists, lists of dataframes 
+
+
+## Dataframes
+- what type of data are dataframes used for 
+
+## Dataframes
+- tabular data like spreadsheets or csv's 
+
+## Indexing
+
+- how does indexing work for a vector
+- how does indexing work for a  list
+- how does indexing work for a  dataframe?
+
+## Indexing
+
+- vector
+    - `vec[i]`, for the ith  element in a vector
+    - `vec[i:j]` to select all elements between i and j 
+- list
+    - `lst[[i]]`, for the ith  element in a list
+    - `lst[i:j]`, to select all elements between i and j 
+- dataframe 
+    - `df[, i]` to select column number i; `df[i, ]
+    - `df[i,]` to select row number i; 
+    - `df[i:j, ]` / `df[,i:j]` for selecting a range of rows/columns 
+    
+- if an object has names, values can also be accessed by their name, instead of their numerical index
+
+##  ggplot
+
+- what are the three major components of a `ggplot`?
+
+##  ggplot
+
+-  base `ggplot` layer, `geom` layer, `theme` layer
+
 
 ## Control flow and conditional programming
 
-- before we get to cleaning data, there are a couple more programming concepts we need to cover.
+- There are a couple more programming concepts we need to cover.
 - Some times when solving a problem,  we want to account for two(or more) different outcomes, but at any given time we only want one of them to happens. This is called conditional programming
-
 
 ## `if` statements 
 
@@ -32,7 +84,7 @@ is_greater_than_five(10)
 is_greater_than_five(4)
 ```
 
-s
+
 ## `if` statements
 
 - this is the  general structure of an if statement
@@ -72,16 +124,30 @@ x>5
 
 ```
 
-vecotors of the same length can also be compared, but this creates an element wise comparision and returns a vector
+vectors of the same length can also be compared, but this creates an element wise comparision and returns a vector
 ```{r}
 x <- c(1, 9, 6, 2, 3, 6)
-y <- c(2, 4, 10, 5, 1, -4)
+y <- c(2, 4, 10, 5, -4)
 comp <-  x>y
 comp
 ```
 ```{r}
 str(comp)
 ```
+
+- to compare two vectors, us,gvs match each other; `any` to see if at least one elements between the two match
+
+
+```{r}
+x <- c(1, 9, 6, 2, 3, 6)
+y <- c(2, 4, 10, 5, 1, -4)
+all(x==y)
+```
+
+
+
+
+
 
 ## the `==` operator
 - the `==` is the equality opeator, and checks whether two values are **exactly** the same 
@@ -108,4 +174,153 @@ x
 ```{r}
 !x
 ```
+
+## the `%in%` operator
+
+- the `%in%` operator allows you to check whether elements in one vector are in another
+
+
+```{r}
+vec_1 <- c('A', 'B', 'C', 'D', 'E', 'F')
+vec_2 <- c('A', 'b', 'C', 'd', 'E')
+
+vec_1 %in% vec_2
+```
+```{r}
+vec_1[vec_1 %in% vec_2]
+```
+- Note that because it check whether elements of the *left* are in the *right*, a vector equal to the length of the left is returned
+
+
+## the `else` block
+- when you're using an `if` statement, generally if the coniditon for the `if` statement is not met, you somthing else to happen
+
+```{r}
+
+weather_report <- function(is_sunny){
+    if(is_sunny){
+        print('it is a nice day out')
+        
+    }else{
+        print('maybe stay inside today')
+    }
+}
+weather_report(is_sunny = T)
+```
+```{r}
+weather_report(is_sunny = F)
+```
+-Its important to note that these two blocks will *never* run at the same time; one or the other will always occur
+
+
+-By just looking at the code below, what will the outputs of `weather_report_if_else(T)` and `weather_report_if(T)` be?
+```{r}
+weather_report_if_else <- function(is_sunny){
+    if(is_sunny){
+        print('it is a nice day out')
+        
+    }else{
+        print('maybe stay inside today')
+    }
+}
+
+weather_report_if <- function(is_sunny){
+    if(is_sunny){
+        print('it is a nice day out')
+        
+    }
+    
+    print('maybe stay inside today')
+    
+}
+```
+
+
+```{r}
+weather_report_if_else(T)
+```
+
+```{r}
+ weather_report_if(T)
+```
+
+- This is an example of "leaky" control flow, where the two outcomes are not proerly separated; This is why its best practice to always inlcude an `else` block as part of an if statement
+
+
+## accounting for multiple conditions
+- some times, we want to account for more than just 2 outcomes. This is done by adding `else if` blocks 
+
+
+```{r}
+weather_report <- function(is_sunny, is_raining){
+    if(is_sunny){
+        print('it is a nice day out')
+        
+    }else if(is_raining){
+        print('Bring an umbrella')
+    }
+    else{
+        print('maybe stay inside today')
+    }
+}
+
+
+weather_report(is_sunny = F, is_raining = T)
+```
+```{r}
+weather_report(is_sunny = F, is_raining = F)
+```
+```{r}
+weather_report(is_sunny = T, is_raining = F)
+```
+
+when using `else if` blocks, its important to remember if multiple conditions are met, only the *first* block is executed
+
+```{r}
+weather_report(is_sunny = T, is_raining = T)
+```
+
+## accounting for multiple conditions with logical operators
+- another way of combining multiple condition is by using the comparison operators, `|` and `&`
+
+
+
+## logical indexing
+
+- one of the most pratical uses of logical operators is for logical indexing.
+-  in logical indexing we select elements that meet a certain condition
+
+```{r}
+vec <- c(1, -2, 4, -5, 8, -3)
+keep_above_zero <- vec >0
+vec[keep_above_zero]
+```
+- this can be directly done within the indexer
+```{r}
+vec[vec > 0]
+```
+
+-logical indexing can be used in any situation normal indexing can
+
+## vectorized `if` statements
+
+- the `ifelse` function is a good way to apply an if-else condition with a binary outcome over a logical vector 
+- for example for each element in a vector, if the number is greater than 0 , set it to `Inf`, and if its below 0, set it to `-Inf`
+
+```{r}
+vec <- c(1,30000,-1, 354, -4)
+vec_greater_than_0 <- vec > 0
+ifelse(test = vec_greater_than_0, yes =Inf, no = -Inf  )# yes and no correspond to the true and false case respectively
+
+```
+
+
+
+
+
+
+
+
+
+
 

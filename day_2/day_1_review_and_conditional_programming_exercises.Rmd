@@ -1,0 +1,71 @@
+---
+title: "Review + tidying data"
+output: html_notebook
+---
+
+## conditional programming practice + review 
+
+We'll be using some sample data from New York Air Quality Measurements. Notice how some of the data is missing
+
+```{r}
+data("airquality")
+airquality
+```
+
+the `is.na` function takes a vector as input and returns `TRUE` when there is a `NA`, and `FALSE` otherwise. Use the `is.na` function on the `Ozone` column and print the results
+
+```{r}
+
+```
+
+
+ try to calculate the mean for the `Ozone` column 
+
+```{r}
+
+```
+
+
+For the `Ozone` column values that are NOT(!) `NA`, and calculate the mean and store it in a variable
+
+```{r}
+
+```
+
+
+select the `NA` values in the `Ozone` to the mean value we calculated earlier
+
+```{r}
+
+```
+
+
+use the `%in%` operator to select values from the `Month` column equal to 6 or 7. Store this in a variable
+
+```{r}
+
+```
+
+use the above logical indexing vector to select rows from the `airquality` dataframe; keep all columns 
+
+```{r}
+
+```
+
+use the `ifelse` function to replace the numbers corresponding to each month with their actual names () 6 -> "June", 7->"July")
+
+```{r}
+
+```
+
+make a boxplot for the `Ozone` levels for each month, coloring boxplots by month, including descriptive name for the axes and a title for the plot.
+
+```{r}
+
+```
+
+
+
+
+
+

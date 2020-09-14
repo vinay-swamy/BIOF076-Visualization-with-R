@@ -16,7 +16,7 @@ output: ioslides_presentation
 ```{r}
 library(RBedtools)
 ```
-- once a library is loaded, all its functions will be availabl to you
+- once a library is loaded, all its functions will be available to you
 
 ## ggplot2 - better plotting than base R
 - making plots has always been a core function of R, and as such the base environment contains its own functions for plotting
@@ -38,6 +38,10 @@ plot(x, y)
 
 ```{r, echo=F, include=FALSE}
 library(tidyverse)
+library(ggplot2)
+library(pals)
+library(patchwork)
+library(RColorBrewer)
 ```
 
 
@@ -295,4 +299,261 @@ ggplot(data=iris) +
 -in a violin plot, the width of the plot corresponds to the (smoothed) number of obsevations of a given value; in this case, `Petal.Length`. This allows you to easily compare distributions between multiple variables
 
 
+## setting graphical parameters
+- up until now we have been using the default graphicaly paramters.
+- graphical parameters include axis names, legend size/orientation, plot titles, etc
+- all graphical parameters can be set with the `theme` function. 
+- lets take a look at the `theme` [documentation](https://ggplot2.tidyverse.org/reference/theme.html)
+- all the `theme_...` functions we've been using are preset configurations of a theme
 
+## Simple Theme modifiers
+- There are several functions that allow you to modify specific elements, designed for simplicity
+- `xlab`/`ylab` - change the axis labels 
+- `ggtitle` -  add a title to a plot
+- `xlim`/`ylim` - change axis limits
+
+```{r}
+data(mpg)
+mpg
+ggplot(mpg) + 
+  geom_bar(aes(x=manufacturer))
+```
+
+- change axis labels , and add a title 
+```{r}
+data(mpg)
+mpg
+ggplot(mpg) + 
+  geom_bar(aes(x=manufacturer)) + 
+  xlab('Car Manufacturer') + 
+  ylab('Number of Cars' ) + 
+  ggtitle('Cars built in 2018 Q1 by Manufactuer')+
+  theme_minimal()
+
+```
+
+
+## changing text with `theme`
+
+- there are various  setting for text - font, size color etc; These are controlled by the `element_text` function, the output of which we assign to to specific graphical parameter, like `axis.text`. these parameters change everything about the text, except the text itself; setting the text is done with functions like `xlab` or `ggtitle` or populated directly from the data
+
+- the x-axis labels, are squished, and a little small; lets rotate the text a little and increase the font size
+```{r}
+
+ggplot(mpg) + 
+  geom_bar(aes(x=manufacturer)) + 
+  xlab('Car Manufacturer') + 
+  ylab('Number of Cars' ) + 
+  ggtitle('Cars built in 2018 Q1 by Manufactuer') +
+  theme(axis.text.x = element_text(size = 12, angle = 45))
+```
+- Note that background of the plot also changed; this is because we were previouisly using `theme_minimal` which has the backgorund set to white, but in `theme` the default is grey; this can be fixed by combnined the two themes
+
+```{r}
+ggplot(mpg) + 
+  geom_bar(aes(x=manufacturer)) + 
+  xlab('Car Manufacturer') + 
+  ylab('Number of Cars' ) + 
+  ggtitle('Cars built in 2018 Q1 by Manufactuer') +
+  theme_minimal()+
+  theme(axis.text.x = element_text(size = 12, angle = 45))
+
+```
+- the order is importants; as each theme is applied in the order it's added, so adding theme_minimal last can sometimes override changes in the theme made previously
+
+
+- while a little better, it would be better if the axis text  was off the graph
+```{r}
+ggplot(mpg) + 
+  geom_bar(aes(x=manufacturer)) + 
+  xlab('Car Manufacturer') + 
+  ylab('Number of Cars' ) + 
+  ggtitle('Cars built in 2018 Q1 by Manufactuer') +
+  theme(axis.text.x = element_text(size = 12, angle = 45, hjust = 1))
+```
+
+
+## setting inheritance
+- graphical settings are all linked in a hiearchical manner; for example this the hiearchy for axis.text.x: `text` > `axis.text` > `axis.text.x` . Changing settings for a one parameter changes everything below it in the hierarchy; however, if you specify changes for parameter below it will take precedence
+
+```{r}
+ggplot(mpg) + 
+  geom_bar(aes(x=manufacturer)) + 
+  xlab('Car Manufacturer') + 
+  ylab('Number of Cars' ) + 
+  ggtitle('Cars built in 2018 Q1 by Manufactuer') +
+  theme_minimal()+
+  theme(axis.text.x = element_text(size = 12, angle = 45, hjust = 1), text = element_text(family ='Palatino' ))
+```
+
+## guides
+- guides are an alternative  method to setting graphical parameters in theme. They were introduced to ggplot after themes, and are generally a more intuitive interface for setting graphical parameters, but lack the full range of parameters offered by `theme`
+
+For example, what if we want to change the name of the legend in the graph below
+
+```{r}
+ggplot(mpg) + 
+  geom_bar(aes(x=manufacturer, fill = class)) + 
+  xlab('Car Manufacturer') + 
+  ylab('Number of Cars' ) + 
+  ggtitle('Cars built in 2018 Q1 by Manufactuer') +
+  theme_minimal()+
+  theme(axis.text.x = element_text(size = 12, angle = 45, hjust = 1), text = element_text(family ='Palatino' ))
+
+```
+
+- we have two options: 
+- 1. change the name of the `class` column, or make a new column that has the name we want 
+```{r}
+mpg$Type_Of_Car <- mpg$class
+ggplot(mpg) + 
+  geom_bar(aes(x=manufacturer, fill = Type_Of_Car)) + 
+  xlab('Car Manufacturer') + 
+  ylab('Number of Cars' ) + 
+  ggtitle('Cars built in 2018 Q1 by Manufactuer') +
+  theme_minimal()+
+  theme(axis.text.x = element_text(size = 12, angle = 45, hjust = 1), text = element_text(family ='Palatino' ))
+```
+
+- or option 2, use the `guides` function. For guides we set a value for the aesthetic within the `geom` we want to change ,  in this case `fill`. Next we choose a guide for the graphical parameter associated with that aesthetic we want to change, ie `guide_legend`
+```{r}
+ggplot(mpg) + 
+  geom_bar(aes(x=manufacturer, fill = class)) + 
+  xlab('Car Manufacturer') + 
+  ylab('Number of Cars' ) + 
+  ggtitle('Cars built in 2018 Q1 by Manufactuer') +
+  theme_minimal()+
+  theme(axis.text.x = element_text(size = 12, angle = 45, hjust = 1), text = element_text(family ='Palatino' )) + 
+  guides(fill = guide_legend(title = 'Type of Car', title.position = 'left'))
+```
+- while the text of legend cannot be changed inside theme, the position can be by changing the 
+
+
+## saving plots 
+- `ggplot2` comes with an easy to use save function, `ggsave`
+- the file extension will determine type of image that is saved ie `png`,`tiff`, `jpeg` etc. 
+- the size and resolution can also be changed. use `?ggsave` to learn more.
+
+```{r}
+plot <- ggplot(mpg) + 
+  geom_bar(aes(x=manufacturer)) + 
+  xlab('Car Manufacturer') + 
+  ylab('Number of Cars' ) + 
+  ggtitle('Cars built in 2018 Q1 by Manufactuer') +
+  theme(axis.text.x = element_text(size = 12, angle = 45, hjust = 1), text = element_text(family ='Palatino' ))
+ggsave(plot, filename = 'ggsave.png')
+
+```
+
+## colors in R
+- chosing the right color scheme for plot is an underpreciated, but crucial step.
+```{r}
+length(colors())
+```
+- there are 657 distinct colors, though 200 of these are different shades of grey
+
+- the `RColorBrewer` package has arranged some of these into useful palettes
+```{r, fig.height=8, fig.width=8}
+library(RColorBrewer)
+
+RColorBrewer::display.brewer.all()
+```
+
+- palettes where colors blend together to form a gradient are best for continous data; palettes where colors are distinct are best for discrete data.
+
+```{r, include=F}
+library(patchwork)
+plot_pal <- function(cols){
+  pdata <- tibble(col = cols, x= seq(1, length(cols)), y=0)
+  cv <- cols
+  names(cv) <- cv
+  plot <- ggplot(pdata) + 
+    geom_tile(aes(x=x, y=y,fill = col), width = 1, height= .5) +
+    scale_fill_manual(values=cv) +
+    theme_void()+
+    theme(legend.position = 'none')
+  return(plot)
+}
+
+str(cols)
+```
+
+the `pals` package
+- the `pals` package contains the most extensive set of color palettes and contains over a hundred palettes
+-the `Alphabet palette` the largest set distinct colors for discrete data 
+
+```{r}
+library(pals)
+print(plot_pal(alphabet()))
+```
+
+- Viridis  and magma, two of the best palettes for continous data
+
+```{r}
+plot_pal(viridis(10)) / plot_pal(magma(10))
+```
+
+- and there are many more;
+
+## using palettes functions 
+- all functions to generate a color palette function roughly the same way. Select a palette, and provide a number of colors to generate. A list of colors, specified in hex format is returned.
+
+- when using the `pals` package, each palette is its own function and requires only the number of colors
+
+```{r}
+alphabet(4)
+```
+
+- when using `RColorbrewer`, provide the name of the palette and the number of colors to generate
+
+```{r}
+RColorBrewer::brewer.pal(6, 'Pastel1')
+```
+
+## using color palettes within ggplot - the `scale_...` functions 
+- ggplot provides a couple methods to change the coloring of
+```{r}
+data(iris)
+ggplot(iris)  + 
+  geom_point(aes(x=Sepal.Length, Petal.Length, color = Sepal.Width))+
+  theme_classic()
+```
+
+- use the `scale_...` functions to adjust colors, or any aesthetic
+
+```{r}
+ggplot(iris)  + 
+  geom_point(aes(x=Sepal.Length, Petal.Length, color = Sepal.Width))+
+  scale_color_gradientn(colors = pals::brewer.reds(100))
+  theme_classic()
+```
+
+- all `scale_...` functions have roughly the same format "scale_<aesthetic>_method"
+
+-always remember to set the right aesthetic 
+
+```{r}
+pal = RColorBrewer::brewer.pal(3, 'Pastel1')
+ggplot(iris)  + 
+  geom_boxplot(aes(x=Species, y=Petal.Length, fill = Species))+
+  scale_color_discrete(type = pal)+
+  theme_classic()
+```
+
+```{r}
+plot_pal(pal)
+```
+```{r}
+ggplot(iris)  + 
+  geom_boxplot(aes(x=Species, y=Petal.Length, fill = Species))+
+  scale_fill_discrete(type =pal)+
+  theme_classic()
+```
+
+
+
+
+
+
+f/."                 
+\
