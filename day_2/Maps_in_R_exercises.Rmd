@@ -1,0 +1,46 @@
+---
+title: "Practice with maps "
+output: html_notebook
+---
+
+
+
+Lets make a plot with some real data. We're gonna be working with some data about COVID-19 testing in maryland. 
+'day_2/MD_COVID_cases_by_zip.tsv.gz' contains the per day number of positive covid cases by zip code for about 160 days in the state of maryland. 
+'day_2/maryland_zipcode_to_county.tsv.gz' contains a mapping for maryland zip code to counties
+'day_2/maryland_counties.shp' is a shapefile for counties in maryland
+
+Were going to take this data and make this:
+
+```{r}
+
+```
+
+As a starting point, this is the generaly workflow. Load data > join county level data to zip level data > aggreagte data to the county level  >  join map data > make animation 
+
+
+
+- first add the county information to the covid data. check how many counties are shared between the covid data and the map data 
+```{r}
+
+```
+
+
+- aggregate zip level covid data to county level
+```{r}
+
+```
+
+- the character date to a DateTime vector
+```{r}
+
+```
+
+
+- add the map data to the covid data. filter out the date '2020-05-21' and plot it 
+```{r}
+
+```
+
+
+

@@ -1,0 +1,48 @@
+---
+title: "GGplot part 2 exercises"
+output: html_notebook
+---
+
+
+## Using multiple geoms 
+
+-this is a more typical form a violin plot, showing both the violin distribution and box plot quantiles. Use multiple geoms to try and recreate this plot. This was generated using the `ToothGrowth` data set. Remember you can use the `?` command to look at the parameters for each geom 
+
+```{r}
+knitr::include_graphics('../src/example_vio_box.png')
+```
+
+```{r}
+data("ToothGrowth")
+```
+
+
+## recreating a complicated plot
+
+- Imagine the following scenario - You're assaying the activity of an enzyme and a hyperactive mutant. Your using a reporter assay that measures the activity in "scientific units". You assay the activity over 24 hours, but realize that when you left the lab the AC turned on and lowered the temperature of the room which may have lowered the temperature. You have the following data
+
+```{r}
+reporter_data <- read_tsv('../src/Reporter_assay_results.tsv.gz')
+reporter_data
+```
+
+- Use this data to recreate the following plot
+
+```{r}
+knitr::include_graphics('../src/reporter_assay_plot.png')
+```
+
+- some hints: the following geoms are required: `geom_line`, `geom_label`, `geom_label_repel`, `geom_line` and `geom_errorbar`. You will have to change several theme settings, and scale at least one aesthtic for one of the geoms
+
+
+```{r}
+
+
+```
+
+
+
+
+
+
+

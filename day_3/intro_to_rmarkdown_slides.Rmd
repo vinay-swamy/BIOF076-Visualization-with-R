@@ -1,0 +1,84 @@
+---
+title: "Intro to RMarkdown"
+author: "Vinay Swamy"
+date: "9/23/2020"
+output: ioslides_presentation
+---
+
+## Before we get to Rmarkdown, what is markdown?
+
+- markdown is mini-language designed for designing documents. It allows users to have the functionality of a word processor - different fonts, bullet points, tables, etc - but written completely in plain text 
+
+- markdown has been used for years, but because of its steep learning curve many choose to avoid it 
+
+## Rmarkdown
+
+- Rmarkdown is a flavor of markdown repurposed by Rstudio. Rmarkdown was designed for programming notebooks, an environment where you can execute code *and* write in plain text. The R notebooks we've been using all use markdown.
+
+- R notebooks can be "knit" into reports. These reports are highly customizeable with a huge number of output formats, including word documents and powerpoint presentations 
+ - markdown can be used for blogs/websites, conference posters, and scientific publications  
+ - making 
+
+- the slides we have been using for class have all been made through R Markdown 
+
+## Benefits of Rmarkdown
+
+- document your code much easier, as its easier to write comments and longer explanations in plain text 
+- create a report/presentation that is descriptive as well as dynamic; a new version of the report can be generated with out having to remake figures and move them around
+- reproducibility: you know exactly what code you used to make a specific plot.
+- Rmarkdown is probably one of the best and most useful features of the R programming language
+
+## Anatomy of a (notebook) cell
+
+- We've briefly covered how to use R notebooks, but we'll go into more detail now about how it all works 
+![](src/cell.png)
+
+- within the curly brackets for each cell, we set parameters on how the *output* should look like. In this case we set `echo=FALSE` which means we don't want the the code cell to be printed, and `eval=TRUE` mean, run this chunk of code. 
+- These parameters only affect the cell in which they are set.
+
+- to globally change settings for all chunks, you must have a chunk names `setup` as the first chunk of the notebook 
+
+![](src/setup_cell.png)
+
+## changing non-cell parameters 
+- `knitr` is the R package the handles converting R Markdown into a formatted document. We can use functions from `knitr` to control a wide range of output 
+
+- for example, changing the root(working directory)
+```{r  eval=FALSE}
+#```{r setup}
+library(knitr)
+opts_knit$set(root.dir = '/Users/swamyvs/personal/')
+#```
+
+```
+
+## RMarkdown in the context of plotting
+
+- Rmarkdown is crucial for plotting;
+- when making plots in RMarkdown, each cell defines the plotting environement for making a plot, in terms of the physical space a plot can take up (the units are in inches)
+
+```{r, fig.height=1, fig.width=1}
+#```{r, fig.height=1, fig.width=1}
+#```
+ggplot(mtcars) +
+  geom_point(aes(mpg, disp)) + 
+  ggtitle('Plot 1')
+```
+
+```{r, fig.height=3, fig.width=3}
+#```{r, fig.height=3, fig.width=3}
+#```
+ggplot(mtcars) + 
+  geom_point(aes(mpg, disp)) + 
+  ggtitle('Plot 1')
+```
+
+
+
+cheat sheet https://rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf
+
+```{r, setup echo=FALSE, eval=TRUE}
+```
+
+
+

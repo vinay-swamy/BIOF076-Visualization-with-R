@@ -1,0 +1,77 @@
+---
+title: "Learning how to use other plotting libraries in R"
+author: "Vinay Swamy"
+date: "9/16/2020"
+output: ioslides_presentation
+---
+
+
+
+## making scientific plots (and using other plotting libraries)
+- The plot we just worked on was a common scientific plot, but was missing one key aspect - a measure of statistical significance. 
+- up until now have worked with just the `ggplot` library, as it provides the most flexibility for making a wide range of plots. Now, we're going to work with the `ggpubr` library.
+
+## the `ggpubr` library
+
+- the `ggpubr` is built on top of ggplot, but provides a more streamlined interface to use. It was designed to be used quickly and easily for making scientific plots 
+
+- this is the code to make a violin plot in ggpubr - one function call to make a single plot
+```{r}
+library(ggpubr)
+ggviolin(ToothGrowth, x = "dose", y = "len", fill = "dose",
+         palette = c("#00AFBB", "#E7B800", "#FC4E07"),
+         add = "boxplot", add.params = list(fill = "white"))
+```
+
+```{r}
+ggviolin(ToothGrowth, x = "dose", y = "len", fill = "dose",
+         palette = c("#00AFBB", "#E7B800", "#FC4E07"),
+         add = "boxplot", add.params = list(fill = "white"))
+```
+
+- all the aesthetics you would need to change are specified as part of the function 
+
+
+- testing and visualizing statistical signifiance is also easy to add to the plot 
+
+```{r}
+ggviolin(ToothGrowth, x = "dose", y = "len", fill = "dose",
+         palette = c("#00AFBB", "#E7B800", "#FC4E07"),
+         add = "boxplot", add.params = list(fill = "white"))+  
+stat_compare_means(comparisons = list( c("0.5", "1"),  c("0.5", "2") ), label = "p.signif")+
+  stat_compare_means(label.y = 50) 
+```
+
+
+- for certain plots, this makes thing much easier , like the line graph we made earlier
+
+```{r}
+df <- suppressMessages(read_tsv('src/Reporter_assay_results.tsv.gz')) %>% pivot_longer(WildType:Mutant, names_to = 'condition', 
+                                                                                       values_to = 'SU')
+df
+```
+
+```{r}
+ggline(data = df, x= 'Time', y='SU', color = 'condition', add = 'mean_se' )
+```
+
+- It gets pretty close.But its not an exact match - take a look at the axis. The data was originally numeric - but has been onverted to a factor. This gets more apparent when we try to add other `geom`s from ggplot. 
+
+```{r}
+ggline(data = df, x= 'Time', y='SU', color = 'condition', add = 'mean_se' )  +
+  geom_vline(xintercept = 5)
+```
+
+- While `ggpubr` excels for making quick and descriptive plots, it lacks a lot of flexibility. Use it when when you need somthing out of the box, but if you need something a littl emore complicated, stick with ggplot
+
+
+```{r}
+
+```
+
+## Learning how to use a new plotting library
+
+- outside of `ggplot` there are a lot of plotting libraries; many of these are for making specific types of plots, and it 
+
+
+
