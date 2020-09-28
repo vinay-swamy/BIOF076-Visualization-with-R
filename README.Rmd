@@ -1,12 +1,10 @@
 ---
 title: 'BIOF 076: Visualization with R'
 author: "Vinay Swamy"
-date: October 5th-9th
-subtitle: Creating publication quality figures and interactive web apps with the R programming language
-output:
-  pdf_document: 
-    keep_md: true
-  html_notebook: default
+date: "October 5th-9th"
+output: pdf_document 
+subtitle: Creating publication quality figures and interactive web apps with the R
+  programming language
 ---
 # Introduction
 Creating compelling visualizations is an important aspect of biomedical research. The R programming language provides many libraries for creating beautiful figures and interactive web apps. As R is an open source project, it facilitates open science and reproducible research. R has been heavily used by bioinformaticians and data scientists for years, and has become increasingly easy to use. This course is designed to allow researchers to quickly dive into R and make visualizations for their own work. No previous experience in R is required. 
