@@ -1,0 +1,68 @@
+---
+title: "Useful Visualizations"
+author: "Vinay Swamy"
+date: "9/26/2020"
+output: ioslides_presentation
+---
+
+## Some visualizations are better than others
+
+- Plots are designed to accruate convey relationships within data. Different kinds of plots are good at conveying different kinds of relationships. A mistake most people make is not understanding specifically what a plot is useful for. 
+
+- For example take the venn diagram 
+![](../src/basic_venn.png)
+
+- The venn diagram is designed to show the intersection between two sets, with the numbers repsenting the total in each different part of the set intersections. In this venn diagram text is the most onformative part of the plot. 
+- Good plots don't need text *inside the plot* to communicate the relationship they describe (not talking about legends, titles,etc). if a plot does have text, the plot should visually match the text 
+
+![](../src/standard_venn.png)
+-  this venn diagram has been drawn proportionally(ish) so that the area matches the size of the set. Even without the text, the relationship between the data is clear.
+
+## When not to use venn diagrams 
+- because simple venn diagrams are easy to interpret, the often get used for more complicated set interactions 
+![](../src/bad_venn.png)
+- This is an example of a bad venn diagram. Not only do the numbers not match the set sizes, it is difficult to easily see some of the more complicated set intersections.
+
+## Upset Plots
+- A *far* superior way to showing set intersections is an Upset plot 
+![](../src/upset.png)
+
+- the stick-and-ball plot at the bottom  represents the intersection between the sets. The bar plot at the top represents the size of the intersection. The bar plot to the left represents the size of the whole sets
+- Its much easier to pick out individual set intersections, ans compare sizes across multiple intersections
+
+- the `ComplexUpset` is my favorite package for plotting Upset plots. It uses `ggplot` under the hood, and provides a lot more flexibility compared to other packages. 
+
+
+## Visualizing changes in set intersection 
+
+- A nice way to visualize *changes* in categorical data are Alluvial plots. It's a bit of a niche plot, but can be very useful if used properly.
+![](../src/sankey.png)
+
+- These are also known as sankey or waterfall plots.
+
+
+## Copmaring continous data
+- There are multiple well established for comparing continuous data, like boxplots or violing plots.
+
+```{r}
+library(ggridges)
+
+ggplot(lincoln_weather,aes(y = `Mean Temperature [F]`, x = Month  )) + 
+    geom_violin() +
+    geom_boxplot(width=.1) + 
+    theme_bw()
+```
+
+- while its definitely clear that each distribution is different, the plot itself is a little plain. Further more, if we were to expand this to many more variables, it would be diffcult to compare the population as a whole 
+
+## Ridge plots
+- Ridge plots are an alternative way to compare a large(ish) number of continuous distributions, epsecially where each variable represents a shift in time 
+
+```{r}
+ggplot(lincoln_weather, aes(x = `Mean Temperature [F]`, y = Month, fill = stat(x))) +
+  geom_density_ridges_gradient(scale = 3, rel_min_height = 0.01) +
+  scale_fill_viridis_c(name = "Temp. [F]", option = "C") +
+  labs(title = 'Temperatures in Lincoln NE in 2016')
+```
+
+- While definitely not applicable for every type of continuous copmarison, it is an aesthetically pleasing plot.

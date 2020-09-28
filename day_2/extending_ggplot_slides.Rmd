@@ -6,16 +6,26 @@ output: ioslides_presentation
 ---
 
 
+## the Grammar of Graphics beyond `ggplot2`
+- The grammar of graphics outlined by `ggplot2` provides a uniform way to both make plots, and to write the code for making other plotting libaries. 
+- Because fo this, there is a wide range of other packages that additional functionality to `ggplot`, while following the same standard to allow for easy use and interoperability
 
-## making scientific plots (and using other plotting libraries)
-- The plot we just worked on was a common scientific plot, but was missing one key aspect - a measure of statistical significance. 
-- up until now have worked with just the `ggplot` library, as it provides the most flexibility for making a wide range of plots. Now, we're going to work with the `ggpubr` library.
+## installing  external libraries
+- recall that we can use `install.packges` to download packages from CRAN. However, the requirements for CRAN can be a little restrictive, and as new packages are developed, there are often long delays between uploads to CRAN. 
+- almost all package developers use GitHub to host their data
+- the `devtools` package provides an easy way to download such packages 
+
+```{r}
+remove.packages('RBedtools')
+devtools::install_github('vinay-swamy/RBedtools', upgrade = F)
+```
 
 ## the `ggpubr` library
 
-- the `ggpubr` is built on top of ggplot, but provides a more streamlined interface to use. It was designed to be used quickly and easily for making scientific plots 
+- the `ggpubr` is built on top of ggplot, but provides a more streamlined interface to use. It was designed to be used quickly and easily for making scientific plots for users with little to know programming expereince.
 
 - this is the code to make a violin plot in ggpubr - one function call to make a single plot
+
 ```{r}
 library(ggpubr)
 ggviolin(ToothGrowth, x = "dose", y = "len", fill = "dose",
@@ -30,7 +40,6 @@ ggviolin(ToothGrowth, x = "dose", y = "len", fill = "dose",
 ```
 
 - all the aesthetics you would need to change are specified as part of the function 
-
 
 - testing and visualizing statistical signifiance is also easy to add to the plot 
 
@@ -64,14 +73,76 @@ ggline(data = df, x= 'Time', y='SU', color = 'condition', add = 'mean_se' )  +
 
 - While `ggpubr` excels for making quick and descriptive plots, it lacks a lot of flexibility. Use it when when you need somthing out of the box, but if you need something a littl emore complicated, stick with ggplot
 
+## adding patterns to plots 
+
+- Using patterns has a long history in scientific plots.
+- patterns provide another "dimension" to showcase a catagorical variable
+- patterns are available through the `ggpattern` package
 
 ```{r}
+library(ggpattern)
+df <- data.frame(level = c("a", "b", "c", 'd'), outcome = c(2.3, 1.9, 3.2, 1))
+
+ggplot(df) +
+  geom_col_pattern(
+    aes(level, outcome, pattern_fill = level), 
+    pattern = 'stripe',
+    fill    = 'white',
+    colour  = 'black'
+  ) +
+  theme_bw(18) +
+  theme(legend.position = 'none') + 
+  labs(
+    title    = "ggpattern::geom_pattern_col()",
+    subtitle = "pattern = 'stripe'"
+  ) +
+  coord_fixed(ratio = 1/2)
+```
+
+- with a little bit more code, multiple patterns can be added 
+
+```{r}
+iris_dfac <-  iris %>% mutate(dfac = sample(c('long', 'short'),size = nrow(.), replace = T)) %>% group_by(Species, dfac) %>% 
+    summarise(dcol = n())
+ggplot(iris_dfac)+ 
+    geom_col_pattern(aes(x=Species, y=dcol, pattern_density = dfac, fill = Species),
+                     pattern_color = 'white',
+                     color='black',
+                     position = 'dodge', pattern_fill = 'white', 
+                     pattern= 'crosshatch')  + 
+    theme_classic()
+    
+    
 
 ```
 
-## Learning how to use a new plotting library
 
-- outside of `ggplot` there are a lot of plotting libraries; many of these are for making specific types of plots, and it 
+## external themes
+
+- While the base ggplot themes are nice, there are *many* published themes that you can use with your plots 
+
+```{r}
+library(ggplot2)
+library(ggthemes)
+ggplot(iris) + 
+  geom_boxplot(aes(x= Species, y= Sepal.Length, fill = Species)) + 
+  theme_minimal()
 
 
+```
+
+- a theme mimicing the Wall Street Journal
+
+```{r}
+ggplot(iris) + 
+  geom_boxplot(aes(x= Species, y= Sepal.Length, fill = Species)) + 
+  ggthemes::theme_wsj()
+```
+
+```{r}
+
+ggplot(iris) + 
+  geom_boxplot(aes(x= Species, y= Sepal.Length, fill = Species)) + 
+  hrbrthemes::theme_ipsum_es()
+```
 
