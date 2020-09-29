@@ -45,12 +45,5 @@ Depends:
     shiny,
     tidyr,
     tidyverse
-Remotes: 
-    coolbutuseless/ggpattern,
-    hrbrmstr/hrbrthemes,
-    jokergoo/ComplexHeatmap,
-    tidyverse/dplyr,
-    vinay-swamy/RBedtools,
-    wilkelab/ggridges
 Encoding: UTF-8
 LazyData: true
