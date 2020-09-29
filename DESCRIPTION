@@ -1,0 +1,56 @@
+Type: Compendium
+Package: BIOF079
+Title: Visualization with R
+Version: 0.0.1
+Authors@R: 
+    person(given = "Vinay",
+           family = "Swamy"",
+           role = c("aut", "cre"),
+           email = "first.last@example.com",
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: Compendium description
+License: What license it uses
+Depends: 
+    ComplexHeatmap,
+    devtools,
+    dplyr,
+    gapminder,
+    gganimate,
+    ggiraph,
+    ggpattern,
+    ggplot,
+    ggplot2,
+    ggplotify,
+    ggpubr,
+    ggrepel,
+    ggridges,
+    ggspatial,
+    ggthemes,
+    grid,
+    hrbrthemes,
+    kableExtra,
+    knitr,
+    lubridate,
+    maps,
+    pals,
+    patchwork,
+    plotly,
+    png,
+    RBedtools,
+    RColorBrewer,
+    rmarkdown,
+    rnaturalearth,
+    rnaturalearthdata,
+    sf,
+    shiny,
+    tidyr,
+    tidyverse
+Remotes: 
+    coolbutuseless/ggpattern,
+    hrbrmstr/hrbrthemes,
+    jokergoo/ComplexHeatmap,
+    tidyverse/dplyr,
+    vinay-swamy/RBedtools,
+    wilkelab/ggridges
+Encoding: UTF-8
+LazyData: true
