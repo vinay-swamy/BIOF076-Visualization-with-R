@@ -3,7 +3,14 @@ title: "Review + tidying data"
 output: html_notebook
 ---
 
-## conditional programming practice + review 
+## conditional programming practice
+
+select all elements greater than 0 in the vector below using a logical vector
+
+```{r}
+vec <- rnorm(10000, 0, sd=10)
+```
+
 
 We'll be using some sample data from New York Air Quality Measurements. Notice how some of the data is missing
 
@@ -65,6 +72,29 @@ make a boxplot for the `Ozone` levels for each month, coloring boxplots by month
 ```
 
 
+
+
+
+## putting it all together 
+
+Heres a slightly more complicated task.
+Working with the `mpg` dataset, write a function that takes as an input the name of a car manufacturer, filters the `mpg` data based on that value, and then plots the a bar plot of the `class` column, colored by `class`. 
+Note: when plotting a `ggplot` within a function you must `print` it out.
+```
+plot = ggplot...
+print(plot)
+```
+It might help to write out the code for the `if` statement first and then incorporate it into a function.
+
+```{r}
+
+```
+
+within the same function, add an `if` statement to check if the input of the function actually is in the mpg dataframe, and if its not print an error message and return from the function. This called error handling, and an important concept to know if your code ever has ro be used by someone else 
+
+```{r}
+
+```
 
 
 

@@ -1,6 +1,6 @@
 <!-- badges: start -->
   [![Launch Rstudio Binder](http://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/vinay-swamy/BIOF076-Visualization-with-R/master?urlpath=rstudio)
-  <!-- badges: end -->
+<!-- badges: end -->
 # 'BIOF 076: Visualization with R'
 
 ## Creating publication quality figures and interactive web apps with the R programming language

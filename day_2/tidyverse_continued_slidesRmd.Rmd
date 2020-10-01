@@ -1,0 +1,44 @@
+---
+title: "Tidyverse - Part 2"
+author: "Vinay Swamy"
+date: "9/29/2020"
+output: html_document
+---
+## Where we left off
+- we covered most of the useful parts of the tidyverse, but there are a few more topics to cover. 
+
+## merging tabular data
+- We've only been working with single data frames/tibbles, but we often will need to combine multiple data.frames together. 
+- In its simplest form, this is called binding
+## merging tabular data
+```{r}
+nrow(iris)
+```
+
+## merging tabular data
+```{r}
+rbind(iris, iris) %>% nrow
+```
+
+```{r}
+
+```
+ 
+## row binding(rbind)
+- the simplest way to combi
+```{r}
+
+```
+
+
+## merging tabular data
+```{r}
+nrow(iris)
+```
+- binds
+- joins 
+- case_when 
+- across 
+
+
+

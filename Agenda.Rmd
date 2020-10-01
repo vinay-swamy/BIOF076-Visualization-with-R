@@ -1,11 +1,16 @@
 ---
-title: 'BIOF 076: Visualization with R'
-author: "Vinay Swamy"
+title: '**BIOF 076: Visualization with R**'
+author: " Instructor: Vinay Swamy"
 date: "October 5th-9th"
-output: pdf_document 
+output: 
+  word_document:
+    default
+  pdf_document:
+    default
 subtitle: Creating publication quality figures and interactive web apps with the R
   programming language
 ---
+
 # Introduction
 Creating compelling visualizations is an important aspect of biomedical research. The R programming language provides many libraries for creating beautiful figures and interactive web apps. As R is an open source project, it facilitates open science and reproducible research. R has been heavily used by bioinformaticians and data scientists for years, and has become increasingly easy to use. This course is designed to allow researchers to quickly dive into R and make visualizations for their own work. No previous experience in R is required. 
 
@@ -29,15 +34,16 @@ Our engagement during this workshop will take several forms:
 * Communications: There will be a slack group created for the class.
  
 # Software and Materials 
-We will have a session to install all software before the course at XXX on October 2nd. Some of the main software we will be using:
+We will have two sessions to install all software before the course at **10am** and **4pm** on **Friday, October 2nd**. Some of the main software we will be using:
 
 * Software
   + R language base system -  the core interpreter for the R language that runs the code we will write
   + Rstudio - an integrated devleopment environment(IDE) that makes it signficantly easier to write code
+  + git - a version control system for writing code
   + GitHub - students will sign up for GitHub, an online repository for code. 
   + GDAL - software for using maps in R
 * Materials
-  + A computer, ideally with administrative access
+  + A computer, ideally with administrative access. (you likely *do not* have administrative access on a government issued computer)
   + Multiple screens(2 monitors, computer  +  tablet/phone etc)
 
 # Schedule
@@ -53,7 +59,7 @@ Monday	12PM-1:00PM	Break
 Monday	1PM-1:50PM 	Manipulating Data with the tidyverse Part 1
 Monday	2PM-2:50PM	Using the ggplot2 library - Customizing themes and Aesthetics
 Monday	3pm-3:50PM	Office hours 
-Tuesday	9AM-9:50AM	Review / Coniditional programming 
+Tuesday	9AM-9:50AM	Review / Conditional programming 
 Tuesday	10AM-10:50AM	Manipulating Data with the tidyverse Part 2
 Tuesday	11AM-12PM	Using the ggplot2 library - Complex Plots 
 Tuesday	12PM-1:00PM	Break 
@@ -94,9 +100,11 @@ Office hours will be held at the end of each day from 3-4PM.
 # FAQ
 
 Q. Do I need any Prior Experience in R
+
 A. No, This class requires NO expreience in R. We will cover everything you need to know within the course.
 
 Q. I don't have administrative access to my computer, how will I be able to install the necessary software?
+
 A. While it's best to work on your own machine, a standalone cloud based environment will be available for people to use.
 
 

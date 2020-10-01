@@ -2,8 +2,19 @@
 title: "Introduction to ggplot2"
 author: "Vinay Swamy"
 date: "9/4/2020"
-output: ioslides_presentation
+output:
+  ioslides_presentation: 
+    widescreen: true
 ---
+<style>
+slides > slide {
+  overflow-x: auto !important;
+  overflow-y: auto !important;
+}
+</style>
+```{r setup, echo=FALSE}
+knitr::opts_chunk$set(fig.height = 3, fig.width =5)
+```
 
 ## Libraries in R
 
@@ -20,14 +31,18 @@ library(RBedtools)
 
 ## ggplot2 - better plotting than base R
 - making plots has always been a core function of R, and as such the base environment contains its own functions for plotting
+
+## ggplot2 - better plotting than base R
+
 ```{r}
 x <- rnorm(10)
 y <- rnorm(10)
 plot(x, y)
 
 ```
-- while this may look simple, the base R plotting functions are much harder to use for complicated plots and the syntax is fairly inconsistent across different kinds of plots
 
+## ggplot2 - better plotting than base R
+- while this may look simple, the base R plotting functions are much harder to use for complicated plots and the syntax is fairly inconsistent across different kinds of plots
 
 ## the grammar of graphics
 - the ggplot2 plotting libraries are written under the core philosphy of the "Grammar of Graphics"
@@ -44,23 +59,23 @@ library(patchwork)
 library(RColorBrewer)
 ```
 
-
+## the iris data set 
 ```{r}
 library(ggplot2)
 data(iris)
-iris
+head(iris)
 ```
 
+## basic plots 
 - a scatter plot, like before
 
 ```{r}
-
 ggplot(data=iris) +
     geom_point(aes(x=Petal.Length, y=Sepal.Length )) +
     theme_minimal()
-
 ```
 
+## basic plots 
 - how about a scatter plot, but colored by the type of flower
 
 ```{r}
@@ -69,6 +84,7 @@ ggplot(data=iris) +
     theme_minimal()
 ```
 
+## basic plots 
 - similarly, lets plot a boxplot
 
 ```{r}
@@ -77,6 +93,7 @@ ggplot(data=iris) +
     theme_minimal()
 ```
 
+## basic plots 
 - how about a boxplot separated by flower 
 
 ```{r}
@@ -87,15 +104,17 @@ ggplot(data=iris) +
 
 ## the anatomy of a `ggplot`
 - ggplots are composed of three core types of layers
-- - the base layer, defined with `ggplot`. This layer creates an empty plot that will be filled with other layers. In this layer we provide the data we will use to plot. This is almost always a data.frame
-- - the plotting layer, which are functions with the `geom_` prefix. Each `geom` has specific properties that can be set, either with a manual value, or an aesthetic mapping.
-- the `theme` layer which controlls a large amount of graphical parameters, like axis titles, legend size, plot titles etc. ggplot provides pre configured themes like `theme_minimal` for easy use
-- note that we *add* layers together
+  - the base layer, defined with `ggplot`. This layer creates an empty plot that will be filled with other layers. In this layer we provide the data we will use to plot. This is almost always a data.frame
+  - the plotting layer, which are functions with the `geom_` prefix. Each `geom` has specific properties that can be set, either with a manual value, or an aesthetic mapping.
+   the `theme` layer which controlls a large amount of graphical parameters, like axis titles, legend size, plot titles etc. ggplot provides pre configured themes like `theme_minimal` for easy use
+  - note that we *add* layers together
 
 
 ## aethetic mappings for plots.
 - each `geom_` layer has multiple aesthetic parameters that can be modified. these can be viewed with the `?` command ( x and y are bolded in the picture below)
-![](../src/geom_aes.png)
+```{r echo=F}
+knitr::include_graphics('../src/geom_aes.png')
+```
 
 - we can set these aesthetic parameters in two ways, manually assigning values, or the `aes` function
 
@@ -126,35 +145,45 @@ ggplot(data=iris) +
 ## aethetic mappings for plots - themes
 - the `theme` function allows you to tweak a large number of graphical settings for a plot, but we will ocver this later. For now use one of the default themes(`theme_minimal`, `theme_gray`, `theme_void`, `theme_classic` ), or no theme.
 
+## discrete vs continuous data
+- continuous data is always numerical, and has a range of values ie height, temperature, gene expression
+- discrete or catagorical data is a set of fixed values - names, labels etc.
+
+## lets practice
+- go to the "day_1/ggplot_basics_exercises.Rmd" notebook
+
+
 ## line graphs 
 - a commply used type of graph is a line graph; geom line draws a line through all points in there numerical order 
 
 ```{r}
 data("economics")
-economics
+head(economics)
 ```
+
+## line graphs 
 
 ```{r}
 ggplot(economics) + 
     geom_line(aes(x=uempmed, y=unemploy))
 ```
 
+## line graphs 
 - multiple lines can be drawn, by specifiying a catagorical column, and a method to distinguish separate lines 
-
 ```{r}
 data("economics_long")
 economics_long
 ```
 
-using `color` as the method
-
+## line graphs 
+- using `color` as the method
 ```{r}
 ggplot(economics_long, aes(x=date, y=value01,color= variable)) +
   geom_line()
 ```
 
-or by `linetype`
-
+## line graphs 
+- or by `linetype`
 ```{r}
 ggplot(economics_long) +
   geom_line(aes(x=date, y=value01,linetype= variable))
@@ -171,6 +200,7 @@ ggplot(economics_long) +
   geom_smooth( aes(x=date, y=value01,color= variable), method = 'lm')
 ```
 
+## fitting a line to data
 - using `loess` smoothing
 
 ```{r}
@@ -180,25 +210,40 @@ ggplot(economics_long) +
 
 -note that these just draw curves, not points. We'll talk about how to do both in another lecture.
 
+## horizontal and vertical lines
+- horizontal and verticals lines can be drawn with `geom_hline` and `geom_vline` respectively
+```{r}
+ggplot() + 
+  geom_hline(yintercept = 5, color = 'blue') + 
+  geom_vline(xintercept = 5, color = 'red')
+
+```
+
+
+## lets practice
+- go to the 'linegraphs" header in the notebook
+
 
 ## Bargraphs
 
--Bargraphs are one of the more common types of plots. There are two methods for generating bargraphs with ggplot - `geom_bar`, used for counting categorical data, and `geom_col`, used for numerical data.
+- Bargraphs are one of the more common types of plots. There are two methods for generating bargraphs with ggplot - `geom_bar`, used for counting categorical data, and `geom_col`, used for numerical data.
 - `geom_bar` takes a discrete vector and generates counts for each unique item in the vector; 
 - `geom_col` plots numerical values, and requires a 1:1 catagory-value mapping
 - a bargraph with geom_col
+
+## Bargraphs
 
 ```{r}
 data("diamonds")
 ggplot(diamonds) + 
     geom_bar(aes(x=cut))
-    
-
+  
 ```
 
-
+## Bargraphs
 - sometimes it can be useful to visualize groups within groups, and create a grouped bar chart, which you can generate by setting the `fill` aesthetic to a categorical variable that is different than the `x` aesthetic. The type of grouped bar chart can be set based on the `position` argument for `geom_bar`
 
+## Bargraphs
 -this is a stacked barplot
 
 ```{r}
@@ -206,6 +251,7 @@ ggplot(diamonds) +
     geom_bar(aes(x=cut, fill = as.character(color)),position = 'stack' )
 ```
 
+## Bargraphs
 - this is a dodged barplot
 
 ```{r}
@@ -213,37 +259,40 @@ ggplot(diamonds) +
     geom_bar(aes(x=cut, fill = as.character(color)), position = 'dodge')
 ```
 
-this is ratio barplot. This similar(and far superior to) to a piechart, where each section corresponds its fraction of the total 
+## Bargraphs
+- this is ratio barplot. This similar(and far superior to) to a piechart, where each section corresponds its fraction of the total 
 ```{r}
 ggplot(diamonds) + 
     geom_bar(aes(x=cut, fill = as.character(color)),position = 'fill')
 ```
 
-`geom_col` is useful for when you want to plot a numerical value; this is done by providing a categorical columns for the `x` aesthetic, and a numerical column to generate the y axis from
+## Bargraphs
+- `geom_col` is useful for when you want to plot a numerical value; however it requires data to formatted slightyl differently - you need a summarised dataframe where each bar you want to plot has exactly 1 numerical value
+- we haven't covered exactly how to do this yet, 
+
+## Bargraphs
 
 ```{r}
-p_data <- data.frame(specie = unique(iris$Species), flower.diameter = c(100,200,300))
-res <- rbind(p_data, p_data)
-res$Flower.time <- rep(c('spring', 'summer'), 3)
-res
+p_data <- data.frame(Species = unique(iris$Species), avg_height = c(1000,2000, 3000))
+p_data
 ```
+
+## Bargraphs
 
 ```{r}
-ggplot(res)+
-    geom_col(aes(x=specie, y=flower.diameter))
+ggplot(p_data)+
+    geom_col(aes(x=Species, y= avg_height, fill = Species))
 ```
 
-- the same grouped bar plots can be used for geom col as well
-
+## Bargraphs
+- one final note, the width of the bar plot can be changed with the with `width` parameter
 ```{r}
-ggplot(res)+
-    geom_col(aes(x=specie, y=flower.diameter, fill=Flower.time), position = 'stack')
+ggplot(p_data)+
+    geom_col(aes(x=Species, y= avg_height, fill = Species), width = .25)
 ```
 
-```{r}
-ggplot(res)+
-    geom_col(aes(x=specie, y=flower.diameter, fill=Flower.time), position = 'dodge')
-```
+## lets practice
+- go to the "day_1/ggplot_basics_exercises.Rmd" notebook
 
 ## Visualizing the distributions of data
 - any continous/numerical data has a distribution, which graphically is the shape of the data. There are important aspects of distributions that we often want to visualize, like its median, mean, and variance.
@@ -256,6 +305,8 @@ Let's look at some of the common types of plots to visualize the distributions o
 - The bottom and top of the box represent 25th and 75th percentile of the data. The middle line shows the 50th percentile, also known as the median
 -The range(max-min) between the 75th and 25th range is called the interquartile range (IQR). The whiskers/tails on either end show data <= 1.5*IQR . Dots outside of this are conisdered outliers.
 
+## Boxplots
+
 ```{r}
 ggplot(data=iris) +
     geom_boxplot(aes(x=Species, y=Petal.Length)) + 
@@ -264,13 +315,15 @@ ggplot(data=iris) +
 
 - boxplots are useful for roughly showing the distribution of data, especially the variance
 - not sensitve to outliers 
-- particularly useful for comparing multiple distributions
+- useful for comparing multiple distributions
 
+## lets practice
+- go to the boxplot header in the notebook
 
-## Histograms and Density plots 
+## Histograms
 
 ```{r, include=F}
-hist_data_small <- tibble(`D1` = rnorm(1000, -2, 2), `D2` = rnorm(1000, 2, 2)) %>% tidyr::pivot_longer(D1:D2, 'dist')
+hist_data <- tibble(`D1` = rnorm(1000, -2, 2), `D2` = rnorm(1000, 2, 2)) %>% tidyr::pivot_longer(D1:D2, 'dist')
 ```
 
 - histograms are much better ar visualizing the distribution of data. Historgrams are generated by splitting series of numeric values into bins, calculating the number of observations in that bin, and plotting a bar for the count of each bin
@@ -279,13 +332,14 @@ hist_data_small <- tibble(`D1` = rnorm(1000, -2, 2), `D2` = rnorm(1000, 2, 2)) %
 ggplot(hist_data) + 
     geom_histogram(aes(x=value), bins = 30)
 ```
+
+## Histograms
 -More bins makes higher resolution plots
 ```{r}
 ggplot(hist_data) + 
     geom_histogram(aes(x=value),bins = 100)
 ```
 - histograms are useeful for seeing the complete shape of the data, but geneally its hard to compare two histograms on the same plot. We'll go over this in an exercise
-
 
 ## Violin plots
 - Violin plots are a cross betwene histograms and box plots
@@ -296,138 +350,11 @@ ggplot(data=iris) +
     theme_minimal()
 
 ```
--in a violin plot, the width of the plot corresponds to the (smoothed) number of obsevations of a given value; in this case, `Petal.Length`. This allows you to easily compare distributions between multiple variables
 
-
-## setting graphical parameters
-- up until now we have been using the default graphicaly paramters.
-- graphical parameters include axis names, legend size/orientation, plot titles, etc
-- all graphical parameters can be set with the `theme` function. 
-- lets take a look at the `theme` [documentation](https://ggplot2.tidyverse.org/reference/theme.html)
-- all the `theme_...` functions we've been using are preset configurations of a theme
-
-## Simple Theme modifiers
-- There are several functions that allow you to modify specific elements, designed for simplicity
-- `xlab`/`ylab` - change the axis labels 
-- `ggtitle` -  add a title to a plot
-- `xlim`/`ylim` - change axis limits
-
-```{r}
-data(mpg)
-mpg
-ggplot(mpg) + 
-  geom_bar(aes(x=manufacturer))
-```
-
-- change axis labels , and add a title 
-```{r}
-data(mpg)
-mpg
-ggplot(mpg) + 
-  geom_bar(aes(x=manufacturer)) + 
-  xlab('Car Manufacturer') + 
-  ylab('Number of Cars' ) + 
-  ggtitle('Cars built in 2018 Q1 by Manufactuer')+
-  theme_minimal()
-
-```
-
-
-## changing text with `theme`
-
-- there are various  setting for text - font, size color etc; These are controlled by the `element_text` function, the output of which we assign to to specific graphical parameter, like `axis.text`. these parameters change everything about the text, except the text itself; setting the text is done with functions like `xlab` or `ggtitle` or populated directly from the data
-
-- the x-axis labels, are squished, and a little small; lets rotate the text a little and increase the font size
-```{r}
-
-ggplot(mpg) + 
-  geom_bar(aes(x=manufacturer)) + 
-  xlab('Car Manufacturer') + 
-  ylab('Number of Cars' ) + 
-  ggtitle('Cars built in 2018 Q1 by Manufactuer') +
-  theme(axis.text.x = element_text(size = 12, angle = 45))
-```
-- Note that background of the plot also changed; this is because we were previouisly using `theme_minimal` which has the backgorund set to white, but in `theme` the default is grey; this can be fixed by combnined the two themes
-
-```{r}
-ggplot(mpg) + 
-  geom_bar(aes(x=manufacturer)) + 
-  xlab('Car Manufacturer') + 
-  ylab('Number of Cars' ) + 
-  ggtitle('Cars built in 2018 Q1 by Manufactuer') +
-  theme_minimal()+
-  theme(axis.text.x = element_text(size = 12, angle = 45))
-
-```
-- the order is importants; as each theme is applied in the order it's added, so adding theme_minimal last can sometimes override changes in the theme made previously
-
-
-- while a little better, it would be better if the axis text  was off the graph
-```{r}
-ggplot(mpg) + 
-  geom_bar(aes(x=manufacturer)) + 
-  xlab('Car Manufacturer') + 
-  ylab('Number of Cars' ) + 
-  ggtitle('Cars built in 2018 Q1 by Manufactuer') +
-  theme(axis.text.x = element_text(size = 12, angle = 45, hjust = 1))
-```
-
-
-## setting inheritance
-- graphical settings are all linked in a hiearchical manner; for example this the hiearchy for axis.text.x: `text` > `axis.text` > `axis.text.x` . Changing settings for a one parameter changes everything below it in the hierarchy; however, if you specify changes for parameter below it will take precedence
-
-```{r}
-ggplot(mpg) + 
-  geom_bar(aes(x=manufacturer)) + 
-  xlab('Car Manufacturer') + 
-  ylab('Number of Cars' ) + 
-  ggtitle('Cars built in 2018 Q1 by Manufactuer') +
-  theme_minimal()+
-  theme(axis.text.x = element_text(size = 12, angle = 45, hjust = 1), text = element_text(family ='Palatino' ))
-```
-
-## guides
-- guides are an alternative  method to setting graphical parameters in theme. They were introduced to ggplot after themes, and are generally a more intuitive interface for setting graphical parameters, but lack the full range of parameters offered by `theme`
-
-For example, what if we want to change the name of the legend in the graph below
-
-```{r}
-ggplot(mpg) + 
-  geom_bar(aes(x=manufacturer, fill = class)) + 
-  xlab('Car Manufacturer') + 
-  ylab('Number of Cars' ) + 
-  ggtitle('Cars built in 2018 Q1 by Manufactuer') +
-  theme_minimal()+
-  theme(axis.text.x = element_text(size = 12, angle = 45, hjust = 1), text = element_text(family ='Palatino' ))
-
-```
-
-- we have two options: 
-- 1. change the name of the `class` column, or make a new column that has the name we want 
-```{r}
-mpg$Type_Of_Car <- mpg$class
-ggplot(mpg) + 
-  geom_bar(aes(x=manufacturer, fill = Type_Of_Car)) + 
-  xlab('Car Manufacturer') + 
-  ylab('Number of Cars' ) + 
-  ggtitle('Cars built in 2018 Q1 by Manufactuer') +
-  theme_minimal()+
-  theme(axis.text.x = element_text(size = 12, angle = 45, hjust = 1), text = element_text(family ='Palatino' ))
-```
-
-- or option 2, use the `guides` function. For guides we set a value for the aesthetic within the `geom` we want to change ,  in this case `fill`. Next we choose a guide for the graphical parameter associated with that aesthetic we want to change, ie `guide_legend`
-```{r}
-ggplot(mpg) + 
-  geom_bar(aes(x=manufacturer, fill = class)) + 
-  xlab('Car Manufacturer') + 
-  ylab('Number of Cars' ) + 
-  ggtitle('Cars built in 2018 Q1 by Manufactuer') +
-  theme_minimal()+
-  theme(axis.text.x = element_text(size = 12, angle = 45, hjust = 1), text = element_text(family ='Palatino' )) + 
-  guides(fill = guide_legend(title = 'Type of Car', title.position = 'left'))
-```
-- while the text of legend cannot be changed inside theme, the position can be by changing the 
-
+## Violin plots
+-in a violin plot, the width of the plot corresponds to the "density" of the data. It's similar to a histogram, but rather than count the number obervations, it uses a mathematical function to approximate a smooth curve fit to the histogram; 
+- in this case, `Petal.Length`. This allows you to easily compare distributions between multiple variables.
+- Generally, Violin plots are much more informative than boxplots, and its almost always better to use a violin pot over a boxplot. 
 
 ## saving plots 
 - `ggplot2` comes with an easy to use save function, `ggsave`
@@ -438,122 +365,7 @@ ggplot(mpg) +
 plot <- ggplot(mpg) + 
   geom_bar(aes(x=manufacturer)) + 
   xlab('Car Manufacturer') + 
-  ylab('Number of Cars' ) + 
-  ggtitle('Cars built in 2018 Q1 by Manufactuer') +
-  theme(axis.text.x = element_text(size = 12, angle = 45, hjust = 1), text = element_text(family ='Palatino' ))
+  ylab('Number of Cars' ) 
 ggsave(plot, filename = 'ggsave.png')
 
 ```
-
-## colors in R
-- chosing the right color scheme for plot is an underpreciated, but crucial step.
-```{r}
-length(colors())
-```
-- there are 657 distinct colors, though 200 of these are different shades of grey
-
-- the `RColorBrewer` package has arranged some of these into useful palettes
-```{r, fig.height=8, fig.width=8}
-library(RColorBrewer)
-
-RColorBrewer::display.brewer.all()
-```
-
-- palettes where colors blend together to form a gradient are best for continous data; palettes where colors are distinct are best for discrete data.
-
-```{r, include=F}
-library(patchwork)
-plot_pal <- function(cols){
-  pdata <- tibble(col = cols, x= seq(1, length(cols)), y=0)
-  cv <- cols
-  names(cv) <- cv
-  plot <- ggplot(pdata) + 
-    geom_tile(aes(x=x, y=y,fill = col), width = 1, height= .5) +
-    scale_fill_manual(values=cv) +
-    theme_void()+
-    theme(legend.position = 'none')
-  return(plot)
-}
-
-str(cols)
-```
-
-the `pals` package
-- the `pals` package contains the most extensive set of color palettes and contains over a hundred palettes
--the `Alphabet palette` the largest set distinct colors for discrete data 
-
-```{r}
-library(pals)
-print(plot_pal(alphabet()))
-```
-
-- Viridis  and magma, two of the best palettes for continous data
-
-```{r}
-plot_pal(viridis(10)) / plot_pal(magma(10))
-```
-
-- and there are many more;
-
-## using palettes functions 
-- all functions to generate a color palette function roughly the same way. Select a palette, and provide a number of colors to generate. A list of colors, specified in hex format is returned.
-
-- when using the `pals` package, each palette is its own function and requires only the number of colors
-
-```{r}
-alphabet(4)
-```
-
-- when using `RColorbrewer`, provide the name of the palette and the number of colors to generate
-
-```{r}
-RColorBrewer::brewer.pal(6, 'Pastel1')
-```
-
-## using color palettes within ggplot - the `scale_...` functions 
-- ggplot provides a couple methods to change the coloring of
-```{r}
-data(iris)
-ggplot(iris)  + 
-  geom_point(aes(x=Sepal.Length, Petal.Length, color = Sepal.Width))+
-  theme_classic()
-```
-
-- use the `scale_...` functions to adjust colors, or any aesthetic
-
-```{r}
-ggplot(iris)  + 
-  geom_point(aes(x=Sepal.Length, Petal.Length, color = Sepal.Width))+
-  scale_color_gradientn(colors = pals::brewer.reds(100))
-  theme_classic()
-```
-
-- all `scale_...` functions have roughly the same format "scale_<aesthetic>_method"
-
--always remember to set the right aesthetic 
-
-```{r}
-pal = RColorBrewer::brewer.pal(3, 'Pastel1')
-ggplot(iris)  + 
-  geom_boxplot(aes(x=Species, y=Petal.Length, fill = Species))+
-  scale_color_discrete(type = pal)+
-  theme_classic()
-```
-
-```{r}
-plot_pal(pal)
-```
-```{r}
-ggplot(iris)  + 
-  geom_boxplot(aes(x=Species, y=Petal.Length, fill = Species))+
-  scale_fill_discrete(type =pal)+
-  theme_classic()
-```
-
-
-
-
-
-
-f/."                 
-\

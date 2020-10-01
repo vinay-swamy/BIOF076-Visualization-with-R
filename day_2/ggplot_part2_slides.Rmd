@@ -8,7 +8,6 @@ output: ioslides_presentation
 ## Using multiple geoms in a plot
 - Up until now we have been using one `geom_` layer in a plot, which often does the trick; but some times, we want to include multiple
 
-
 - for example, fitting a line ot some points; we want both the points and the line 
 ```{r}
 library(tidyverse)
@@ -18,6 +17,8 @@ ggplot(mpg) +
 
 ```
 
+## Using multiple geoms in a plot
+
 ```{r}
 ggplot(mpg, aes(displ, hwy)) +
   geom_point() +
@@ -26,6 +27,7 @@ ggplot(mpg, aes(displ, hwy)) +
 ```
 - notice how I set the `aes` within the `ggplot` function. When you provide an aesthetic mapping in the `ggplot` function, it  *globaly* defines aesthetics for all geoms. 
 
+## Using multiple geoms in a plot
 
 - we can even do this with two different data sets; Suppose for example that I want to make a boxplot, but I want to add a point for the max and min for each data set.
 ```{r}

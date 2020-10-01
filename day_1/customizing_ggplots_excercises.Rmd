@@ -1,0 +1,90 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+## Practice with themes 
+
+We're going to work with one of the plots we made earlier 
+
+
+```{r}
+ggplot(mpg) + 
+  geom_bar(aes(x=manufacturer, fill = class)) 
+
+```
+
+
+Assign descriptive axis labels and a plot title to the plot
+
+```{r}
+
+```
+
+
+fix the labels similar to how it was done in the example
+
+```{r}
+
+```
+
+
+change the y axis title so it is parallel to the x axis title 
+
+```{r}
+
+```
+
+change the font of the title to AvantGarde, the color to red, and make it italizced
+
+```{r}
+
+```
+
+now use guide to reposition the legend to the top of the plot 
+```{r}
+
+```
+
+
+## practice with colors
+- We'll be working with the `storms` data set in dplyr library(we havent covered this yet, but we will) for this part 
+
+```{r}
+library(dplyr)
+data("storms")
+storms
+```
+
+make a violin plot for `pressure`, using `status` as the x variable. Give axes appropriate titles. 
+
+```{r}
+
+```
+
+explore the palettes in the `pals` package. I've written a function to let you plot color palletes 
+
+```{r}
+library(pals)
+source('../src/plot_pal.R')
+plot_pal(pals::alphabet())
+```
+
+
+pick a pallete and use the appriate `scale_..._discrete` function to color your plot based on the `status` column
+```{r}
+
+```
+
+now pick colors from different palettes, and use them as part of a `scale_...manual`. 
+
+```{r}
+
+```
+
+make a scatter plot of `wind` vs `pressure`, using the `category` to color the points using a contionus scale. make sure `category` is a continous variable
+
+```{r}
+
+```
+
+

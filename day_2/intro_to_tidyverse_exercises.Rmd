@@ -15,35 +15,55 @@ load the `dplyr` library
 
 ```
 
-in the `starwars` dataset, keep only values about Humans from the homewrold Tatooine. Store the result in variable 
+we'll be working with the `starwars` dataset
+
+```{r}
+data("starwars")
+starwars
+```
+
+Select the `Name` column from the `starwars` dataset. Store this in a variable 
 
 ```{r}
 
 ```
 
-select only the height `Name` and height columns from the previous result
+now `pull` the `Name` column from the dataset. store this in a variable
 
 ```{r}
 
 ```
 
-repeat the first two excerises, but chain them together using pipes (` %>% `)
+Notice the differences in the returned data. use `class` to examine both outputs 
 
 ```{r}
 
 ```
 
-keep adding to the chained commands, and convert the Height column to inches. the height column is currently in cm and  1 cm is 0.393701 inches 
+select the name and height columns 
+
 ```{r}
-dir('../src')
+
 ```
 
+ Using pipes to add to the previous command,  add a column with the height in inches.  the height column is currently in cm and  1 cm is 0.393701 inches 
+```{r}
 
+```
 
-reshape the `iris` data frame in to long format with `pivot_longer` ; calculate the max an min for each column using `group_by` and `summarise`
+plot a scatter plot for the height in inches 
+```{r}
+
+```
+
+using the main data set, select just the `skin_color` column. `group_by` this column and calculate the number of observations in each group. (hint use the `n()` function)
+
+```{r}
+
+```
 
 ## Tying it all together
-Lets practice what we'ved learned on real data;
+Lets practice what we'ved learned on real data
 
 In the main folder for this project, there is a subfolder called `src`; inside this is the file "tx_expression_subset.tsv.gz". This is some data from a real RNA-seq experiment and contains transcript expression values; there are two columns for the gene and transcript name, and the rest of the columns are the samples each transcript is expressed in.
 In order, do the following;
