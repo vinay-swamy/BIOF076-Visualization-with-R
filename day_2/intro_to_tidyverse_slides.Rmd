@@ -427,4 +427,138 @@ economics_long %>%
 
 - when grouping and summarising data, always remember that what ever function your use to summarise `mean`, `max`, etc, must return a single value
 
+## lets do some practice
+
+
+## merging tabular data
+- We've only been working with single data frames/tibbles, but we often will need to combine multiple data.frames together. 
+- In its simplest form, this is called binding. functions for this are provided in dplyr: `bind_rows` and `bind_cols`
+
+## merging tabular data
+```{r}
+dim(iris)
+```
+
+## merging tabular data
+```{r}
+bind_rows(iris, iris) %>% dim
+```
+
+## merging tabular data
+```{r}
+bind_cols(iris, iris) %>% dim
+```
+
+## merging uneven tabular data
+- more often then not, the data you are trying to combine isnt the same shape, so be a little careful. Thankfully, both `bind_rows` and `bind_cols` have a bit of error checking involved
+
+```{r}
+iris_small <- iris[1:5, 1:3]
+colnames(iris_small) <- c('a', 'b', 'c')
+dim(iris_small)
+```
+
+```{r}
+dim(iris)
+```
+
+## merging tabular data
+```{r}
+bind_rows(iris, iris_small)
+```
+
+## merging tabular data
+- `bind_rows` will NOT bind data that has differnet colnames, even if they are in the same position.
+
+## merging tabular data
+
+```{r, error=T}
+cb_iris <- bind_cols( iris_small, iris)
+```
+- bind cols doesnt work if the data is mis matched. This is because there isn't really a good reason to  ever column bind uneven data.
+
+## joining data 
+- Often times wedo want to combine data by merge along columns, but in a more structed way
+
+```{r}
+mpg %>% as_tibble
+```
+## joining data 
+- say i went out and figured out which models were gas powered and which ones were diesel
+```{r}
+
+model2fuel <- tibble(model= unique(mpg$model), 
+       fuel_type = sample(c('gas', 'diesel'), n_distinct(mpg$model) ,replace= T)) 
+model2fuel
+```
+## joining data 
+
+- i want to make plot by gas type for city milage
+```{r}
+cty_by_fueltype <-  mpg %>% select(model, cty) %>% left_join(x=., y=model2fuel, by = 'model')
+cty_by_fueltype
+```
+## joining data 
+
+```{r}
+ggplot(cty_by_fueltype) + 
+  geom_boxplot(aes(x = fuel_type, y=cty, fill = fuel_type), width = .25) + 
+  theme_classic()
+```
+
+## joining data 
+-  joins merge together data frames by 1 or more ID columns, in this case `model`
+
+## types of joins
+- *_join( left, right, by..) - merge 2 data frames by common values in a shared column(s)
+- `left_join`: keep all values in the left data frame. any values that are in the left, but not the right are kept, with NA values generated in the right df
+```{r}
+model2fuel[1:2, ] %>% left_join(mpg ,.) %>% filter(!grepl('a4',model)) %>% select(model, fuel_type)
+
+```
+
+## types of joins
+
+```{r}
+model2fuel[1:2, ] %>% left_join(mpg) %>% select(model, fuel_type)
+```
+
+## types of joins
+- `inner_join` : only keep rows that have matching id's in **both** columns; no NA's will be generated, and if nothing matches an empty df is returned
+```{r}
+model2fuel[1:2, ] %>% inner_join(mpg,.) %>% select(model, fuel_type)
+```
+
+## types of joins
+- `full_join` joins all rows, as long as there is at least one common values between the join columns
+```{r}
+model2fuel[1:2, ] %>% full_join(mpg,.) %>% select(model, fuel_type)
+```
+
+## duplicate values in joining columns
+- be careful when joinning columns that have repeated values in columns 
+
+```{r}
+a4_only <- filter(mpg, model == 'a4')
+dim(a4_only)
+```
+```{r}
+
+a4_fuel <- filter(model2fuel, model == 'a4') %>% bind_rows(. ,. ,. ,. ,. ,.)
+dim(a4_fuel)
+```
+
+## duplicate values in joining columns
+```{r}
+left_join(a4_only, a4_fuel, by= 'model') %>% dim
+``` 
+- when you have duplicate values in joining columns in *both* data frames, the values will be matched multiple times
+- if you're not careful about this, you might make a data-frame that consumes all your memory and crashes R
+
+## duplicate values in joining columns
+- the `distinct` function will remove any duplicated rows, and help prevent this 
+```{r}
+left_join(a4_only, a4_fuel %>% distinct, by= 'model') %>% dim
+```
+
 

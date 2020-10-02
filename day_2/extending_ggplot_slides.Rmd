@@ -5,12 +5,12 @@ date: "9/16/2020"
 output: ioslides_presentation
 ---
 
-
 ## the Grammar of Graphics beyond `ggplot2`
 - The grammar of graphics outlined by `ggplot2` provides a uniform way to both make plots, and to write the code for making other plotting libaries. 
 - Because fo this, there is a wide range of other packages that additional functionality to `ggplot`, while following the same standard to allow for easy use and interoperability
 
 ## installing  external libraries
+
 - recall that we can use `install.packges` to download packages from CRAN. However, the requirements for CRAN can be a little restrictive, and as new packages are developed, there are often long delays between uploads to CRAN. 
 - almost all package developers use GitHub to host their data
 - the `devtools` package provides an easy way to download such packages 
@@ -23,7 +23,6 @@ devtools::install_github('vinay-swamy/RBedtools', upgrade = F)
 ## the `ggpubr` library
 
 - the `ggpubr` is built on top of ggplot, but provides a more streamlined interface to use. It was designed to be used quickly and easily for making scientific plots for users with little to know programming expereince.
-
 - this is the code to make a violin plot in ggpubr - one function call to make a single plot
 
 ```{r}
@@ -33,6 +32,8 @@ ggviolin(ToothGrowth, x = "dose", y = "len", fill = "dose",
          add = "boxplot", add.params = list(fill = "white"))
 ```
 
+## the `ggpubr` library
+
 ```{r}
 ggviolin(ToothGrowth, x = "dose", y = "len", fill = "dose",
          palette = c("#00AFBB", "#E7B800", "#FC4E07"),
@@ -40,6 +41,8 @@ ggviolin(ToothGrowth, x = "dose", y = "len", fill = "dose",
 ```
 
 - all the aesthetics you would need to change are specified as part of the function 
+
+## the `ggpubr` library
 
 - testing and visualizing statistical signifiance is also easy to add to the plot 
 
@@ -51,24 +54,22 @@ stat_compare_means(comparisons = list( c("0.5", "1"),  c("0.5", "2") ), label = 
   stat_compare_means(label.y = 50) 
 ```
 
-
-- for certain plots, this makes thing much easier , like the line graph we made earlier
+## the `ggpubr` library
+- the data format is also a lot for flexible
 
 ```{r}
-df <- suppressMessages(read_tsv('src/Reporter_assay_results.tsv.gz')) %>% pivot_longer(WildType:Mutant, names_to = 'condition', 
-                                                                                       values_to = 'SU')
-df
+ggline(ToothGrowth, "dose", "len",
+   linetype = "supp", shape = "supp",
+   color = "supp", palette = c("#00AFBB", "#E7B800"), add='mean')
 ```
 
-```{r}
-ggline(data = df, x= 'Time', y='SU', color = 'condition', add = 'mean_se' )
-```
-
-- It gets pretty close.But its not an exact match - take a look at the axis. The data was originally numeric - but has been onverted to a factor. This gets more apparent when we try to add other `geom`s from ggplot. 
+## the `ggpubr` library
+- customizing plots is a lot easier as well
 
 ```{r}
-ggline(data = df, x= 'Time', y='SU', color = 'condition', add = 'mean_se' )  +
-  geom_vline(xintercept = 5)
+ggline(ToothGrowth, "dose", "len",
+   linetype = "supp", shape = "supp",
+   color = "supp", palette = c("#00AFBB", "#E7B800"), add='mean_se')
 ```
 
 - While `ggpubr` excels for making quick and descriptive plots, it lacks a lot of flexibility. Use it when when you need somthing out of the box, but if you need something a littl emore complicated, stick with ggplot
@@ -144,5 +145,164 @@ ggplot(iris) +
 ggplot(iris) + 
   geom_boxplot(aes(x= Species, y= Sepal.Length, fill = Species)) + 
   hrbrthemes::theme_ipsum_es()
+
+
+```
+
+
+## Plotting Maps in R
+- R was well known in its early years for having good libraries for making plots with maps.
+- While not too common in biological sciences, map based plots are common in fields like public health and ecology
+- The libraries for making maps are notoriously difficult to install, especially on a Mac. We'll go through how to install its later, but it will probably be easier if you use the `binder` link in the repo
+
+## the `sf` package
+- `sf` stands for "simple features", and is a way for representing the physical diagram of a map as a dataframe. This format is not unique to R, and is used by many different programs 
+- `sf` is the successor to the `sp` package, which was what gave maps in R its fame 
+
+- This is some example data provided in the `sf` pakage. It contains geospatial information about the state of North Carolina. you can recognize geospatial data by the `.shp` extension. the `st_read` function allows you to read `.shp` data into R. Within R, it exists as a custom class, also called `sf
+```{r}
+library(sf)
+nc <- st_read(system.file("shape/nc.shp", package="sf"))
+nc
+str(nc)
+```
+- the most important part of an `sf` object is the `geometry` column; this contains the actual information about how to draw each map
+
+- `sf` objects can be easily coerced to a tibble
+
+```{r}
+nc_table <- nc %>% as_tibble
+nc_table
+```
+
+
+
+-`sf` was designed to be used with base R's plotting interface
+
+```{r, message=F, warning=FALSE}
+plot(nc)
+```
+
+- but since plotting in base R isn't great, we'll be combining `sf` with another package, `ggspatial`. 
+- when using `geom_sf`, we can directly pass `sf` objects. When doing this, aesthetic mappings are automatically generated
+
+```{r}
+library(tidyverse)
+library(ggplot)
+library(ggspatial)
+ggplot(data = nc ) +
+    geom_sf() + 
+    theme_bw()
+
+```
+
+- when using using a `tibble` as input, manually specify the aesthetic mapping
+
+```{r}
+ggplot(nc_table) + 
+    geom_sf(aes( geometry= geometry)) + 
+    theme_bw()
+```
+
+- from here, we can treat the plot like a normal `ggplot, changing aesthetics as we please
+
+```{r}
+ggplot(nc_table) + 
+    geom_sf(aes( geometry= geometry, fill = SID74)) + 
+    theme_bw()
+```
+
+## Using Maps with real data 
+- Almost always, real data does not come with geometry coordinates attached. if you're lucky, you'll get tabular data that has some kind of easy geographical identifier, like state, country, or zip code.
+
+
+- Heres an (slightly morbid) example - Violent Crime Arrests in the US
+```{r}
+data("USArrests")
+USArrests
+```
+
+- the general workflow for plotting maps is taking an `sf` object that has defined geomtry, and then connecting the `sf` data to our tablular data.
+
+- there are multiple packages for obtaining map data, but its often not in `sf` format. luckily, the `sf` package provides the function `st_as_sf` to convert other formats to `sf` format
+
+```{r}
+library(maps)
+library(sf)
+
+states <- maps::map("state", plot = FALSE, fill = TRUE) %>% st_as_sf() %>% 
+    as_tibble %>% 
+    rename(state = ID, 
+           geometry = geom)
+
+
+states
+```
+
+
+```{r}
+arrests <- USArrests %>% rownames_to_column('state')
+arrests
+```
+
+
+```{r}
+inner_join(arrests, states)
+```
+
+- What happened?
+
+
+
+## always check your joins!
+- in this case the cases in the `state` column doesnt match 
+
+```{r}
+states <- states %>% 
+    mutate(state = tolower(state))
+
+arrestData_with_mapData <- arrests %>%
+    mutate(state = tolower(state)) %>% 
+    inner_join( states)
+ggplot(arrestData_with_mapData) + 
+    geom_sf(aes(geometry = geometry, fill = Assault)) + 
+    theme_bw()
+
+
+```
+
+-lets pretty it up a little
+
+```{r}
+
+ggplot(arrestData_with_mapData) + 
+    geom_sf(aes(geometry = geometry, fill = Assault)) + 
+    scale_fill_viridis_c('Hundreds of Persons') + 
+    ggtitle('Number of Assaults per state')+
+    theme_void()
+
+```
+
+# using coordinate systems 
+- sometimes you don't even get a region, and just get lattitudes, and longitudes
+
+- this is some example data about the locations of earthquakes in fiji 
+```{r}
+data("quakes")
+quakes
+```
+
+```{r}
+library(rnaturalearth)
+library(rnaturalearthdata)
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+quakes_sf <- quakes %>% st_as_sf(coords = c("long", "lat"),crs = 3460 ) %>% as_tibble 
+ggplot() +
+    geom_sf(data = quakes_sf,  aes(geometry = geometry), alpha = .1)+
+    geom_sf(data = world, color = 'red') +
+    coord_sf( ylim = c(-50, -10),  xlim = c(165, 200)) + 
+    theme_bw()
+
 ```
 

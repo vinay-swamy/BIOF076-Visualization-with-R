@@ -32,7 +32,7 @@ reporter_data
 knitr::include_graphics('../src/reporter_assay_plot.png')
 ```
 
-- some hints: the following geoms are required: `geom_line`, `geom_label`, `geom_label_repel`, `geom_line` and `geom_errorbar`. You will have to change several theme settings, and scale at least one aesthtic for one of the geoms
+- some hints: the following geoms are required: `geom_line`, `geom_label`, `geom_label_repel`, `geom_vline` and `geom_errorbar`. You will have to change several theme settings, and scale at least one aesthtic for one of the geoms
 
 
 ```{r}

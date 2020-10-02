@@ -51,10 +51,7 @@ select the name and height columns
 
 ```
 
-plot a scatter plot for the height in inches 
-```{r}
 
-```
 
 using the main data set, select just the `skin_color` column. `group_by` this column and calculate the number of observations in each group. (hint use the `n()` function)
 
@@ -62,16 +59,19 @@ using the main data set, select just the `skin_color` column. `group_by` this co
 
 ```
 
-## Tying it all together
-Lets practice what we'ved learned on real data
+## Example - GTF file
 
-In the main folder for this project, there is a subfolder called `src`; inside this is the file "tx_expression_subset.tsv.gz". This is some data from a real RNA-seq experiment and contains transcript expression values; there are two columns for the gene and transcript name, and the rest of the columns are the samples each transcript is expressed in.
-In order, do the following;
- - read the data into R, using the absolute path for the file as the input file
- - reshape all the data except the `gene_name` and `transcript_id` columns into long format
- - calculate per sample total gene expression - for each gene in each sample calculate the sum of all associated transcripts(hint: you will need to group by multiple columns)
- - filter the data so you only have data for the following genes: DCX , GRM3 , MYO7A
- - make a boxplot of expression values for these genes; color each box plot by gene expression
+- a GTF file contains information about the location of genes within the genome, as well as vartiety of other annotations. `../src/gtf_example.tsv.gz` contains 5 genes. 
+- Each gene has multiple transcripts, and each transcript has a protein coding region, or CDS.  read this data in, and use functions from the tidyverse to calculate the length of each CDS, and determine the gene with the longest CDS
+
+```{r}
+
+```
+
+## Tying it all together
+
+- the file  "../src/tx_expression_subset.tsv.gz" has some data from a real RNA-seq experiment and contains transcript expression values; there are two columns for the gene and transcript name, and the rest of the columns are the samples each transcript is expressed in. 
+- Using the gene to transcript id mapping present in the gtf file from above, add gene names to this expression data, and select the genes DCX , GRM3 , MYO7A. summarise the transcript level expression to gene level, and make box plots for  the expression of each gene expression. 
 
 ```{r}
 

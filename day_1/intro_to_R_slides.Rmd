@@ -58,6 +58,7 @@ x <- 'hello' #good
 x <- hello  #bad
 
 ```
+
 - In Rstudio, we can see the variable under the enviroment panel 
 <insert image>
 
