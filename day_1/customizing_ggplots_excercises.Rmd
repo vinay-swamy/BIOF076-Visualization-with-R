@@ -70,7 +70,7 @@ plot_pal(pals::alphabet())
 ```
 
 
-pick a pallete and use the appriate `scale_..._discrete` function to color your plot based on the `status` column
+pick a palette and use the appriate `scale_..._discrete` function to color your plot based on the `status` column
 ```{r}
 
 ```
@@ -86,5 +86,16 @@ make a scatter plot of `wind` vs `pressure`, using the `category` to color the p
 ```{r}
 
 ```
+
+## customizing multiple aesthetics 
+- the `gapminder` dataset is a popular example dataset about the life expectancy, GDP and population for differnt countries across the world 
+![](../src/gapminder_bubbleplot.png)
+
+- this is a bubble plot. We're going to remake this plot with ggplot. the data we'll be plotting can be loaded by the function below. you'll need to use scale_size_? to adjust the point size; feel free to change the color scheme from something besides the default. You will also need to change the alpha value for the points 
+
+```{r, fig.height=4}
+data <- read_tsv('../src/gapminder_2007.tsv.gz')
+```
+
 
 

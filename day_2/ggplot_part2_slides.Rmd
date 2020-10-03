@@ -147,6 +147,36 @@ ggplot(avg_petal_width) +
     theme_classic()
 ```
 
+## ordering descrete axes
+- here's a simple bar plot. I'm summarizing the data to count the number of entries for each, and then using `geom_col`
+```{r}
+data(mpg)
+mpg_count <- mpg %>% group_by(class) %>% summarise(count = n())
+ggplot(mpg_count) + 
+  geom_col(aes(x=class, y=count, fill = class))
+```
+
+## ordering discrete axes
+- suppose i want to order bars that they from smallest to largest. Lets try ordering the data first
+```{r}
+mpg_count_arranges <- mpg_count %>% arrange(count)
+ggplot(mpg_count_arranges) + 
+  geom_col(aes(x=class, y=count, fill = class))
+```
+
+## ordering discrete axes
+- This doesn't work because under the hood, ggplot converts all character vectors to factors
+- when a character is converted to a factor, the factor is arranged in alphbetical order
+- when you order a dataframe,  to maintain the ordering you must convert any character columns you want to include in the plot to factors
+
+## ordering discrete axes
+```{r}
+mpg_count_arranges <- mpg_count %>% arrange(count) %>% mutate(class = factor(class, levels = class))
+ggplot(mpg_count_arranges) + 
+  geom_col(aes(x=class, y=count, fill = class))
+```
+
+
 ## making faceted plots
 - it can be useful to show the same plot across multiple conditions. 
 

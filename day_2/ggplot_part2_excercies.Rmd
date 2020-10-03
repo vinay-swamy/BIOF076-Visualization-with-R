@@ -34,13 +34,27 @@ knitr::include_graphics('../src/reporter_assay_plot.png')
 
 - some hints: the following geoms are required: `geom_line`, `geom_label`, `geom_label_repel`, `geom_vline` and `geom_errorbar`. You will have to change several theme settings, and scale at least one aesthtic for one of the geoms
 
+## dumbell plots
+- this is dumbbell plot. 
+![](../src/dumbell_plot.png)
+
+- the are analgous to a dodged bar plot, where the height, or in this case width, corresponds to the number of cases 
+- the data for this plot is in the file '../src/health.csv.gz'
+couple hints: you will need to sort this data before plotting it. Remember how discrete axes are ordered in ggplot
 
 ```{r}
-
-
+write_tsv(data, '../src/US_health.tsv.gz')
 ```
 
 
+## faceting plots 
+
+- Remember the bubble plot we made yesterday using the gapminder data set? We're going to re plot it
+- This time use `facet_wrap` to split the data up by continent and make a facted plot. Additionally, add labels for the country names for three countries from each continent
+
+```{r}
+
+```
 
 
 

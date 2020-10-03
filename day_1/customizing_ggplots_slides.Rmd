@@ -317,7 +317,7 @@ ggplot(iris)  +
 ```{r}
 col_vec <- c('setosa' = 'blue','versicolor' = 'purple',  'virginica' = 'red')
 ggplot(iris) + 
-  geom_boxplot(aes(x=Species, y= Sepal.Width, fill = Species), width = .25)+ 
+  geom_boxplot(aes(x= Species, y= Sepal.Width, fill = Species)) +
   scale_fill_manual(values = col_vec)  + 
   theme_classic()
 ```
@@ -326,8 +326,42 @@ ggplot(iris) +
 -  using `scale_*_manual` is the best way to use a discrete color scale
 
 
+## other aesthetics 
+- there are a couple other aesthetics we havent covered; some are specific to different plots 
 
+## size
+- size is pretty straight forward, bigger number > bigger size 
+```{r}
+ggplot(iris , aes(x=Sepal.Length, y=Sepal.Width, color = Species)) + 
+  geom_point(size = 1)
+```
 
+## size
 
+```{r}
+ggplot(iris , aes(x=Sepal.Length, y=Sepal.Width, color = Species)) + 
+  geom_point(size = 3)
+```
+
+## alpha
+- alpha controls the transparency of geoms, and is between 0(translucent) and 1(solid fill)
+
+```{r}
+ggplot(iris , aes(x=Sepal.Length, y=Sepal.Width, color = Species)) + 
+  geom_point(size = 3, alpha = .5)
+```
+
+## width
+-  width is an example of an aesthetic specific to a few geoms `geom_boxplot`, `geom_bar`, and `geom_boxplot`, to name a few 
+
+```{r}
+ggplot(iris) + 
+  geom_boxplot(aes(x= Species, y= Sepal.Width, fill = Species), width = .1) +
+  scale_fill_manual(values = col_vec)  + 
+  theme_classic()
+```
+
+## width
+- alway a good idea to spend some time looking through the documentation about what aethetics work for what geoms 
 
 

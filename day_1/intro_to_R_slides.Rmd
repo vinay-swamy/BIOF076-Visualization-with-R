@@ -451,18 +451,46 @@ example_df
 ## Factors
 
 - Factors are another data type, like `numeric`, or `character`. Factors are designed to be representations of characters that take up low memory
-- in factor vector, each unique value is mapped to a number. this mapping is not displayed, and is used under-the-hood. Factors are used because its easier to store numbers in memory than characters
+- in factor vector, each unique value is mapped to a number. this mapping is not displayed, and is used under-the-hood. T
+- he unique values for each factor are called  its levels
+- Factors are used because its easier to store numbers in memory than characters
 
 ```{r}
 char_vec <- c('a', 'a', 'a', 'b', 'b', 'c')
 char_vec 
+
 ```
+
+## Factors
+
 ```{r}
 char_vec_factor <- factor(char_vec)
 char_vec_factor
 ```
+- the levels of a factor can be accessed by the `levels` function. 
+
+```{r}
+levels(char_vec_factor)
+```
 
 ## Factors
+- levels must always be a unique set of values 
+
+```{r, error = T}
+factor(char_vec, levels = c('a', 'a', 'b', 'c'))
+```
+
+## ordering factors 
+- unlike characters or number which have an innate order, the ordered pf factors is  based on the ordering of their levels; 
+```{r}
+char_vec_factor_arr <- factor(char_vec, levels =c('b', 'a', 'c') )
+char_vec_factor_arr
+```
+```{r}
+sort(char_vec_factor_arr)
+```
+
+## Factors vs characters
 - while they look similar they have very different properties. 
 
 ```{r}
@@ -472,7 +500,7 @@ as.numeric(char_vec)
 as.numeric(char_vec_factor)
 ```
 
-## Factors
+## Factors in data frames 
 -data frames by default convert all character vectors to factors. This can be disabled when declaring a data frame using the argument`stringsAsFactors=F`
 
 ```{r}

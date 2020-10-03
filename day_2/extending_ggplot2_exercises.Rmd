@@ -4,39 +4,38 @@ output: html_notebook
 ---
 
 
-## ggpattern
+## revisting the line graph from earlier with `ggpubr`
 
-```{r}
-library(gapminder)
-library(tidyverse)
-gapminder_bygender <- gapminder %>% 
-    mutate(gender = sample(c('male', 'female'), nrow(gapminder), replace = T))
-```
-
-I've added some data about gender to the `gapminder` dataset. use this data set to calculate the average lifespan per continent per gender. plot a bargraph with colors for each continents and patterns for each gender. 
-
-```{r}
-remotes::install_github("coolbutuseless/ggpattern")
-```
-
-
-## revisting the line graph from earlier 
+![](src/reporter_assay_plot.png)
+Remember this plot?
 use `ggline` to remake the line graph we made a few exercises ago
 
 ```{r}
 
 ```
 
-filter the data to the last time point, and make a boxplot with `ggboxplot`. Include a test for a statstically significant change in the data on the plot.  
+filter the data to the last time point, and make a boxplot with `ggboxplot`. Include a test for a statstically significant change in the data on the plot. 
+```{r}
 
-##  external themes and palettes.
-- there are many libraries that add new themes to `ggplot`, too many for us to cover. 
-- two packages we will cover are `ggthemes` and `ggsci`
-
+```
 
 
 ## gganimate
+- Using the gapminder data frame remake a the bubble plot we made yesterday. This time we have data for multiple years
 
+```{r}
+p <- ggplot(gapminder, aes(gdpPercap, lifeExp, size = pop, colour = country)) +
+  geom_point(alpha = 0.5, show.legend = FALSE) +
+  scale_colour_manual(values = country_colors) +
+  scale_size(range = c(2, 12)) +
+  scale_x_log10() +
+  facet_wrap(~continent) +
+  # Here comes the gganimate specific bits
+  labs(title = 'Year: {frame_time}', x = 'GDP per capita', y = 'life expectancy') +
+  transition_time(year) +
+  ease_aes('linear')
+anim_save('src/gapminder_bubble_animated.gif', p)
+```
 
 ## plotting with maps 
 
@@ -52,7 +51,6 @@ Were going to take this data and make this:
 ```
 
 As a starting point, this is the generaly workflow. Load data > join county level data to zip level data > aggreagte data to the county level  >  join map data > make animation 
-
 
 
 - first add the county information to the covid data. check how many counties are shared between the covid data and the map data 

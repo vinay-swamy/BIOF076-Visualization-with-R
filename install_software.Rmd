@@ -1,9 +1,16 @@
 ---
 title: "Sofware setup"
-output: pdf_document
+output:
+  pdf_document:
+      default
+  word_document: 
+     keep_md: yes
 ---
 
+NOTE: for those that are unable to install software, a cloud environment will be provided for them to work in. This environment requries a github account, so follow the instructions to create one below
+
 ## Install R
+
 Mac
 
 https://cloud.r-project.org/bin/macosx/R-3.6.3.nn.pkg
@@ -27,37 +34,20 @@ https://rstudio.com/products/rstudio/download/#download
 https://gitforwindows.org
 
 
+## install R packages 
+
+Launch Rstudio - in the console panels, run the following commands
+
+```
+install.packages(c('devtools','tidyverse' )
+library(tidyverse)
+```
+
 ## Set up a GitHub account 
 
 go to: https://github.com
 
 sign up for an account
 
-## install GDAL(this will be painful)
-
-* if this doesn't work, don't worry, there is a cloud based alternative 
-
-### Windows 
-
-Follow the instructions at 
-
-https://sandbox.idre.ucla.edu/sandbox/tutorials/installing-gdal-for-windows
-
-### MacOS
-First download homebrew. Paste this into a terminal: 
-
-```
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-```
-
-then run this in a terminal : `brew install gdal`
-
-### Linux
-run the following in a terminal 
-```
-apt-get update
-apt-get install gdal-bin
-add-apt-repository ppa:ubuntugis/ppa
-```
 
 
