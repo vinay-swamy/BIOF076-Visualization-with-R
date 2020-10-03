@@ -70,7 +70,7 @@ using the main data set, select just the `skin_color` column. `group_by` this co
 
 ## Tying it all together
 
-- the file  "../src/tx_expression_subset.tsv.gz" has some data from a real RNA-seq experiment and contains transcript expression values; there are two columns for the gene and transcript name, and the rest of the columns are the samples each transcript is expressed in. 
+- the file  "../src/tx_expression_subset.tsv.gz" has some data from a real RNA-seq experiment and contains transcript expression values; there is a column fortranscript name, and the rest of the columns are the samples each transcript is expressed in. 
 - Using the gene to transcript id mapping present in the gtf file from above, add gene names to this expression data, and select the genes DCX , GRM3 , MYO7A. summarise the transcript level expression to gene level, and make box plots for  the expression of each gene expression. 
 
 ```{r}

@@ -6,7 +6,7 @@ output: html_notebook
 
 ## revisting the line graph from earlier with `ggpubr`
 
-![](src/reporter_assay_plot.png)
+![](../src/reporter_assay_plot.png)
 Remember this plot?
 use `ggline` to remake the line graph we made a few exercises ago
 
@@ -21,7 +21,7 @@ filter the data to the last time point, and make a boxplot with `ggboxplot`. Inc
 
 
 ## gganimate
-- Using the gapminder data frame remake a the bubble plot we made yesterday. This time we have data for multiple years
+- continuing with the gapminder dataset, remake the bubble plot we made yesterday. We'll be using the full dataset this time, and have data for many years. Create an animated version of the bubble plots we made earlier to visualize changes across time. 
 
 ```{r}
 p <- ggplot(gapminder, aes(gdpPercap, lifeExp, size = pop, colour = country)) +
@@ -34,7 +34,7 @@ p <- ggplot(gapminder, aes(gdpPercap, lifeExp, size = pop, colour = country)) +
   labs(title = 'Year: {frame_time}', x = 'GDP per capita', y = 'life expectancy') +
   transition_time(year) +
   ease_aes('linear')
-anim_save('src/gapminder_bubble_animated.gif', p)
+anim_save('../src/gapminder_bubble_animated.gif', p)
 ```
 
 ## plotting with maps 
@@ -46,9 +46,6 @@ Lets make a plot with some real data. We're gonna be working with some data abou
 
 Were going to take this data and make this:
 
-```{r}
-
-```
 
 As a starting point, this is the generaly workflow. Load data > join county level data to zip level data > aggreagte data to the county level  >  join map data > make animation 
 
