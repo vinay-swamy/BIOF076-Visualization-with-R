@@ -3,6 +3,19 @@ title: "extending ggplot"
 output: html_notebook
 ---
 
+## gapminder and ggpattern
+```{r}
+ gapminder_ss <- read_tsv('../src/gapminder_2007.tsv.gz')
+ gapminder_bygender <- gapminder_ss %>% 
+     mutate(gender = sample(c('male', 'female'), nrow(gapminder_ss), replace = T))
+```
+
+- I've added some data about gender to the `gapminder` dataset. use this data set to calculate the average lifespan per continent per gender. plot a bargraph with colors for each continents and patterns for each gender. 
+- hint: becasue the data is averaged, you will be using `geom_col`
+
+```{r}
+ remotes::install_github("coolbutuseless/ggpattern")
+```
 
 ## revisting the line graph from earlier with `ggpubr`
 
@@ -22,6 +35,7 @@ filter the data to the last time point, and make a boxplot with `ggboxplot`. Inc
 
 ## gganimate
 - continuing with the gapminder dataset, remake the bubble plot we made yesterday. We'll be using the full dataset this time, and have data for many years. Create an animated version of the bubble plots we made earlier to visualize changes across time. 
+- customize the plots with some themes and palettes from 
 
 ```{r}
 p <- ggplot(gapminder, aes(gdpPercap, lifeExp, size = pop, colour = country)) +

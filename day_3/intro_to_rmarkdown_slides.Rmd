@@ -18,7 +18,7 @@ output: ioslides_presentation
 - R notebooks can be "knit" into reports. These reports are highly customizeable with a huge number of output formats, including word documents and powerpoint presentations 
  - markdown can be used for blogs/websites, conference posters, and scientific publications  
  - making 
-
+ 
 - the slides we have been using for class have all been made through R Markdown 
 
 ## Benefits of Rmarkdown
@@ -31,17 +31,28 @@ output: ioslides_presentation
 ## Anatomy of a (notebook) cell
 
 - We've briefly covered how to use R notebooks, but we'll go into more detail now about how it all works 
-![](src/cell.png)
+![](../src/cell.png)
 
 - within the curly brackets for each cell, we set parameters on how the *output* should look like. In this case we set `echo=FALSE` which means we don't want the the code cell to be printed, and `eval=TRUE` mean, run this chunk of code. 
 - These parameters only affect the cell in which they are set.
+- as you may have notcied from the exercise notebooks, cells can be named, by adding a title right after the `r` part of the cell header
+## Anatomy of a (notebook) cell
 
 - to globally change settings for all chunks, you must have a chunk names `setup` as the first chunk of the notebook 
 
-![](src/setup_cell.png)
+- a complete list of options is available [here](https://rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf)
+
+## changing parameters for all cells
+- to globally change a setting in rmarkdown, make a cell at the beginning of your document named setup 
+- wihtin this chunk set options by usinf the `opts_...`  functions from the `knitr` library
+
+![](../src/setup_chunk_example.png)
+
+## the `knitr` library
+- `knitr` is the package for the actual R code that converts R markdown into a rendered format. We generally don't need to use it beyond formatting notebook parameters. 
 
 ## changing non-cell parameters 
-- `knitr` is the R package the handles converting R Markdown into a formatted document. We can use functions from `knitr` to control a wide range of output 
+- We can use functions from `knitr` to control a wide range of output 
 
 - for example, changing the root(working directory)
 ```{r  eval=FALSE}
@@ -49,13 +60,12 @@ output: ioslides_presentation
 library(knitr)
 opts_knit$set(root.dir = '/Users/swamyvs/personal/')
 #```
-
 ```
 
 ## RMarkdown in the context of plotting
 
 - Rmarkdown is crucial for plotting;
-- when making plots in RMarkdown, each cell defines the plotting environement for making a plot, in terms of the physical space a plot can take up (the units are in inches)
+- when making plots in RMarkdown, each cell defines the plotting environment for making a plot, in terms of the physical space a plot can take up (the units are in inches)
 
 ```{r, fig.height=1, fig.width=1}
 #```{r, fig.height=1, fig.width=1}
@@ -65,6 +75,8 @@ ggplot(mtcars) +
   ggtitle('Plot 1')
 ```
 
+## RMarkdown in the context of plotting
+
 ```{r, fig.height=3, fig.width=3}
 #```{r, fig.height=3, fig.width=3}
 #```
@@ -73,12 +85,53 @@ ggplot(mtcars) +
   ggtitle('Plot 1')
 ```
 
+## using external images
+- you can link directly to an image via its path relative to the notebook, using the following syntax: `![Caption for Figure](path/to/image)`
 
+- examples `![This is a Heatmap](../src/complex_heatmap_example.png)`
+![This is a Heatmap](../src/complex_heatmap_example.png)
 
-cheat sheet https://rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf
-
-```{r, setup echo=FALSE, eval=TRUE}
+## using external images
+- images can also be used through a notebook chunk with the `include_graphics` function from `knitr`
+```{r}
+knitr::include_graphics('../src/complex_heatmap_example.png')
 ```
+- this is useful for when you want to take advantage of some of the chunk formatting options offered by `knitr`
+
+## output formats
+- out of the box, Rmarkdown converts documents to `html` format, like these slides. With a few extra packages, they can be converted to `pdf` or docx. 
+- the same document can be converted to multiple out put formats, which are set in the header of the document
+```
+---
+title: "Intro to RMarkdown"
+author: "Vinay Swamy"
+date: "9/23/2020"
+output: ioslides_presentation
+---
+```
+
+## output formats
+
+```
+---
+title: "Intro to RMarkdown"
+author: "Vinay Swamy"
+date: "9/23/2020"
+output: pdf_document
+```
+
+## Lets practice 
+- We're going to make an R markdown document, and practice writing.
+- keep this [cheatsheet](https://rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf) open as a reference, as it has all the markdown syntax you will need to know
+
+
+
+## extensions to Rmarkdown
+- Other developers have created packages to create different types of media using Rmarkdown as the formatting language. 
+- `blogdown` is a popular package for making websites, where the page layout can be specified in Rmarkdown
+- `posterdown` is a package for making scientific posters using Rmarkdown. We'll be covering and using this package today.
+
+
 
 
 
