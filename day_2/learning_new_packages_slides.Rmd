@@ -2,7 +2,9 @@
 title: 'Learning non-ggplot plotting packages'
 author: "Vinay Swamy"
 date: "9/25/2020"
-output: ioslides_presentation
+output:
+  ioslides_presentation: 
+    widescreen: true
 ---
 
 <style>

@@ -2,7 +2,9 @@
 title: "ggplot - continued"
 author: "Vinay Swamy"
 date: "9/14/2020"
-output: ioslides_presentation
+output:
+  ioslides_presentation: 
+    widescreen: true
 ---
 
 

@@ -42,7 +42,7 @@ install.packages('ggridges')
 ```
 
 - reshape the data from wide to long format, suitable for plotting
-- select a gene and make a ridge plot for oits expression values for the different cell types
+- select a gene and make a ridge plot for its expression values for the different cell types
 - select multiple genes and make a faceted ridge plot for each gene.
 
 ```{r}
