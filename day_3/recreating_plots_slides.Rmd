@@ -1,0 +1,20 @@
+---
+title: "Building intuition for making re-creating plots"
+author: "Vinay Swamy"
+date: "10/4/2020"
+output: ioslides_presentation
+---
+
+
+## We've covered a lot of visualiztion tools
+- We extensively covered multiple visualization packages, with most of them centered around the `ggplot` API
+- What I want to do now is help you build the your intuition about how to tackle recreating plots generated outside of ggplot or R. 
+
+
+## Decontructing a plot
+- When you see a  new visualization that you want to try and recreate,  here are some general strategies
+- break the plot into separate pieces
+  - What is the underlying data, what information does it contain, and how is it likely formatted; were any transformations applied to the before plotting?
+  - what `geoms` will you need to recreate the plot. Are they all in `ggplot` or will you have to find an external package to draw a unique type of plot
+  - What are the aesethetic properties - color scheme, point size, pattern etc (looking at legends helps for this  )
+  - What are the graphical parameters - X/y axis labels/gridlines, legend orientation

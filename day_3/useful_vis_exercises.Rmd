@@ -1,0 +1,64 @@
+---
+title: "Useful visualizations to know"
+output: html_notebook
+---
+
+## some example single cell RNA-seq data. 
+- in the file '../src/pbmc_cell_expression.tsv.gz', we have some single cell expression data. This is semi-real data from data generated from blood samples from 3 patients and contains information from Peripheral blood mononuclear cells (PBMCs).
+- read this data in and take  a look at it 
+```{r}
+
+```
+
+
+## making Upset plots 
+- install `ComplexUpset`
+```{r}
+devtools::install_github("krassowski/complex-upset")
+```
+- We're going to make an upset plot using our single cell data. 
+- Single cell data is very sparse, meaning that only few genes are detected in each cell. Select 3 genes from the above dataset, and make an upset plot for whether or not a gene is expressed in a cell. 
+- anything above a count of 0 is expressed, and anything with 0 counts is not expressed
+- remember that complexUpset needs columns corresponding to true/false for each attribute we are trying to compare. 
+- hint: remember that logical operators(>, <, !) can be applied directly to data.frames
+
+## making alluvial plots 
+- install `ggalluvial`
+```{r}
+install.packages('ggalluvial')
+```
+- a common step in single cell data is computationally labelling cells with their associated cell type. The data has the output of two labelling tools, in columns `cell_type` and `cell_type_relabeled`. 
+- make an alluvial plot, where the first column is `cell_type` and  the second column is `cell_type_relabeled`, to visualize the in cell label from tool to tool 
+
+```{r}
+
+```
+
+
+## ridge plots 
+- install ggridges 
+```{r}
+install.packages('ggridges')
+```
+
+- reshape the data from wide to long format, suitable for plotting
+- select a gene and make a ridge plot for oits expression values for the different cell types
+- select multiple genes and make a faceted ridge plot for each gene.
+
+```{r}
+
+```
+
+## Rainclouds 
+- install `gghalves`
+
+- working with the long dataset from before, filter out any expression values equal to zero. This will leave us with a long data frame of only expressed cells. 
+- select one gene and make a raincloud plot for each cell type. 
+- select multiple genes and make a faceted raincloud plot
+```{r}
+
+```
+
+
+
+

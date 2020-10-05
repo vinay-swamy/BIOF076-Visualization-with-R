@@ -1,13 +1,31 @@
 ---
-title: "Learning how to use other plotting libraries in R"
+title: "Beyond GGplot2 - extensions of the Grammar of Graphics"
 author: "Vinay Swamy"
 date: "9/16/2020"
 output: ioslides_presentation
 ---
 
+<style>
+slides > slide {
+  overflow-x: auto !important;
+  overflow-y: auto !important;
+}
+</style>
+
+```{r setup, echo=FALSE, include=F}
+knitr::opts_chunk$set(fig.height = 5, fig.width =5)
+options(warn = -1)
+options(tibble.print_max = 5)
+library(tidyverse)
+library(ggpubr)
+library(ggpattern)
+library(sf)
+library(ggspatial)
+```
+
 ## the Grammar of Graphics beyond `ggplot2`
-- The grammar of graphics outlined by `ggplot2` provides a uniform way to both make plots, and to write the code for making other plotting libaries. 
-- Because fo this, there is a wide range of other packages that additional functionality to `ggplot`, while following the same standard to allow for easy use and interoperability
+- The grammar of graphics outlined by `ggplot2` provides a uniform way to both make plots, and to write the code for making other plotting libraries. 
+- Because of this, there is a wide range of other packages that additional functionality to `ggplot`, while following the same standard to allow for easy use and interoperability
 
 ## installing  external libraries
 
@@ -22,7 +40,7 @@ devtools::install_github('vinay-swamy/RBedtools', upgrade = F)
 
 ## the `ggpubr` library
 
-- the `ggpubr` is built on top of ggplot, but provides a more streamlined interface to use. It was designed to be used quickly and easily for making scientific plots for users with little to know programming expereince.
+- the `ggpubr` is built on top of ggplot, but provides a more streamlined interface to use. It was designed to be used quickly and easily for making scientific plots for users with little to know programming experience.
 - this is the code to make a violin plot in ggpubr - one function call to make a single plot
 
 ```{r}
@@ -44,18 +62,24 @@ ggviolin(ToothGrowth, x = "dose", y = "len", fill = "dose",
 
 ## the `ggpubr` library
 
-- testing and visualizing statistical signifiance is also easy to add to the plot 
+- testing for statistical significance is also easy to add to the plot 
 
 ```{r}
 ggviolin(ToothGrowth, x = "dose", y = "len", fill = "dose",
          palette = c("#00AFBB", "#E7B800", "#FC4E07"),
          add = "boxplot", add.params = list(fill = "white"))+  
-stat_compare_means(comparisons = list( c("0.5", "1"),  c("0.5", "2") ), label = "p.signif")+
+  stat_compare_means(comparisons = list( c("0.5", "1"),  c("0.5", "2") ), 
+                     label = "p.signif")+
   stat_compare_means(label.y = 50) 
 ```
 
+## An aside 
+- My biggest qualm with `ggpubr` is that it makes it too easy to apply a statistical analysis without really understanding what's being used. 
+
+
 ## the `ggpubr` library
-- the data format is also a lot for flexible
+- `ggpubr will can also apply transformations ot data for you
+- For example, summarizing a range of point to theur average value
 
 ```{r}
 ggline(ToothGrowth, "dose", "len",
@@ -72,12 +96,12 @@ ggline(ToothGrowth, "dose", "len",
    color = "supp", palette = c("#00AFBB", "#E7B800"), add='mean_se')
 ```
 
-- While `ggpubr` excels for making quick and descriptive plots, it lacks a lot of flexibility. Use it when when you need somthing out of the box, but if you need something a littl emore complicated, stick with ggplot
+- While `ggpubr` excels for making quick and descriptive plots, it lacks a lot of flexibility. Use it when when you need something out of the box, but if you need something a little more complicated, stick with ggplot
 
 ## adding patterns to plots 
 
 - Using patterns has a long history in scientific plots.
-- patterns provide another "dimension" to showcase a catagorical variable
+- patterns provide another "dimension" to showcase a categorical variable
 - patterns are available through the `ggpattern` package
 
 ```{r}
@@ -137,7 +161,7 @@ ggplot(iris) +
 ```
 
 ## external themes
-- a theme mimicing the Wall Street Journal
+- a theme mimicking the Wall Street Journal
 
 ```{r}
 ggplot(iris) + 
@@ -146,6 +170,7 @@ ggplot(iris) +
 ```
 
 ## `ggsci`
+
 - many journals and magazines have specific color palettes they use for their publications. the `ggsci` provides close approximation for several of these 
 
 ```{r}
@@ -177,23 +202,28 @@ p1 + scale_color_aaas()
 
 
 ## animated plots 
-- animated pltos are all the rage these days, and thanks to the `gganimate` package, making animated plots is super easy
+- animated plots are all the rage these days, and thanks to the `gganimate` package, making animated plots is super easy
 
 ```{r}
+knitr::include_graphics('../src/economic_lg_ani.gif')
+```
+
+## animated plots
+- `gganimate` works by having `transition_...` functions that can change the color or positions of geoms based on  time or another continuous variable
+
+- the code to make the animated plot
+
+```{r, eval=F}
 library(gganimate)
 data("economics_long")
 ani_plot <- ggplot(economics_long)  +
   geom_line(aes(x=date, y=value01, color = variable)) + 
   theme_bw()+
   transition_reveal(date)
-anim_save('../src/economic_lg_ani.gif', ani_plot)
+#anim_save('../src/economic_lg_ani.gif', ani_plot)
 ```
 
-## animated plots
-- `gganimate` works by having `transition_...` functions that can change the color or positions of geoms based on a time or another continuous variable
-
 ## lets do some examples 
-
 
 ## Plotting Maps in R
 - R was well known in its early years for having good libraries for making plots with maps.
@@ -205,7 +235,7 @@ anim_save('../src/economic_lg_ani.gif', ani_plot)
 - `sf` is the successor to the `sp` package, which was what gave maps in R its fame 
 
 ## the `sf` package
-- This is some example data provided in the `sf` pakage. It contains geospatial information about the state of North Carolina. you can recognize geospatial data by the `.shp` extension. the `st_read` function allows you to read `.shp` data into R. Within R, it exists as a custom class, also called `sf
+- This is some example data provided in the `sf` package. It contains geospatial information about the state of North Carolina. you can recognize geospatial data by the `.shp` extension. the `st_read` function allows you to read `.shp` data into R. Within R, it exists as a custom class, also called `sf
 ```{r}
 library(sf)
 nc <- st_read(system.file("shape/nc.shp", package="sf"))
@@ -234,10 +264,8 @@ plot(nc)
 - but since plotting in base R isn't great, we'll be combining `sf` with another package, `ggspatial`. 
 - when using `geom_sf`, we can directly pass `sf` objects. When doing this, aesthetic mappings are automatically generated
 
-## the `sf` package
+## the `ggspatial` package
 ```{r}
-library(tidyverse)
-library(ggplot)
 library(ggspatial)
 ggplot(data = nc ) +
     geom_sf() + 
@@ -245,7 +273,7 @@ ggplot(data = nc ) +
 
 ```
 
-## the `sf` package
+## the  `ggspatial` package
 - when using using a `tibble` as input, manually specify the aesthetic mapping
 
 ```{r}
@@ -254,7 +282,7 @@ ggplot(nc_table) +
     theme_bw()
 ```
 
-## the `sf` package
+## the `ggspatial` package
 - from here, we can treat the plot like a normal `ggplot, changing aesthetics as we please
 
 ```{r}
@@ -265,14 +293,14 @@ ggplot(nc_table) +
 
 ## Using Maps with real data 
 - Almost always, real data does not come with geometry coordinates attached. if you're lucky, you'll get tabular data that has some kind of easy geographical identifier, like state, country, or zip code.
-- Heres an (slightly morbid) example - Violent Crime Arrests in the US
+- Here's an (slightly morbid) example - Violent Crime Arrests in the US
 ```{r}
 data("USArrests")
 USArrests
 ```
 
 ## the `sf` package
-- the general workflow for plotting maps is taking an `sf` object that has defined geomtry, and then connecting the `sf` data to our tablular data.
+- the general workflow for plotting maps is taking an `sf` object that has defined geometry, and then connecting the `sf` data to our tabular data.
 
 - there are multiple packages for obtaining map data, but its often not in `sf` format. luckily, the `sf` package provides the function `st_as_sf` to convert other formats to `sf` format
 
@@ -305,7 +333,7 @@ inner_join(arrests, states)
 
 
 ## always check your joins!
-- in this case the cases in the `state` column doesnt match 
+- in this case the cases in the `state` column doesn't match 
 
 ```{r}
 states <- states %>% 
@@ -334,12 +362,12 @@ ggplot(arrestData_with_mapData) +
 ```
  
 # using coordinate systems 
-- sometimes you don't even get a region, and just get lattitudes, and longitudes
+- sometimes you don't even get a region, and just get latitudes, and longitudes
 
-- this is some example data about the locations of earthquakes in fiji 
+- this is some example data about the locations of earthquakes in Fiji 
 ```{r}
 data("quakes")
-quakes
+quakes %>% head
 ```
 
 ## using coordinate systems 

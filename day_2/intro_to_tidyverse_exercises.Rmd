@@ -52,17 +52,11 @@ select the name and height columns
 ```
 
 
-
-using the main data set, select just the `skin_color` column. `group_by` this column and calculate the number of observations in each group. (hint use the `n()` function)
-
-```{r}
-
-```
-
 ## Example - GTF file
 
 - a GTF file contains information about the location of genes within the genome, as well as vartiety of other annotations. `../src/gtf_example.tsv.gz` contains 5 genes. 
-- Each gene has multiple transcripts, and each transcript has a protein coding region, or CDS.  read this data in, and use functions from the tidyverse to calculate the length of each CDS, and determine the gene with the longest CDS
+- Each gene has multiple transcripts, and each transcript has a protein coding region, or CDS.  read this data in, and use functions from the tidyverse to calculate the length of each CDS, and determine the gene with the longest CDS. Generaly workflow  
+read the data  >  select values that only correspond the to CDS(look at the `type` column)  >  for each CDS group together and calculate the smallest start and the largest end( the `transcript_id` column is unique for each CDS ) >  largest end - smallest start  = length
 
 ```{r}
 

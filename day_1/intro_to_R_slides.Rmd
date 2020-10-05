@@ -21,8 +21,8 @@ slides > slide {
 
 ## How does code work 
 - We write commands in a certain format, and a program reads those commands and does things
-- The format we write in is called syntax, and the program is called the interpreter
-- Syntax is extremely important - if we dont format our commands correctly, the interpreter won't understand how to run the commands properly
+- The format we write in is called syntax, and the program that does something with them  is called the interpreter
+- Syntax is extremely important - if we don't format our commands correctly, the interpreter won't understand how to run the commands properly
 - As you see code in the slides below, pay close attention to the way it is formatted
 
 ## Variable 
@@ -40,7 +40,7 @@ my_variable
 ```
 
 ## Variable 
-- the name of a variable msut be a continous string of letters and numbers, and must start with a letter, and contain the any of these symbols `. - _`. NO SPACES
+- the name of a variable must be a continuous string of letters and numbers, and must start with a letter, and can contain the any of these symbols `. - _`. NO SPACES
 - `my_var <- 5` good
 - `my var <- 5` bad
 - `1var <- 5` bad
@@ -49,29 +49,27 @@ my_variable
 
 ## Types of Variables
 
-- In R, there are 4 major types of variables: Numeric, character, factor, and Logical, but we'll conver the first two for now
+- In R, there are 4 major types of variables: Numeric, character, factor, and Logical, but we'll cover the first two for now
  - numeric: any number: `x <- 1`,  `x <- .5`
  - character: any letters or characters `x <- "H"`, `x <- 'H'`, `x<- 'Hello'`. 
- - All characters must be enclosed by either `'` or `"`, but has to be the same for each side; a word enclosed by `'` like `'outside'` is called a string
+ - All characters must be enclosed by either `'` or `"`, but has to be the same for each side; 
+ - I'll often refer to `character`s as "strings"  
 ```
 x <- 'hello' #good
 x <- hello  #bad
 
 ```
 
-- In Rstudio, we can see the variable under the enviroment panel 
-<insert image>
-
 ## Vectors
 - A vector is a type of variable that stores multiple values. Each individual item in a vector is called an Element. Note the syntax for defining a vector
 ```{r}
 Vector <- c(1,2,3)
 ```
-- one of the quicks about R is that every base type is a vector, but we'll talk more about this later
+- one of the quirks about R is that every base type is a vector, but we'll talk more about this later
 
 ## Vectors
 
-- Vectors can be joined, or concatentated similar to how they created
+- Vectors can be joined, or concatenated similar to how they created
 
 ```{r}
 l1 <- c(1, 2, 3)
@@ -86,13 +84,13 @@ joined <- c(l1, l2 )
 - an Index is an element's specific position within a list
 
 ## Indexing 
-- each element in a vector can be indexed by its numerical position relative the start of the list 
+- each element in a vector can be indexed by its numerical position relative to the start of the list 
 
 ```{r,echo=FALSE, fig.height=1, fig.width=2}
 knitr::include_graphics('../src/list_index.png')
 ```
 
-- So to acces the second element of this list, I would use the following
+- So to access the second element of this list, I would use the following
 
 ```{r}
 vec <- c('a', 'b', 'c', 'd')
@@ -100,7 +98,7 @@ vec[2]
 ```
 
 ## Indexing 
-- We can uses vector corresponds to multiple locations to select multiple elements at once . 
+- We can use a vector's index to select multiple locations at once . 
 
 ```{r}
 locs <- c(2, 4)
@@ -110,13 +108,13 @@ vec[locs]
 
 ## Indexing 
 
--  to select a continous range of values, we can use the `:` operator. this is called slicing 
+-  to select a continuous range of values, we can use the `:` operator. This is called *slicing *
 
 ```{r}
 vec[1:3]
 ```
 
--Note that the start *and* stop of the range are included when using this notation. This and starting array indexing at 1 are a couple quirks in R that separate it from other programming languages
+- Note that the start *and* stop of the range are included when using this notation. This and starting array indexing at 1 are a couple quirks in R that separate it from other programming languages
 
 ## updating values in a vector 
 
@@ -133,11 +131,11 @@ vec
 
 ```
 
-## Time for some Excercises
+## Time for some Exercises
 
-## Type coercsion
+## Type coercion
 
-- In many languages, its against the rules to have elements of different types in the same vector, ie having a numeric and a charachter in the same vector
+- In many languages, its against the rules to have elements of different types in the same vector, IE having a `numeric` and a `character` in the same vector
 - In R, its not technically against the rules, but when you declare a vector with 2 types, it will force one element to converted to the type with the highest priority. For the two data types we have covered, character > numeric
 
 ## Math in R
@@ -154,7 +152,7 @@ vec
 ```
 
 ## Math in R 
--mathmetical operations can be directly applied to vectors. All operations are done element wise 
+- mathematical operations can be directly applied to vectors. All operations are done element wise 
 ```{r}
 c(1, 2, 3) + 5
 ```
@@ -182,13 +180,14 @@ c(0, 2) * c(1, 2, 3, 4)
 
 ## Functions 
 
-- functions are pieces of code that perform actions. There are many functions that are availble within base R. For example consider the `sum` function, which sums all elements in a numeric vector. Note the syntax
+- functions are pieces of code that perform actions. There are many functions that are available within base R. For example consider the `sum` function, which sums all elements in a numeric vector. Note the syntax
 ```{r}
 vec <- c(1, 2, 3, 4, 5)
 sum(vec)
 ```
 - broadly, functions take an input, do something, and return a new output
-- using a function is often refered to as "calling". we call functions by passing arguments inside the parenthesis. In this case, we passed the `vec` variable to the `sum` function. - A function can multiple arguments, or none. 
+- using a function is often referred to as "calling". we call functions by passing arguments inside the parenthesis. In this case, we passed the `vec` variable to the `sum` function. 
+- A function can multiple arguments, or none. 
 
 ## passing arguments to functions
 - Every argument in a function has a name. We can  consider this name a variable that is defined *inside* the function. We can see these with the `args` function.
@@ -196,7 +195,7 @@ sum(vec)
 ```{r}
 args(mean)
 ```
-- the the arguments you pass to a function can be directly nameed within the function
+- the arguments you pass to a function can be directly named within the function
 ```{r}
 mean(x=vec)
 ```
@@ -206,7 +205,8 @@ mean(x=vec)
 ```{r}
 args(sum)
 ```
-- the order in which you write the arguments matters; when you do privde the names for arguments, its assumed their passed in the write order. Thats why its generally better to always explictly assign arugments to their respective names
+- the order in which you write the arguments matters; when you don't provide the names for arguments,they are assigned to arguments in the order that th arguments are written in the function.  
+- This is  why its generally better to always explicitly assign arguments to their respective names
 
 
 ## useful functions in base R
@@ -218,11 +218,12 @@ args(sum)
 - `as.numeric`
 - `as.character`
 
-## Time for some exercieses
+## Time for some exercises
 
 ## Defining a function
-- sometime there won't be a predefined function for the task you want to complete, and you'll have to write your own 
-- here is an example for adding two numbers together. Note the syntax - assigning a name to the function (`add`), defining arguments for the function( `num_1` & `num_2`), and then writing the actual code for the function within the brackets. Once we have generated the final value we want for our function, we can pass it back to the main environment using the `return` function
+- sometime there won't be a predefi ned function for the task you want to complete, and you'll have to write your own 
+- here is an example for adding two numbers together. Note the syntax - assigning a name to the function (`add`), defining arguments for the function( `num_1` & `num_2`), and then writing the actual code for the function within the brackets. 
+- Once we have generated the final value we want for our function, we can pass it back to the main environment using the `return` function
 
 ```{r}
 add <- function(num_1, num_2){
@@ -234,7 +235,7 @@ add(1,1)
 ```
 
 ## Defining a function
-though you dont always need to use the `return` function, is best practice to do so. If you want to return nothing, you can call `return` with no arugments
+though you don't always need to use the `return` function, is best practice to do so. If you want to return nothing, you can call `return` with no arguments
 
 ```{r}
 add <- function(num_1, num_2){
@@ -246,7 +247,7 @@ add <- function(num_1, num_2){
 add(1,1)
 ```
 
-NULL, which is essentually an empty value, is returned by calling `return` with no arguments.
+NULL, which is essentially an empty value, is returned by calling `return` with no arguments.
 
 ## more exercises
 
@@ -275,13 +276,13 @@ print(list_with_vector)
 ```
 
 ## indexing with lists 
-- indexing with lists is slightly different than vectors. when using `[]` a smaller list is return, depending how much indices you requested. We can check this with the `str` function, which allows you to see a variables data type
+- indexing with lists is slightly different than vectors. when using `[]`,  a smaller list is returned, depending how many indices you requested. We can check this with the `class` function, which allows you to see a variables data type
 
 ```{r}
 list_with_vector[1]
 ```
 ```{r}
-str(list_with_vector[1])
+class(list_with_vector[1])
 ```
 
 ## indexing with lists  
@@ -306,7 +307,7 @@ big_list
 ## Names
 
 - we can assign labels to indices for lists and vectors, in order to make it easier to access data
-- consider the above example about measurements on X. instead of storing a seperate entry for the condition, we can set the name of the vector within the list, and access that element by its name, similar to indexing 
+- consider the above example about measurements on X. instead of storing a separate entry for the condition, we can set the name of the vector within the list, and access that element by its name, similar to indexing 
 
 ```{r}
 experiment <- list(condition_a = c(1,2,3,4,5,5,6), 
@@ -321,13 +322,13 @@ experiment[['condition_a']]
 named_vector <- c('first'=1,'second'=3, 'third'=5 )
 named_vector['third']
 ```
-- Note that named lists/vectors stil retain their numerical index
+- Note that named lists/vectors still retain their numerical index
 ```{r}
 named_vector[3]
 ```
 
 ## setting names 
-- the `names` function allows you to set the names a list or vector *after* its declared
+- the `names` function allows you to set the names of a list or vector *after* its declared
 ```{r}
 experiment <- list(c(1,2,3,4,5,5,6), 
                    c(0,0,0,0,2,3,0))
@@ -338,7 +339,7 @@ experiment
 names(experiment) <- c('condition_a', 'condition_b')
 experiment
 ```
--Note: when using `names` the vector of names must be the same length as the target list/vector
+-Note: when using `names`,  the vector of names must be the same length as the target list/vector
 
 ## list accessor
  
@@ -348,22 +349,21 @@ experiment
 experiment$condition_a
 ```
 
-
 ## lets do some practice
 -  go to "working with lists"
 
 ## dataframes
 
-- Often we want to work with tabular data. this is somthing you would commonly open in excel - a file with rows and columns 
--under the hood, a data frame is essentially a list of vectors, where each vector represents a column
--df is often used as shorthand for dataframe
+- Often we want to work with tabular data. this is something you would commonly open in excel - a file with rows and columns 
+- under the hood, a data frame is essentially a list of vectors, where each vector represents a column
+- "df" is often used as shorthand for dataframe
 
 ```{r}
 example_df <- data.frame(col_a = c(1, 2, 3 ), col_b = c('a', 'b', 'c'), stringsAsFactors = F)
 example_df
 ```
 
-As you can see, data frames are composed of rows and columns 
+- As you can see, data frames are composed of rows and columns 
 
 ## indexing dataframes
 
@@ -393,7 +393,7 @@ example_df[2:3,]
 ```
 
 ## indexing dataframes
-- works the same for columnsm but instead of returning a dataframe, vector is returned
+- works the same for columns but instead of returning a dataframe, vector is returned
 
 ```{r}
 example_df[,1]
@@ -407,7 +407,7 @@ example_df$col_b
 
 ## indexing dataframes
 
--columns can also be accesed by their column name 
+-columns can also be accessed by their column name 
 ```{r}
 example_df[,'col_b']
 ```
@@ -438,22 +438,22 @@ example_df
 ```
 
 ## modifying data frames 
-- new columns can be added by declaing a new index name or similarly with the accessor function
+- new columns can be added by declaring a new index name or similarly with the accessor function
 ```{r}
 example_df[,'col_c'] <- c(-1,-2,-3)
 example_df
 ```
 ```{r}
-example_df$col_d <- c('apple', 'facebook', 'google')
+example_df$col_d <- c('apple', 'Facebook', 'Google')
 example_df
 ```
 
 ## Factors
 
-- Factors are another data type, like `numeric`, or `character`. Factors are designed to be representations of characters that take up low memory
-- in factor vector, each unique value is mapped to a number. this mapping is not displayed, and is used under-the-hood. T
-- he unique values for each factor are called  its levels
-- Factors are used because its easier to store numbers in memory than characters
+- `Factors` are another data type, like `numeric`, or `character`. `Factors` are designed to be representations of characters that take up low memory.
+- in a `factor` vector, each unique value is mapped to a number. this mapping is not displayed, and is used under-the-hood. 
+- The unique values for each factor are called  its levels
+- `Factors` are used because its easier to store numbers in memory than characters
 
 ```{r}
 char_vec <- c('a', 'a', 'a', 'b', 'b', 'c')
@@ -467,7 +467,7 @@ char_vec
 char_vec_factor <- factor(char_vec)
 char_vec_factor
 ```
-- the levels of a factor can be accessed by the `levels` function. 
+- the levels of a `factor` can be accessed by the `levels` function. 
 
 ```{r}
 levels(char_vec_factor)
@@ -481,7 +481,7 @@ factor(char_vec, levels = c('a', 'a', 'b', 'c'))
 ```
 
 ## ordering factors 
-- unlike characters or number which have an innate order, the ordered pf factors is  based on the ordering of their levels; 
+- unlike characters or numbers which have an innate order, the ordered of `factors` is based on the ordering of their levels; 
 ```{r}
 char_vec_factor_arr <- factor(char_vec, levels =c('b', 'a', 'c') )
 char_vec_factor_arr
@@ -501,7 +501,7 @@ as.numeric(char_vec_factor)
 ```
 
 ## Factors in data frames 
--data frames by default convert all character vectors to factors. This can be disabled when declaring a data frame using the argument`stringsAsFactors=F`
+- data frames by default convert all `character` vectors to `factors`. This can be disabled when declaring a data frame using the argument`stringsAsFactors=F`
 
 ```{r}
 example_df <- data.frame(col_a = c(1, 2, 3 ), 
@@ -518,7 +518,7 @@ example_df_no_fctr <- data.frame(col_a = c(1, 2, 3 ),
 str(example_df_no_fctr)
 ```
 
-- There are also functions for convert vectors to factors- `as.factor`, or to character `as.character`
+- There are also functions for convert vectors to `factors`,  `as.factor`, or to `character`,  `as.character`
 - confusion between factors and characters is a very common mistake
 
 ## missing values
@@ -528,7 +528,7 @@ str(example_df_no_fctr)
 as.numeric(char_vec)
 ```
 
-- NA can be any data type. Functions will sometimes return NA to indcate that the function ran successfully, but the value produced is not what it should be. 
+- NA can be any data type. Functions will sometimes return NA to indicate that the function ran successfully, but the value produced is not what it should be. 
 - In the example above, when we tried to convert a character vector to, R does not know how to convert those specific letters to numbers, but for some letter it does 
 
 ```{r}
@@ -539,14 +539,14 @@ str(character_numerals)
 str(as.numeric(character_numerals))
 ```
 
-- Theres another missing values, `NaN`. This stands for "Not a Number", and specifically represents an undefined mathmatical value like 0/0.
+- There's another missing value, `NaN`. This stands for "Not a Number", and specifically represents an undefined mathematical value, like 0/0.
 
 ```{r}
 0/0
 ```
 
 ## math with data frames
--Math with data frames works similarly to vectors, where mathmatical operations happen elementwise
+- Math with data frames works similarly to vectors, where mathematical operations happen element wise
 ```{r}
 numeric_df <- data.frame(left=c(0,0,0,0), right = c(1,2,4,5))
 

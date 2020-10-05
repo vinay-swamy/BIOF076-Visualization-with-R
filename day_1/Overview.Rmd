@@ -6,11 +6,9 @@ output:
     ioslides_presentation:
         transition: 0
 ---
-## Important links
-- github
-- website
-- zoom
-- email?
+
+## Course Goals
+- Give you the skills you need to use R to improve your day to day work. 
 
 ## Course Overview 
 
@@ -19,9 +17,6 @@ output:
 - Day 3: Created Figures, reports, and posters; Useful Plots to Know
 - Day 4: Making Interactive webapps with Shiny
 - Day 5: Final Project and Project presentations 
-
-## Course Goals
-- Give you the skills you need to use R to improve your day to day work. 
 
 ## Lecture Format
 - Lecture slides + excercies
@@ -32,15 +27,14 @@ output:
 - Ideally, you'll use what you learn in the course to help you with your own work, like
   - creating and assembling multiple plots into a figure for paper, 
   - creating a poster for your next conference, 
-  - building an interactive webapp to explore data, 
-  - creating your own website
+  - building an interactive webapp to explore data with
 
 # Intro to R and other tools 
 
 ## What is R and why is it good for making visualizations
 
 - R is a programming language designed for statistics 
-- Researchers who need to use statistics used R because it is free and open source unlike Stata or SPSS
+- Researchers who need to use statisticsused R because it is free and open source unlike Stata or SPSS
 - Researchers need to make plots and figures to put in publications, so they began developing plotting packages for R
 - As biology is growing more and more computational across time, more biologists are using R for analysis and visualization
 
@@ -80,6 +74,11 @@ knitr::include_graphics('../src/fetal_retina_diff_exp-1.png', dpi=1000)
 - Github is a website that lets you store code repositories
 - GitHub is useful for backing up your code, as well as sharing it with others. 
 - We'll be using github for our class
+
+## getting course materials for the course
+1. Open Rstudio 
+2. Go to the terminal in the bottom left panel 
+3. type in this command git clone https://github.com/vinay-swamy/BIOF076-Visualization-with-R.git
 
 
 

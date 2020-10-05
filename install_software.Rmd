@@ -29,9 +29,16 @@ Download Rstudio for your specific computer at:
 
 https://rstudio.com/products/rstudio/download/#download
 
-## install git( windows only )
+## install git( )
+
+Windows
 
 https://gitforwindows.org
+
+Mac
+git comes pre-installed on Macs, but you may have to install XCode to use it.
+
+https://apps.apple.com/us/app/xcode/id497799835?mt=12
 
 
 ## install R packages 

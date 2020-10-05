@@ -35,3 +35,27 @@ ggplot() +
 ggsave('../src/reporter_assay_plot.png')
 ```
 
+
+
+```{r}
+library(Seurat)
+library(tidyverse)
+pbmc <- readRDS(file = "~/Downloads/pbmc3k_final.rds")
+pbmc$groups <- sample(c("group1", "group2"), size = ncol(pbmc), replace = TRUE)
+features <- c("LYZ", "CCL5", "IL32", "PTPRCAP", "FCGR3A", "PF4")
+pbmc
+t_feat <-  pbmc@assays$RNA@var.features %>% head(10)
+cell_types <- pbmc@active.ident %>% {tibble(barcode  = names(.), cell_type = .)}
+raw_data <- pbmc@assays$RNA@data[t_feat, ] %>% 
+    as.data.frame %>% 
+    t() %>% 
+    as.data.frame %>% 
+    rownames_to_column('barcode') %>% 
+    left_join(cell_types,.) %>% 
+    mutate(patient_id = sample(c('patient_1', 'patient_2', 'patient_3'), replace = T, size = nrow(.)),
+           cell_type_relabeled = sample(.$cell_type, size = nrow(.), replace = T)) %>% 
+    select(barcode, cell_type, cell_type_relabeled, patient_id, everything()) 
+
+write_tsv(raw_data, '../src/pbmc_cell_expression.tsv.gz')
+```
+

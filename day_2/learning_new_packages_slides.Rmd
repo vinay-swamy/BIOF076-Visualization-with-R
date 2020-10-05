@@ -5,6 +5,19 @@ date: "9/25/2020"
 output: ioslides_presentation
 ---
 
+<style>
+slides > slide {
+  overflow-x: auto !important;
+  overflow-y: auto !important;
+}
+</style>
+
+```{r setup, echo=FALSE}
+knitr::opts_chunk$set(fig.height = 5, fig.width =5)
+options(warn = -1)
+library(knitr)
+```
+
 ## Learning how to use a new plotting package(or any package)
 
 - We've spent a good chunk of time going leanring some libraries, but now I want show you how to learn to use a new package.
@@ -15,7 +28,10 @@ output: ioslides_presentation
 
 - As a case study for learning a new package, we're going to go learn how to plot heat maps, which are difficult to produce with `ggplot`
 -  Heatmaps are a common type of plot for clustering data.
-![](../src/exapmle_heatmap.png)
+```{r, echo = F}
+include_graphics('../src/exapmle_heatmap.png')
+```
+
 ## Heatmaps 
 
 - Heatmaps are used to show subpopulations within a set of data, both between observations and between variables. This happens by clustering both the row vectors, and the column vectors. 
@@ -25,7 +41,10 @@ output: ioslides_presentation
 
 - `ComplexHeatmap` is package for, you guessed it, making heatmaps, and is probably the most popular package for doing so. 
 - its popularity comes from having a feature rich and well documented API
-![](../src/complex_heatmap_example.png)
+```{r echo =F}
+include_graphics('../src/complex_heatmap_example.png')
+```
+
 
 ## Application Programming Interfaces( APIs)
 

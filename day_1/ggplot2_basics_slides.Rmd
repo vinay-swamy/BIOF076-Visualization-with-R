@@ -13,7 +13,8 @@ slides > slide {
 }
 </style>
 ```{r setup, echo=FALSE}
-knitr::opts_chunk$set(fig.height = 3, fig.width =5)
+knitr::opts_chunk$set(fig.height = 5, fig.width =5)
+options(warn = -1)
 ```
 
 ## Libraries in R
@@ -21,7 +22,7 @@ knitr::opts_chunk$set(fig.height = 3, fig.width =5)
 - up until now we either been using functions included within the base R environment and if function is not available in base R, we have written our own. 
 - However, we can get functions from other sources, called libraries
 
-- libraries are collection of functions, generaly specialized task ; for example the package `ggplot2`, which we will be heavily using throughout this course is a library that contains functions for makes plots.
+- libraries are collection of functions, generally specialized task ; for example the package `ggplot2`, which we will be heavily using throughout this course is a library that contains functions for makes plots.
 
 - To use a library, load it using the `library` function
 ```{r}
@@ -45,7 +46,7 @@ plot(x, y)
 - while this may look simple, the base R plotting functions are much harder to use for complicated plots and the syntax is fairly inconsistent across different kinds of plots
 
 ## the grammar of graphics
-- the ggplot2 plotting libraries are written under the core philosphy of the "Grammar of Graphics"
+- the `ggplot2` plotting libraries are written under the core philosophy of the "Grammar of Graphics"
 - the "Grammar of Graphics" is a framework that enables users to concisely describe any element of a graphic or plot
 - this grammar should be uniformly defined across functions for making any kind of plot
 
@@ -57,6 +58,7 @@ library(ggplot2)
 library(pals)
 library(patchwork)
 library(RColorBrewer)
+options(warn = -1)
 ```
 
 ## the iris data set 
@@ -85,7 +87,7 @@ ggplot(data=iris) +
 ```
 
 ## basic plots 
-- similarly, lets plot a boxplot
+- similarly, lets plot a box plot
 
 ```{r}
 ggplot(data=iris) +
@@ -94,7 +96,7 @@ ggplot(data=iris) +
 ```
 
 ## basic plots 
-- how about a boxplot separated by flower 
+- how about a box plot separated by flower 
 
 ```{r}
 ggplot(data=iris) +
@@ -104,13 +106,12 @@ ggplot(data=iris) +
 
 ## the anatomy of a `ggplot`
 - ggplots are composed of three core types of layers
-  - the base layer, defined with `ggplot`. This layer creates an empty plot that will be filled with other layers. In this layer we provide the data we will use to plot. This is almost always a data.frame
-  - the plotting layer, which are functions with the `geom_` prefix. Each `geom` has specific properties that can be set, either with a manual value, or an aesthetic mapping.
-   the `theme` layer which controlls a large amount of graphical parameters, like axis titles, legend size, plot titles etc. ggplot provides pre configured themes like `theme_minimal` for easy use
+  - the base layer, defined with `ggplot`. This layer creates an empty plot that will be filled with other layers. In this layer we provide the data we will use to plot. This is almost always a `data.frame`
+  - the plotting layer, which are functions with the `geom_` prefix. Each `geom` draws a specific plot and has specific properties that can be set, either with a manual value, or an aesthetic mapping.
+   the `theme` layer which controls a large amount of graphical parameters, like axis titles, legend size, plot titles etc. ggplot provides pre configured themes like `theme_minimal` for easy use
   - note that we *add* layers together
 
-
-## aethetic mappings for plots.
+## aesthetic mappings for plots.
 - each `geom_` layer has multiple aesthetic parameters that can be modified. these can be viewed with the `?` command ( x and y are bolded in the picture below)
 ```{r echo=F}
 knitr::include_graphics('../src/geom_aes.png')
@@ -119,7 +120,7 @@ knitr::include_graphics('../src/geom_aes.png')
 - we can set these aesthetic parameters in two ways, manually assigning values, or the `aes` function
 
 ##  the `aes` function
-- `aes` generates a mapping between columnns in the data specified in the `ggplot` to aesthetic paramters of the `geom`
+- `aes` generates a mapping between columns in the data specified in the `ggplot` to aesthetic parameters of the `geom`
 
 ```{r}
 colnames(iris)
@@ -129,9 +130,9 @@ ggplot(data=iris) +
     geom_point(aes(x=Sepal.Length,y=Sepal.Width))
 ```
 
-- note that we don't use single/double quotes around the name of the column; the `aes` function supports quasi-quotatation - we'll learn more about this later 
+- note that we don't use single/double quotes around the name of the column; the `aes` function supports quasi-quotation - we'll learn more about this later 
 
-## aethetic mappings for plots 
+## aesthetic mappings for plots 
 
 - aesthetic mappings can also be provided a manual mapping; this must be a single value
 ```{r}
@@ -142,19 +143,19 @@ ggplot(data=iris) +
 - note that manual values are specified within the `geom_` function, NOT the `aes` function, and that colors must be passed as strings
 - choosing colors is an extensive topic in making plots; but for now, stick to simple colors- red, orange, yellow, green, blue, black, white and grey.
 
-## aethetic mappings for plots - themes
-- the `theme` function allows you to tweak a large number of graphical settings for a plot, but we will ocver this later. For now use one of the default themes(`theme_minimal`, `theme_gray`, `theme_void`, `theme_classic` ), or no theme.
+## aesthetic mappings for plots - themes
+- the `theme` function allows you to tweak a large number of graphical settings for a plot, but we will cover these later. For now, use one of the default themes(`theme_minimal`, `theme_gray`, `theme_void`, `theme_classic` ), or no theme.
 
 ## discrete vs continuous data
-- continuous data is always numerical, and has a range of values ie height, temperature, gene expression
-- discrete or catagorical data is a set of fixed values - names, labels etc.
+- continuous data is always numerical, and has a range of valuesm, IE height, temperature, gene expression
+- discrete or categorical data is a set of fixed values - names, labels etc.
 
 ## lets practice
 - go to the "day_1/ggplot_basics_exercises.Rmd" notebook
 
 
 ## line graphs 
-- a commply used type of graph is a line graph; geom line draws a line through all points in there numerical order 
+- a commonly used type of graph is a line graph; geom line draws a line through all points in there numerical order 
 
 ```{r}
 data("economics")
@@ -169,7 +170,7 @@ ggplot(economics) +
 ```
 
 ## line graphs 
-- multiple lines can be drawn, by specifiying a catagorical column, and a method to distinguish separate lines 
+- multiple lines can be drawn, by specifying a categorical column, and a method to distinguish separate lines 
 ```{r}
 data("economics_long")
 economics_long
@@ -190,7 +191,7 @@ ggplot(economics_long) +
 ```
 
 ## fitting a line to data
-- sometimes instead of just connecting data, we want to generate a line that mathetically best describes the data 
+- sometimes instead of just connecting data, we want to generate a line that mathematically best describes the data 
 - this is done with the `geom_smooth`, which can be used as an almost drop-in replacement for `geom_line`, except that a fitting method must be passed to `geom_case`
 
 -fitting with `lm`, a standard linear regression
@@ -211,7 +212,7 @@ ggplot(economics_long) +
 -note that these just draw curves, not points. We'll talk about how to do both in another lecture.
 
 ## horizontal and vertical lines
-- horizontal and verticals lines can be drawn with `geom_hline` and `geom_vline` respectively
+- horizontal and verticals lines can be drawn with `geom_hline` and `geom_vline` respectively. As these are just single lines, they don't need data attatched to it
 ```{r}
 ggplot() + 
   geom_hline(yintercept = 5, color = 'blue') + 
@@ -221,17 +222,17 @@ ggplot() +
 
 
 ## lets practice
-- go to the 'linegraphs" header in the notebook
+- go to the 'line graphs" header in the notebook
 
 
-## Bargraphs
+## Bar graphs
 
-- Bargraphs are one of the more common types of plots. There are two methods for generating bargraphs with ggplot - `geom_bar`, used for counting categorical data, and `geom_col`, used for numerical data.
+- Bar graphs are one of the more common types of plots. There are two methods for generating bar graphs with ggplot - `geom_bar`, used for counting categorical data, and `geom_col`, used for numerical data.
 - `geom_bar` takes a discrete vector and generates counts for each unique item in the vector; 
-- `geom_col` plots numerical values, and requires a 1:1 catagory-value mapping
-- a bargraph with geom_col
+- `geom_col` plots numerical values, and requires a 1:1 category-value mapping
+- a bar graph with geom_col
 
-## Bargraphs
+## Bar graphs
 
 ```{r}
 data("diamonds")
@@ -240,51 +241,51 @@ ggplot(diamonds) +
   
 ```
 
-## Bargraphs
+## Bar graphs
 - sometimes it can be useful to visualize groups within groups, and create a grouped bar chart, which you can generate by setting the `fill` aesthetic to a categorical variable that is different than the `x` aesthetic. The type of grouped bar chart can be set based on the `position` argument for `geom_bar`
 
-## Bargraphs
--this is a stacked barplot
+## Bar graphs
+- this is a stacked bar plot
 
 ```{r}
 ggplot(diamonds) + 
     geom_bar(aes(x=cut, fill = as.character(color)),position = 'stack' )
 ```
 
-## Bargraphs
-- this is a dodged barplot
+## Bar graphs
+- this is a dodged bar plot
 
 ```{r}
 ggplot(diamonds) + 
     geom_bar(aes(x=cut, fill = as.character(color)), position = 'dodge')
 ```
 
-## Bargraphs
-- this is ratio barplot. This similar(and far superior to) to a piechart, where each section corresponds its fraction of the total 
+## Bar graphs
+- this is ratio bar plot. This similar(and far superior to) to a pie chart, where each section corresponds its fraction of the total 
 ```{r}
 ggplot(diamonds) + 
     geom_bar(aes(x=cut, fill = as.character(color)),position = 'fill')
 ```
 
-## Bargraphs
-- `geom_col` is useful for when you want to plot a numerical value; however it requires data to formatted slightyl differently - you need a summarised dataframe where each bar you want to plot has exactly 1 numerical value
+## Bar graphs
+- `geom_col` is useful for when you want to plot a numerical value; however it requires data to formatted slightly differently - you need a summarized dataframe where each bar you want to plot has exactly 1 numerical value
 - we haven't covered exactly how to do this yet, 
 
-## Bargraphs
+## Bar graphs
 
 ```{r}
 p_data <- data.frame(Species = unique(iris$Species), avg_height = c(1000,2000, 3000))
 p_data
 ```
 
-## Bargraphs
+## Bar graphs
 
 ```{r}
 ggplot(p_data)+
     geom_col(aes(x=Species, y= avg_height, fill = Species))
 ```
 
-## Bargraphs
+## Bar graphs
 - one final note, the width of the bar plot can be changed with the with `width` parameter
 ```{r}
 ggplot(p_data)+
@@ -295,17 +296,17 @@ ggplot(p_data)+
 - go to the "day_1/ggplot_basics_exercises.Rmd" notebook
 
 ## Visualizing the distributions of data
-- any continous/numerical data has a distribution, which graphically is the shape of the data. There are important aspects of distributions that we often want to visualize, like its median, mean, and variance.
+- any continuous/numerical data has a distribution, which graphically is the shape of the data. There are important aspects of distributions that we often want to visualize, like its median, mean,variance and skew.
 
 Let's look at some of the common types of plots to visualize the distributions of data
 
-## Boxplots
+## Box plots
 
-- boxplots are a common type of plot useful for showing the distribution of data. 
+- box plots are a common type of plot useful for showing the distribution of data. 
 - The bottom and top of the box represent 25th and 75th percentile of the data. The middle line shows the 50th percentile, also known as the median
--The range(max-min) between the 75th and 25th range is called the interquartile range (IQR). The whiskers/tails on either end show data <= 1.5*IQR . Dots outside of this are conisdered outliers.
+-The range(max-min) between the 75th and 25th range is called the interquartile range (IQR). The whiskers/tails on either end show data <= 1.5*IQR . Dots outside of this are considered outliers.
 
-## Boxplots
+## Box plots
 
 ```{r}
 ggplot(data=iris) +
@@ -313,12 +314,12 @@ ggplot(data=iris) +
     theme_minimal()
 ```
 
-- boxplots are useful for roughly showing the distribution of data, especially the variance
-- not sensitve to outliers 
+- box plots are useful for roughly showing the distribution of data, especially the variance
+- not sensitive to outliers 
 - useful for comparing multiple distributions
 
 ## lets practice
-- go to the boxplot header in the notebook
+- go to the box plot header in the notebook
 
 ## Histograms
 
@@ -334,12 +335,12 @@ ggplot(hist_data) +
 ```
 
 ## Histograms
--More bins makes higher resolution plots
+- More bins makes higher resolution plots
 ```{r}
 ggplot(hist_data) + 
     geom_histogram(aes(x=value),bins = 100)
 ```
-- histograms are useeful for seeing the complete shape of the data, but geneally its hard to compare two histograms on the same plot. We'll go over this in an exercise
+- histograms are useful for seeing the complete shape of the data, but geneally it's hard to compare two histograms on the same plot. We'll go over this in an exercise
 
 ## Violin plots
 - Violin plots are a cross betwene histograms and box plots
@@ -352,13 +353,15 @@ ggplot(data=iris) +
 ```
 
 ## Violin plots
--in a violin plot, the width of the plot corresponds to the "density" of the data. It's similar to a histogram, but rather than count the number obervations, it uses a mathematical function to approximate a smooth curve fit to the histogram; 
-- in this case, `Petal.Length`. This allows you to easily compare distributions between multiple variables.
-- Generally, Violin plots are much more informative than boxplots, and its almost always better to use a violin pot over a boxplot. 
+-in a violin plot, the width of the plot corresponds to the "density" of the data. It's similar to a histogram, but rather than count the number observations, it uses a mathematical function to approximate a smooth curve fit to the histogram, where the area under the curve sums to 1 
+- This allows you to easily compare distributions between multiple variables.
+- Generally, v iolin plots are much more informative than box plots, and its almost always better to use a violin pot over a box plot. 
+
+## lets do more exercises
 
 ## saving plots 
 - `ggplot2` comes with an easy to use save function, `ggsave`
-- the file extension will determine type of image that is saved ie `png`,`tiff`, `jpeg` etc. 
+- the file extension will determine type of image that is saved IE `png`,`tiff`, `jpeg` etc. 
 - the size and resolution can also be changed. use `?ggsave` to learn more.
 
 ```{r}

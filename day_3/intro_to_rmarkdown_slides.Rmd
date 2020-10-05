@@ -100,7 +100,7 @@ knitr::include_graphics('../src/complex_heatmap_example.png')
 
 ## output formats
 - out of the box, Rmarkdown converts documents to `html` format, like these slides. With a few extra packages, they can be converted to `pdf` or docx. 
-- the same document can be converted to multiple out put formats, which are set in the header of the document
+- the same document can be converted to multiple out put formats, which are set in the yaml header of the document
 ```
 ---
 title: "Intro to RMarkdown"
@@ -124,12 +124,25 @@ output: pdf_document
 - We're going to make an R markdown document, and practice writing.
 - keep this [cheatsheet](https://rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf) open as a reference, as it has all the markdown syntax you will need to know
 
+## rendering tables 
 
 
 ## extensions to Rmarkdown
 - Other developers have created packages to create different types of media using Rmarkdown as the formatting language. 
 - `blogdown` is a popular package for making websites, where the page layout can be specified in Rmarkdown
 - `posterdown` is a package for making scientific posters using Rmarkdown. We'll be covering and using this package today.
+
+## why should you make a scietific poster in R
+- Reproducibilty -- as long as you have the data you can always regenerate your poster. 
+- Poster templates  -- use the same template for multiple posters
+- Easy to update -- as you get new data, easier to directly analyze it and drop it into a poster. 
+
+## using `posterdown`
+-  poster down is remarkably easy to use. install the package and set the output in the document header as `output: posterdown::posterdown_html`.
+- a few other settings can be tweaked in the yaml like including a logo or setting the number of columns
+
+## lets make a poster
+-  we'll be making a poster with the data you brought today with posterdown
 
 
 

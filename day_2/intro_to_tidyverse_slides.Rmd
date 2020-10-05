@@ -11,6 +11,11 @@ slides > slide {
   overflow-y: auto !important;
 }
 </style>
+```{r setup, echo=FALSE}
+knitr::opts_chunk$set(fig.height = 3, fig.width =5)
+options(warn = -1)
+```
+
 ```{r echo =F}
 options(tibble.print_max = 5)
 ```
@@ -29,7 +34,7 @@ options(tibble.print_max = 5)
 
 ## List vs Vector
 
-- vectors must be a single data type; lists can contain multiple data types, and can contain multiple data stuctures, ie lists of lists, lists of dataframes 
+- vectors must be a single data type; lists can contain multiple data types, and can contain multiple data structures, IE lists of lists, lists of dataframes 
 
 
 ## Dataframes
@@ -70,20 +75,20 @@ options(tibble.print_max = 5)
 ## data usually does not come with a bow on top
 
 - almost all real world data won't be ready for plotting; usually steps to *clean* and *tidy* the data are required
-- clean data as all the data with the right data types, ie numbers are `numeric`, strings are `characters`
+- clean data as all the data with the right data types, IE numbers are `numeric`, strings are `characters`
 - tidy data has data organized such that each complete row is a unique observation.
 - thankfully there are quite a bit of resources for doing this within R
 
 ## the Tidyverse
 
 - the tidyverse is a collection of packages that provide *fast, well documented* functions for data science.
-- This inlucdes reading and writing data, organizing and "tidying" data, and plotting data
+- This includes reading and writing data, organizing and "tidying" data, and plotting data
 ```{r}
 library(tidyverse)
 ```
 
 ## the Tidyverse
-- tibble: a new data type analgous to a `data.frame`, but with more consistent indexing, and no type coerscion
+- tibble: a new data type analogous to a `data.frame`, but with more consistent indexing, and no type coercion
 - dplyr: a series of functions for subsetting, filtering, changing, and summarizing dataframes/tibbles
 - tidyr: functions for tidying data(more on that later)
 - stringr: library for efficiently working with strings
@@ -97,8 +102,8 @@ library(tidyverse)
 
 
 ## reading data 
-- generally tabular data is arranges where each element within a row is seperated by a delimiter, and whole rows are separated by a newline
-- the delimiter are commonly tabs `\t`, or commas, `,`. The demlimiter is relflected in the file extensions of tabular data, ie "tab separated values" is a `.tsv` file, and "comma separated values are `.csv`
+- generally tabular data is arranges where each element within a row is separated by a delimiter, and whole rows are separated by a newline
+- the delimiter are commonly tabs `\t`, or commas, `,`. The delimiter is reflected in the file extensions of tabular data, IE "tab separated values" is a `.tsv` file, and "comma separated values are `.csv`
 - the `read_...` functions all work the same way - just provide the name of the file
 
 ## reading data 
@@ -148,7 +153,7 @@ getwd()
 
 ## the working directory
 -each `/` represents a different folder. In this, R is looking and writing to the `day_2` directory
--you can change the working directory by using `setwd`(this doesnt work super great inside an R notebook)
+-you can change the working directory by using `setwd`(this doesn't work super great inside an R notebook)
 ```{r, warning=FALSE}
 setwd('/Users/swamyvs/')
 ```
@@ -222,7 +227,7 @@ class(iris_tbl)
 ```
 
 ## the `dplyr` package
-- "dplyr stands for "data plier", and is a package centered around manipulating tabular data. It provides effcient "verbs" to subset data, change it , and filter it. 
+- "dplyr stands for "data plier", and is a package centered around manipulating tabular data. It provides efficient "verbs" to subset data, change it , and filter it. 
 - There are a large number of useful functions that are within the package, but we're going to focus on a core few. 
 - None of the `dplyr` functions modify data in-place, so always must store the output in a new variable if you want to use the result again 
 
@@ -242,7 +247,7 @@ select(mpg, model)
 
 ## `select`
 - note that i did not use quotes for the `model` column; like `ggplot`, dplyr support quasi-quotation, so column names can be used with out quoting them 
-- you can select multipl columns, either by specifying a specific column, or a range
+- you can select multiple columns, either by specifying a specific column, or a range
 ```{r}
 select(mpg, model, class)
 ```
@@ -309,7 +314,7 @@ arrange(iris, Sepal.Width)
 
 
 ## the `arrange` function
-- note that this sorts is in ascending order. for descending order, wrap the columnname in the `desc` function
+- note that this sorts is in ascending order. for descending order, wrap the column name in the `desc` function
 ```{r}
 arrange(iris, desc(Sepal.Width))
 ```
@@ -323,7 +328,7 @@ pull(iris, Sepal.Width) %>% head
 ## `dplyr` functions as "verbs"
 - Its best to think of each of these functions as an action or "verb" that we perform on the. 
 - For example within the `airquality` data:
-" In my data I want to keep only the rows correspond to the months 5, or 6, keep only the temp and species column, and change the month column so that we use the character names for the month instead of the nuemric names"
+" In my data I want to keep only the rows correspond to the months 5, or 6, keep only the temp and species column, and change the month column so that we use the character names for the month instead of the numeric names"
 
 ## `dplyr` functions as "verbs"
 
@@ -353,7 +358,7 @@ df <- filter(airquality, Month %in% c(5, 6)) %>%
     mutate( Month = ifelse(Month == 5, 'May', 'June'))
 df
 ```
-- pipes can make it easier to understand your code, and help iternatively build a query or transformation for some data 
+- pipes can make it easier to understand your code, and help iteratively build a query or transformation for some data 
 
 ## the "`.`" hidden variable in `%>%`
 -  when using the `%>%` operator, the output of each function is stored in a temporary variable called `.`
@@ -366,6 +371,8 @@ iris %>% pull(Sepal.Width) %>% head %>% print
 iris %>% pull(Sepal.Width) %>% .[1]
 ```
 
+## lets do some practice
+
 ## wide vs long data 
 
 - two common ways for formatting data are "wide" and "long"
@@ -373,7 +380,7 @@ iris %>% pull(Sepal.Width) %>% .[1]
 data("economics")
 economics
 ```
-- this is an example of wide data - each data point/ label is date, with multiple observations per date. Data in this format is generally used for building models like regression or machine leanrning model
+- this is an example of wide data - each data point/ label is date, with multiple observations per date. Data in this format is generally used for building models like regression or machine learning model
 
 ## wide vs long data 
 
@@ -382,8 +389,8 @@ data("economics_long")
 economics_long %>% arrange(date) %>% as_tibble
 ```
 - this is the same data, but in "long format". Here, each row is a distinct measurement; note that the date column is repeated multiple times for different variable. 
-- the reason long format is prefered is that it reduces the number of columns in a data set, making it longer instead. 
-- rememember that each column is a vector under the hood; computationally its more efficient to perform the same operation over a single large vector, rather than a series of smaller vectors/columns
+- the reason long format is preferred is that it reduces the number of columns in a data set, making it longer instead. 
+- remember that each column is a vector under the hood; computationally its more efficient to perform the same operation over a single large vector, rather than a series of smaller vectors/columns
 
 ## converting from wide to long
 - the `tidyr` package has a useful function called `pivot_longer` that allows you to convert from wide to long
@@ -410,7 +417,7 @@ economics %>% pivot_longer(cols = -date,
                            values_to = 'obs') %>% as_tibble
 ```
 
-## grouping and summarising data 
+## grouping and summarizing data 
 - we often want to generate summary statistics for subcharacterics/subpopulations of our data
 - for example, calculating the the average value by day in  `economics_long` data. we do this by using the `group_by` and `summarise` functions from `dplyr`
 
@@ -418,17 +425,14 @@ economics %>% pivot_longer(cols = -date,
 economics_long %>% arrange(date) %>% as_tibble
 ```
 
-## grouping and summarising data 
+## grouping and summarizing data 
 ```{r}
 economics_long %>% 
     group_by(date) %>% 
     summarise(avg_value_per_day = mean(value))
 ```
 
-- when grouping and summarising data, always remember that what ever function your use to summarise `mean`, `max`, etc, must return a single value
-
-## lets do some practice
-
+- when grouping and summarizing data, always remember that what ever function your use to summaries `mean`, `max`, etc, must return a single value
 
 ## merging tabular data
 - We've only been working with single data frames/tibbles, but we often will need to combine multiple data.frames together. 
@@ -450,7 +454,7 @@ bind_cols(iris, iris) %>% dim
 ```
 
 ## merging uneven tabular data
-- more often then not, the data you are trying to combine isnt the same shape, so be a little careful. Thankfully, both `bind_rows` and `bind_cols` have a bit of error checking involved
+- more often then not, the data you are trying to combine isn't the same shape, so be a little careful. Thankfully, both `bind_rows` and `bind_cols` have a bit of error checking involved
 
 ```{r}
 iris_small <- iris[1:5, 1:3]
@@ -468,17 +472,17 @@ bind_rows(iris, iris_small)
 ```
 
 ## merging tabular data
-- `bind_rows` will NOT bind data that has differnet colnames, even if they are in the same position.
+- `bind_rows` will NOT bind data that has different colnames, even if they are in the same position.
 
 ## merging tabular data
 
 ```{r, error=T}
 cb_iris <- bind_cols( iris_small, iris)
 ```
-- bind cols doesnt work if the data is mis matched. This is because there isn't really a good reason to  ever column bind uneven data.
+- bind cols doesn't work if the data is mismatched. This is because there isn't really a good reason to ever column bind uneven data.
 
 ## joining data 
-- Often times wedo want to combine data by merge along columns, but in a more structed way
+- Often times we *do* want to combine data by merge along columns, but in a more structured way
 
 ```{r}
 mpg %>% as_tibble
@@ -493,7 +497,7 @@ model2fuel
 ```
 ## joining data 
 
-- i want to make plot by gas type for city milage
+- i want to make plot by gas type for city mileage
 ```{r}
 cty_by_fueltype <-  mpg %>% select(model, cty) %>% left_join(x=., y=model2fuel, by = 'model')
 cty_by_fueltype
@@ -536,7 +540,7 @@ model2fuel[1:2, ] %>% full_join(mpg,.) %>% select(model, fuel_type)
 ```
 
 ## duplicate values in joining columns
-- be careful when joinning columns that have repeated values in columns 
+- be careful when joining columns that have repeated values in columns 
 
 ```{r}
 a4_only <- filter(mpg, model == 'a4')

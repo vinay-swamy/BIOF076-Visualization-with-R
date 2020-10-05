@@ -3215,7 +3215,7 @@ as.numeric(tf)</pre>
 </article></slide><slide class=""><hgroup><h2>logical operations over vectors</h2></hgroup><article  id="logical-operations-over-vectors">
 
 <ul>
-<li>all logical operators are vecotorized, meaning they can apply they can be applied directly to all elements in a vector</li>
+<li>all logical operators are vectorized, meaning they can apply they can be applied directly to all elements in a vector</li>
 </ul>
 
 <pre class = 'prettyprint lang-r'>x &lt;- c(1, 9, 6, 2, 3, 6)
@@ -3225,7 +3225,7 @@ x&gt;5</pre>
 
 </article></slide><slide class=""><hgroup><h2>logical operations over vectors</h2></hgroup><article  id="logical-operations-over-vectors-1">
 
-<p>vectors of the same length can also be compared, but this creates an element wise comparision and returns a vector</p>
+<p>vectors of the same length can also be compared, but this creates an element wise comparison and returns a vector</p>
 
 <pre class = 'prettyprint lang-r'>x &lt;- c(1, 9, 6, 2, 3, 6)
 y &lt;- c(2, 4, 10, 5, -4)
@@ -3245,7 +3245,7 @@ comp &lt;-  x&gt;y</pre>
 </article></slide><slide class=""><hgroup><h2>logical operations over vectors</h2></hgroup><article  id="logical-operations-over-vectors-2">
 
 <ul>
-<li>to compare two vectors, us,gvs match each other; <code>any</code> to see if at least one elements between the two match</li>
+<li>to compare two vectors wrap the comparison in the <code>all</code> function to chekc if <em>all</em> elements match each other; <code>any</code> to see if at least one elements between the two match</li>
 </ul>
 
 <pre class = 'prettyprint lang-r'>x &lt;- c(1, 9, 6, 2, 3, 6)
@@ -3275,7 +3275,10 @@ x==6</pre>
 
 </article></slide><slide class=""><hgroup><h2>the <code>!</code> operator</h2></hgroup><article  id="the-operator-1">
 
-<p>-this operator inverts an existing logical vector; all trues become false, and all falses become true - <code>T</code> can be used for <code>TRUE</code> and <code>F</code> can be used for <code>FALSE</code></p>
+<ul>
+<li>this operator inverts an existing logical vector; all trues become false, and all falses become true</li>
+<li><code>T</code> can be used for <code>TRUE</code> and <code>F</code> can be used for <code>FALSE</code></li>
+</ul>
 
 <pre class = 'prettyprint lang-r'>x &lt;- c(T,F,T,T,F)
 x</pre>
@@ -3329,7 +3332,9 @@ weather_report(is_sunny = T)</pre>
 
 <pre >## [1] &quot;maybe stay inside today&quot;</pre>
 
-<p>-Its important to note that these two blocks will <em>never</em> run at the same time; one or the other will always occur</p>
+<ul>
+<li>It’s important to note that these two blocks will <em>never</em> run at the same time; one or the other will always occur</li>
+</ul>
 
 </article></slide><slide class=""><hgroup><h2>the <code>else</code> block</h2></hgroup><article  id="the-else-block-1">
 
@@ -3440,13 +3445,15 @@ vec[keep_above_zero]</pre>
 
 <pre >## [1] 1 4 8</pre>
 
-<p>-logical indexing can be used in any situation normal indexing can</p>
+<ul>
+<li>logical indexing can be used in any situation normal indexing can.</li>
+</ul>
 
 </article></slide><slide class=""><hgroup><h2>vectorized <code>if</code> statements</h2></hgroup><article  id="vectorized-if-statements">
 
 <ul>
 <li>the <code>ifelse</code> function is a good way to apply an if-else condition with a binary outcome over a logical vector</li>
-<li>for example for each element in a vector, if the number is greater than 0 , set it to <code>Inf</code>, and if its below 0, set it to <code>-Inf</code></li>
+<li>for example, for each element in a vector, if the number is greater than 0 , set it to <code>Inf</code>, and if its below 0, set it to <code>-Inf</code></li>
 </ul>
 
 <pre class = 'prettyprint lang-r'>vec &lt;- c(1,30000,-1, 354, -4)

@@ -59,9 +59,3 @@ write_tsv(data, '../src/US_health.tsv.gz')
 ```
 
 
-
-
-
-
-
-
