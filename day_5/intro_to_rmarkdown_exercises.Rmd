@@ -1,0 +1,35 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+- make a volcano plot with the data provided, Add a descriptive caption 
+
+```{r}
+
+```
+
+- filter table for statistically significant genes, and then 
+
+```{r}
+
+```
+
+
+
+- make a heat map for the statistically significant genes
+
+
+```{r}
+
+```
+
+
+
+
+select a few of those genes and make violin plots of the log2fc
+
+```{r}
+
+```
+

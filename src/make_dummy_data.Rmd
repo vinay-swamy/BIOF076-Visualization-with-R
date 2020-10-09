@@ -59,3 +59,31 @@ raw_data <- pbmc@assays$RNA@data[t_feat, ] %>%
 write_tsv(raw_data, '../src/pbmc_cell_expression.tsv.gz')
 ```
 
+
+
+```{r}
+k <- read_tsv('../src/tx_expression_subset.tsv.gz')
+gtf <- rtracklayer::readGFF('~/Downloads/gencode.v35.annotation.gtf.gz')
+tx2gene <- gtf %>% filter(type == 'transcript', transcript_id %in% k$transcript_id) %>% left_join(k, .) %>%   select(gene_name,transcript_id) %>% mutate(gene_name = replace(gene_name,                                                                                                list = is.na(gene_name),
+                                                                     values = sample(gtf$gene_name, sum(is.na(gene_name)))  ) )
+
+neg_p <-  rnorm(n=10000, .5, sd = .2) %>% {sample(.[between(., .05, 1)], 5000, replace = T)}
+neg_l2fc <- rnorm(n=10000, 0, .2) %>% {sample(.[between(., .-1, 1)], 5000, replace = T)}
+
+pos_p <- rnorm(n=10000, .5, sd = .4) %>% {sample(.[between(., 0, .0499)], n_distinct(tx2gene$gene_name), replace = T)}
+pos_l2fc <- rnorm(n=10000, .5, sd = .5) %>% {sample(.[.>1 | . < -1], n_distinct(tx2gene$gene_name), replace = T)}
+
+volcano_data <- bind_rows(
+  tibble(gene_name = sample(unique(gtf$gene_name), 5000, replace = F), 
+         pvalue = neg_p, 
+         log2fc = neg_l2fc),
+  tibble(gene_name = unique(tx2gene$gene_name), 
+         pvalue = pos_p,
+         log2fc = pos_l2fc
+         )
+) %>% mutate(significant = ifelse(pvalue <.05& (log2fc > 1 | log2fc < -1),'sig', 'not_sig'))
+write_tsv(volcano_data, '../day_5/diff_gene_exp.tsv.gz')
+sum(volcano_data$significant == 'sig')
+```
+
+

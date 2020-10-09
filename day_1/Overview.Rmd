@@ -4,19 +4,19 @@ author: "Vinay Swamy"
 date: "8/26/2020"
 output:
   ioslides_presentation: 
-    widescreen: true
+    widescreen: true 
 ---
 
 ## Course Goals
 - Give you the skills you need to use R to improve your day to day work. 
 
 ## Course Overview 
-
+ 
 - Day 1: Introduction to R; Learning to make basic plots with `ggplot2`
 - Day 2: Manipluating data in R; Creating complex plots with `ggplot2`
 - Day 3: Created Figures, reports, and posters; Useful Plots to Know
 - Day 4: Making Interactive webapps with Shiny
-- Day 5: Final Project and Project presentations 
+- Day 5: Final Project and Project presentations  
 
 ## Lecture Format
 - Lecture slides + excercies
@@ -50,7 +50,7 @@ knitr::include_graphics('../src/fetal_retina_diff_exp-1.png', dpi=1000)
 - this is an example of a figure made entirely in R. 
 - At the end of this course you'll be able to make something like this
 </div>
-
+ 
 ## R is useful for making interactive visualizations
 - R also excels at making fast, interactive webapps, like this [covid-19 tracker](https://vac-lshtm.shinyapps.io/ncov_tracker/?_ga=2.255768001.835685898.1601257185-1821184268.1598473205)
 

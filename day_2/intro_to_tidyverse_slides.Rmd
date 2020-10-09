@@ -28,7 +28,7 @@ options(tibble.print_max = 5)
 - We have covered 3 data types in R. What are they, and what is each one used for 
 
 ## Data Types
-- `numeric` - used for numerical data ; `character` used for strings/text
+- `numeric` - used for numerical data ; `character` used for strings/text, factor - alternative to `character`, used in plotting.
 
 ## List vs Vector
 

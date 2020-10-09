@@ -2,9 +2,17 @@
 title: "Intro to Shiny"
 author: "Vinay Swamy"
 date: "9/28/2020"
-output: ioslides_presentation
+output:
+  ioslides_presentation: 
+    widescreen: true
 ---
 
+<style>
+slides > slide {
+  overflow-x: auto !important;
+  overflow-y: auto !important;
+}
+</style>
 ## R-Shiny
 - R-Shiny is a series of packages for creating interactive, web-based apps, which can run locally or as a stand alone website.
 
@@ -43,11 +51,12 @@ output: ioslides_presentation
 ## Whats a simple Shiny App look like?
 
 ## Whats a simple Shiny App look like?
-- `shinyApp(ui = ui, server = server)` is what acrtually runs the server and UI
+- `shinyApp(ui = ui, server = server)` is what actually runs the server and UI
 
 ## the UI 
 - the UI that we write is a function,  where each part of the UI is an argument
-```{r}
+```{r eval = F}
+library(shiny)
 ui <- fluidPage(
     # App title ----
     titlePanel("Hello Shiny!"),
@@ -74,7 +83,7 @@ ui <- fluidPage(
 ## UI elements
 - All *interactive* and *reactive* elements within the UI have an ID associated with it. 
 - Inputs are generally interactive, and outputs are reactive
-```{r}
+```{r eval = F}
 sliderInput(inputId = "bins", label = "Number of bins:", min = 1,max = 50, value = 30)
 plotOutput(outputId = "distPlot")
 ```
@@ -84,7 +93,7 @@ plotOutput(outputId = "distPlot")
 
 ## the server
 - unlike the UI, which is itself a predefined function, the server is a unique function that we design for each app 
-```{r}
+```{r eval = F}
 server <- function(input, output) {
     output$distPlot <- renderPlot({ 
         x    <- faithful$waiting
@@ -102,7 +111,7 @@ server <- function(input, output) {
 
 ## the server input
 - `input` is a list where each element corresponds to an `inputID` within the UI. The value within each inputID corresponds to the specific UI element its associated with 
-```{r}
+```{r, eval = F}
 ## from UI
 sliderInput(inputId = "bins", label = "Number of bins:", min = 1,max = 50, value = 30)
 ## from server 
@@ -112,7 +121,7 @@ bins <- seq(min(x), max(x), length.out = input$bins + 1)
 ## the server output
 - the `output` argument contains "empty" outputIDs, that are connected to the outputs in UI
 - outputs must alway be some kind `render*` object
-```{r}
+```{r, eval = F}
 output$distPlot <- renderPlot({ 
         x    <- faithful$waiting
         bins <- seq(min(x), max(x), length.out = input$bins + 1)
@@ -125,7 +134,7 @@ output$distPlot <- renderPlot({
 ```
 
 ## server formats
-```{r}
+```{r eval=F}
 server <- function(input, output) {
     output$distPlot <- renderPlot({ 
         x    <- faithful$waiting
@@ -147,7 +156,32 @@ server <- function(input, output) {
 - However Rstudio provides a little help to run shiny apps. 
 - Open the file 'shiny_examples/basic_app.R'
 
+## loading data when using shiny
 
+- make sure you read in all the data you need at the beginning of your script. If you read data in within shiny code, the data will be run in constanly and get very slow.
+
+## more control over layout - columns
+- as opposed to a single column with `mainPanel`, you can designate multiple columns within `fluidPage`
+with the `column` function
+```
+fluidPage(
+    
+    column(3,
+           radioButtons("radio", "Radio buttons",
+                        choices = list("Choice 1" = 1, "Choice 2" = 2,
+                                       "Choice 3" = 3),selected = 1),
+           plotOutput(outputId = "distPlot")),
+                        
+                                      
+    
+    column(3,
+           selectInput("select", "Select box", 
+                       choices = list("Choice 1" = 1, "Choice 2" = 2,
+                                      "Choice 3" = 3), selected = 1),
+           plotOutput(outputId = "distPlot"))
+        )
+```
+- the first number in the column corresponds to the width; the width of one page is 12, so these columns each take up a quarter of the screen
 
 
 

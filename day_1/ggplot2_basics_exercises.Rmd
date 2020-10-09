@@ -11,6 +11,20 @@ We're making plots in Rmarkdown; plots will display below the chunk once you run
 
 ## `geom_point`
 
+
+
+
+```{r}
+install.packages('ggplot2')
+```
+
+```{r}
+
+library(ggplot2)
+View(geom_bar)
+
+```
+
 First, we'll be going through the geom_point function. We'll be using the `CO2` dataframe, The CO2 data frame has 84 rows and 5 columns of data from an experiment on the cold tolerance of the grass species Echinochloa crus-galli.
 
 ```{r}
@@ -22,6 +36,8 @@ load the ggplot2 library, and make a scatter plot using `conc` for the x axis an
 
 ```{r}
 
+ggplot(data = iris) + 
+    geom_point(  aes(x=Sepal.Length,y=Sepal.Width))
 
 ```
 
@@ -29,6 +45,8 @@ load the ggplot2 library, and make a scatter plot using `conc` for the x axis an
 Now change all the points to the color red
 
 ```{r}
+ggplot(data = CO2) + 
+    geom_point( aes(x=conc,y=uptake ), color = 'red')
 
 ```
 
@@ -37,12 +55,18 @@ Change the color of the points to color by the `Type` column
 
 ```{r}
 
+# ggplot(data = iris) + 
+#     geom_point( aes(x=Sepal.Length,y=Sepal.Width, color = Species) )
+ggplot(data = CO2) + 
+    geom_point( aes(x=conc, y=uptake, color = Type ) )
+
 ```
 
-Change the color of the points to color by the `Plant` column` column
+Change the color of the points to color by the `Plant` column
 
 ```{r}
-x
+ggplot(data = CO2) + 
+    geom_point( aes(x=conc, y=uptake, color = Plant ) )
 ```
 
 note that this coloring is a continuous coloring, ie a uniform transition between shades of color. Continous data types like `numeric` or `ordered.factor` are automatically given continous scales, whereas categorical types like `character` or `factor` are colored with a discrete scales. We'll talk more about this when we discuss colors 
@@ -51,11 +75,22 @@ change the `Plant` column to a character and re create the plot above to see the
 
 ```{r}
 
+iris$Species <- as.character(iris$Species)
+CO2$Plant <- as.character(CO2$Plant)
+ggplot(data = CO2) + 
+    geom_point( aes(x=conc, y=uptake, color = Plant ) )
+
 ```
 
 - now change the shape of the points based on the `Treatment` column.  A combination of shapes and colors is a good way to show two different variables
 
 ```{r}
+
+ggplot(data = CO2) + 
+    geom_point( aes(x=conc, 
+                    y=uptake, 
+                    color = Type, 
+                    shape = Treatment))
 
 ```
 
@@ -64,6 +99,11 @@ the `alpha` value of a `geom` sets how transparent it is, with 1 being fully vis
 set the `alpha` value for all points to .75, then .5, then .25 to see how the plot changes
 
 ```{r}
+ggplot(data = CO2) + 
+    geom_point( aes(x=conc, 
+                    y=uptake, 
+                    color = Type, 
+                    shape = Treatment), alpha = .1)
 
 ```
 
@@ -77,22 +117,43 @@ data("Indometh")
 Indometh
 ```
 
-
 make a basic line graph comparing `time` and `conc` from the `Indometh` data 
 
 ```{r}
+data("economics_long")
+ggplot(economics_long) +  
+    geom_line(aes(x=date, y=value01))
 
 ```
 
 
+```{r}
+
+ggplot(Indometh) + 
+    geom_line(aes(x=time, y=conc))
+
+```
+
 Now make seperate lines using a different color for `different subject`.
 ```{r}
+
+ggplot(Indometh) + 
+    geom_line(aes(x=time, y=conc, color = Subject ))
 
 ```
 
 instead of connecting the data, use fitted line to make a similar plot as above, with separate lines for each subject. Try out a couple different smoothing methods
 
+```{r}
+
+ggplot(Indometh) + 
+    geom_point(aes(x=time, y=conc, color = Subject ))
+
+```
+
+
 ## Bargraphs 
+
 we're going to practice making bar graphs use the `mpg` data set which contains Fuel economy data from 1999 and 2008 for 38 popular models of car
 
 ```{r}
@@ -104,12 +165,27 @@ make a bargraph for  the `manufacturer` column
 
 ```{r}
 
-```
-- dpending on the size of your screen, the labels on the x-axis maybe overlapping. We'll learn how to fix this in a later lesson
+data("diamonds")
+ggplot(diamonds) + 
+    geom_bar(aes(x=cut))
 
-plot a stacked bar class using `class` as the coloring variable. 
+```
 
 ```{r}
+
+ggplot(mpg) + 
+    geom_bar(aes(x=manufacturer, fill = class), 
+             position = 'stack') +
+    theme()
+
+```
+
+- dpending on the size of your screen, the labels on the x-axis maybe overlapping. We'll learn how to fix this in a later lesson
+
+plot a stacked bar chart using `class` as the coloring variable. 
+
+```{r}
+data(mpg)
 
 ```
 
@@ -137,44 +213,68 @@ ToothGrowth
 use a boxplot to visualize the length(`len`) distributions for the different treatment conditions(`supp`). Use the `?` command if you get stuck
 
 ```{r}
-
+ggplot(iris) + 
+    geom_boxplot(mapping = aes( x=Species, 
+                                y= Sepal.Length, 
+                                color = Species),
+               )
+  
 ```
+```{r}
+ggplot(data = iris)  
+?geom_boxplot
+```
+
+
 
 add `theme_minimal` to this plot if you have not done so; note the changes 
 
-```{r}
+`theme_bw()`
+`theme_minimal()`
+`theme_classic()`
 
+```{r}
+ggplot(ToothGrowth) + 
+  geom_boxplot(aes(x=supp, y = len)) +
+  theme_classic()
+  
 ```
 
 
-change the shading of the box to fill the box based on treatment
+change the shading(fill) of the box to fill the box based on treatment
 
 ```{r}
-
+ggplot(ToothGrowth) + 
+      geom_boxplot(mapping = aes(x=supp, 
+                                y= len, 
+                                fill = supp)
+               )
+  
 ```
 
-change the outline of the box based on the treatment
-
-```{r}
-
-```
 
 
 change the width of all boxplots 
 ```{r}
-
+ggplot(ToothGrowth) + 
+      geom_boxplot(mapping = aes(x=supp, 
+                                y= len, 
+                                fill = supp),
+                   width = .1)
 ```
 
-
-
-Now change the width of the lines within the boxplot; which parameter to change might not be clear from the documentation, so this may take some trial error
-```{r}
-
-```
 
 ## Visualization distributions 
 
 Below is some fake data about the ages of patients in various part of a hospital. We are trying to visualize whether the distributions of ages in each region are different
+
+```{r}
+install.packages('tidyverse')
+```
+```{r}
+library(tidyverse)
+```
+
 
 ```{r}
 mu <- 2
@@ -190,13 +290,17 @@ hospital_data <- data.frame( ICU  =  c(rnorm(1000, -mu, si), rnorm(1000, mu, si)
 first, lets plot a boxplot; make multiple boxplots shaded by location
 
 ```{r}
-
+ggplot(hospital_data) + 
+  geom_boxplot(aes(x=Hospital_location, 
+                   y= age,fill = Hospital_location))
 ```
 
 now plot make violin plots for each location; take note of the distributions 
 
 ```{r}
-
+ggplot(hospital_data) + 
+  geom_violin(aes(x=Hospital_location, 
+                   y= age,fill = Hospital_location))
 ```
 
 
@@ -204,13 +308,17 @@ now plot histograms, again shaded by location
 
 ```{r}
 
+ggplot(hospital_data) + 
+    geom_histogram( aes(x=age, fill=Hospital_location))
+
 ```
 
 `geom_freqpoly` is  drop-in replacement for `geom_histogram`: instead of drawing bar's for the count in each bin, it draws points at each count, and then draws a line through each point. Try it out with the above data, tweaking the coloring if necessary
 
 
 ```{r}
-
+ggplot(hospital_data) + 
+    geom_freqpoly( aes(x=age, color=Hospital_location))
 ```
 
 

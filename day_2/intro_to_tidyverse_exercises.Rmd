@@ -7,12 +7,16 @@ We're going to practice using some of the functions in the `dplyr` library. Firs
 ```{r}
 install.packages('tidyverse')
 ```
+```{r}
+library(tidyverse)
+```
+
 
 You will be using the pipe function all lot; I recommend setting a key board short cut for it. Go to Tools > modify keyboard searchcuts > search for "pipe"  >  click to change the command. I find `alt + 2` or `option + 2` work well.
 
 load the `dplyr` library
 ```{r}
-
+library(dplyr)
 ```
 
 we'll be working with the `starwars` dataset
@@ -22,34 +26,61 @@ data("starwars")
 starwars
 ```
 
-Select the `Name` column from the `starwars` dataset. Store this in a variable 
+```{r}
+iris
+#select( DATAFRAME, COLUMN(s) )
+select(iris, Species)
+#mutate( DATAFRAME, COLUMN(s) = ...)
+mutate(iris, new_column_single_value =5, new_column_multi_value = 1:nrow(iris))
+#filter( DATAFRAM, LOGICAL_VECTOR)
+filter(iris, Species == 'setosa')
+#pullselect( DATAFRAME, COLUMN) //only  one column
+pull(iris, Species)
+```
+Select the `name` column from the `starwars` dataset. Store this in a variable 
 
 ```{r}
-
+col_selected <-   select(starwars, name)
 ```
 
-now `pull` the `Name` column from the dataset. store this in a variable
+now `pull` the `name` column from the dataset. store this in a variable
 
 ```{r}
-
+col_pulled <- pull(starwars, name )
 ```
-
 Notice the differences in the returned data. use `class` to examine both outputs 
-
 ```{r}
-
+class(col_pulled)
 ```
-
 select the name and height columns 
-
 ```{r}
-
+select(starwars, name, height)
 ```
-
  Using pipes to add to the previous command,  add a column with the height in inches.  the height column is currently in cm and  1 cm is 0.393701 inches 
 ```{r}
 
 ```
+
+
+
+
+
+filter the starwars dataframe to get every person who has blue eyes 
+```{r}
+starwars %>% filter(eye_color == 'blue')
+filter(starwars, eye_color == 'blue')
+```
+
+filter the starwars dataframe to get rows whose homeworld is either Tatooine or Naboo	
+hint use %in%
+```{r}
+starwars %>% filter(homeworld %in% c('Tatooine','Naboo'))
+```
+
+```{r}
+colnames(starwars)
+```
+
 
 
 ## Example - GTF file
@@ -59,25 +90,198 @@ select the name and height columns
 read the data  >  select values that only correspond the to CDS(look at the `type` column)  >  for each CDS group together and calculate the smallest start and the largest end( the `transcript_id` column is unique for each CDS ) >  largest end - smallest start  = length
 
 ```{r}
+iris
+#select( DATAFRAME, COLUMN(s) )
+select(iris, Species)
+#mutate( DATAFRAME, COLUMN(s) = ...)
+mutate(iris, new_column_single_value =5, new_column_multi_value = 1:nrow(iris))
+#filter( DATAFRAM, LOGICAL_VECTOR)
+filter(iris, Species == 'setosa')
+#pullselect( DATAFRAME, COLUMN) //only  one column
+pull(iris, Species)
+```
+
+
+```{r}
+iris %>% 
+    group_by(Species) %>% 
+    summarise(avg_petal_length = mean(Petal.Length), 
+              largest_sepal_length = max(Sepal.Length),
+              smallest_sepal_width = min(Sepal.Width)
+              )
+```
+
+- filter this data to just CDS entries for the `type` column
+- select the following columns : type, transcript_id, start, end
+- group the filtered data by transcript_id, and summarise the data to select the smallest start and largest end for each CDS
+- with the summarised data frame, calculate(with mutate) the length of each CDS (end -start)
+- arrange data by the length is decreasinng order largest. 
+
+```{r}
+
+gtf <-  read_tsv('../src/gtf_example.tsv.gz')
+
+filter(gtf, type == 'CDS') %>%  
+    select(type, transcript_id, start, end) %>% 
+    group_by(transcript_id) %>% 
+    summarise(smallest_start = min(start), 
+              largest_end = max(end)) %>% 
+    mutate(length  = largest_end - smallest_start) %>%
+    arrange(desc(length))
 
 ```
 
-## Tying it all together
 
-- the file  "../src/tx_expression_subset.tsv.gz" has some data from a real RNA-seq experiment and contains transcript expression values; there is a column fortranscript name, and the rest of the columns are the samples each transcript is expressed in. 
-- Using the gene to transcript id mapping present in the gtf file from above, add gene names to this expression data, and select the genes DCX , GRM3 , MYO7A. summarise the transcript level expression to gene level, and make box plots for  the expression of each gene expression. 
+
+```{r}
+iris_subcolor <- tibble(Species = unique(iris$Species), 
+                        sub_color = c('red', 'orange', 'blue'))
+
+iris %>% View 
+iris_subcolor_setosa <- tibble(Species = 'iris', sub_color='red')
+iris_subcolor_setosa  %>%  left_join(iris, . )
+inner_join(iris, iris_subcolor_setosa)
+```
+
 
 ```{r}
 
 ```
+
+
+```{r}
+gtf_gene <-  gtf %>% 
+    select(gene_name, source, transcript_id) %>% 
+    distinct
+gtf_transcript <- gtf %>% 
+    select(transcript_id, transcript_support_level) %>% 
+    distinct
+
+inner_join(gtf_gene, gtf_transcript)
+```
+
+
+```{r}
+library(tidyverse)
+iris_reshaped <- iris %>% pivot_longer(cols = c(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width), 
+                      names_to = 'column_names' ,
+                      values_to = 'observations'
+                      )
+iris_reshaped %>% 
+    ggplot() + 
+    geom_bar(aes(x=Species, fill = column_names), position = 'dodge')
+```
+
+```{r}
+
+data("economics")
+economics %>% pivot_longer(c(pce, pop, psavert, uempmed, unemploy), 
+                           names_to = 'variables',
+                           values_to = 'measurements')
+
+colnames(economics)
+```
+
+
+
+## Tying it all together
+
+- the file  "../src/tx_expression_subset.tsv.gz" has some data from a real RNA-seq experiment and contains transcript expression values; there is a column for transcript name, and the rest of the columns are the samples each transcript is expressed in. 
+
+- Using the gene to transcript id mapping present in the gtf file from above, add gene names to this expression data, and select the genes DCX , GRM3 , MYO7A. summarise the transcript level expression to gene level, and make box plots for  the expression of each gene expression. 
+
+- create a data frame that maps each gene_name to a transcript_id using the gtf we loaded earlier. selecting gene_name and transcript_id columns,  removinng duplicated rows 
+
+
+
+```{r}
+
+tx_exp <- read_tsv('../src/tx_expression_subset.tsv.gz')
+tx2gene <- gtf %>% select( gene_name, transcript_id) %>% 
+    distinct %>% filter(!is.na(transcript_id) )
+
+```
  
+join tx2gene and the data we read in together, with tx2gene left side, and the expression data on the right hand side ex inner_join(gtf_gene, gtf_transcript)
+
+ 
+```{r}
+gene_tx_expression <- inner_join(tx2gene, tx_exp)
+
+```
+
+- remove the transcript id column, and convert the data from wide to long,
+```
+economics %>% pivot_longer(c(pce, pop, psavert, uempmed, unemploy), 
+                           names_to = 'variables',
+                           values_to = 'measurements')
+select(DATAGFRAME, -COLUMNAME)
+```
+
+```{r}
+
+gene_expression_long <-  gene_tx_expression %>% 
+    select(-transcript_id) %>% 
+    pivot_longer( -gene_name, names_to = 'sample', values_to = 'expression')
+
+```
 
 
+- groupby and summarise this data by grouping by the gene name and sample  columnns, and summarise with sum
+
+```{r}
+
+gene_expressionn_long_summarized <- gene_expression_long %>% 
+    group_by(gene_name, sample) %>% 
+    summarise(gene_exp = sum(expression))
+    
+```
 
 
+```{r}
+
+gene_tx_expression <- tx_exp %>%  
+    inner_join(tx2gene, .) %>% 
+    select(-transcript_id) %>% 
+    pivot_longer( -gene_name, names_to = 'sample', values_to = 'expression') %>%  
+    group_by(gene_name, sample) %>% 
+    summarise(gene_exp = sum(expression))
+
+```
 
 
+```{r}
+
+ggplot(gene_tx_expression) + 
+    geom_boxplot(aes(x=gene_name, y= gene_exp, fill = gene_name))
+
+```
+
+```{r}
+iris %>% 
+    mutate(Sepal_Length_log = log2(Sepal.Length + 1) )
 
 
+```
+
+log scale the gene expressionn data 
+
+```{r}
+
+gene_tx_expression_log <- gene_tx_expression %>% mutate(log_exp = log2(gene_exp + 1))
+library(pals)
+all_colors <- alphabet()
+plot_colors <-  all_colors[c('blue', 'iron', 'pink')]
+names(plot_colors) <- NULL
+ggplot(gene_tx_expression_log ) + 
+    geom_boxplot(aes(x=gene_name, y= log_exp, fill = gene_name), width=.5) +
+    geom_jitter (aes(x=gene_name, y= log_exp), width = .1, alpha =.1)+
+    scale_fill_discrete(type = plot_colors)+
+    ylab('log2(Counts + 1)') + 
+    xlab('Gene Name') + 
+    theme_classic() +
+    guides(fill = guide_legend(title = 'Gene Name'))
+?geom_jitter
+```
 
 

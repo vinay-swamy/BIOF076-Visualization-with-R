@@ -1,0 +1,60 @@
+---
+title: "Shiny exercises"
+output: html_notebook
+---
+
+## your first Shiny App
+- this Notebook is just for instructions;
+- click the new folder button, and make new folder called 'shiny_app_01'
+- make a new Rscript (File >  new file > R Script), and name it app.R
+- load the following libraries: `shiny` and `ggplot2`
+
+- this is the boilerplate for your code. Copy and paste it into app.R 
+```{r}
+ui <- fluidPage(
+    titlePanel(''),
+    mainPanel(
+              plotOutput(outputId = ''),
+              selectInput(inputId = '', label = '', selected = "", choices = c(""))
+              )
+)
+server <- function(input, output) {
+    
+}
+
+shinyApp(ui = ui, server = server)
+```
+- reference 'shiny_examples/basic_app.R' for syntax guidelines, and use the `?` help operator if you get stuck
+
+
+## lets add some stuff
+After each step, makes sure the app runs successfully( if the app launches, and the screen doesnt turn grey, it works )
+- Add a title panel to the UI. 
+- Add a `mainPanel` to the UI, with a `plotOutput` inside. set the outputID to something informative
+- in the server, create a `renderPlot` assigned to your outputID in UI
+- Create a scatter plot with the `iris` data set
+- add a `selectInput` to the UI, making the label and id accordingly. Structure it so that you can choose from one of the three species within the iris data set
+- within the server function modify the `renderPlot` function you made above to use the value selected by the `selectInput`, and filter the data to only plot data from the selected species. Set the plot title as the selected species. Remember to read through the documentation for each function if you get stuck
+- create a `sliderInput` in UI, and use it to control the point size of the plot. 
+- add a DT::DToutput to UI and DT::renderDT to the server
+
+
+## working with real(ish) data 
+- we're going add the plots and table from our Rmarkdown  exercise into shiny
+- create a new folder, and create an app inside 
+- copy thr data you need into this folder
+- make a new app.R
+- we're going to make a new app, that display's each of our columns. 
+- in the first column, add the volcano plot and the table. use DT::renderDT in server and DT::DToutput in the UI
+- second column -  add the heatmap
+- third column - text box to select gene name, use gene name to filter expression data, and make violin plot for filtered gene.
+
+
+
+
+
+
+
+
+
+

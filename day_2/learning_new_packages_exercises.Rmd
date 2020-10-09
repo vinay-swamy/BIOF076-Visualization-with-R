@@ -28,24 +28,30 @@ Heatmap(gene_expression_matrix)
 
 - set the colors of the heat map using `colorRamp2`
 ```{r}
+
 library(circlize)
 col_fun = colorRamp2(c(0, 5, 15), c("purple", "green", "yellow"))
-col_fun(seq(-5, 10))
-Heatmap(gene_expression_matrix, name = "mat", col = viridis::viridis)
+col_fun(seq(0, 15))
+Heatmap(gene_expression_matrix, name = "mat", col = col_fun)
+class(col_fun)
+
 ```
 
 - set the color to the viridis palette. you can generate a vector of viridis colors by using `viridisLite::viridis`
 
 ```{r}
+
 library(viridisLite)
+viridis_pal =viridisLite::viridis(100)
+Heatmap(gene_expression_matrix, name = "mat", col = viridis_pal)
 
 ```
 
 - change the heatmap such that there is a white gap between each tile.
-
-
 ```{r}
-
+Heatmap(gene_expression_matrix, col = viridis_pal,
+        rect_gp = gpar(col = "white", lwd = 2))
+?Heatmap
 ```
 
 - create row and column titles accordingly 
