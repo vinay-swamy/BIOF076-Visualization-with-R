@@ -20,7 +20,7 @@ After this course you will be able to:
 * Complete a final project with your own data
 
 ## Format
-The workshop is structured as a series of interactive lessons, with a lecture and exercises components. There 
+The workshop is structured as a series of interactive lessons, with a lecture and exercises components. 
 Our engagement during this workshop will take several forms: 
 
 * Class materials: All materials, including lecture slides and excercises will be availble on canvas, and the course Github repository
@@ -28,7 +28,8 @@ Our engagement during this workshop will take several forms:
 * Communications: There will be a slack group created for the class.
  
 ## Software and Materials 
-We will have a session to install all software before the course at XXX on October 2nd. Some of the main software we will be using:
+We will have a session to install all software before the course.
+Some of the main software we will be using:
 
 * Software
   + R language base system -  the core interpreter for the R language that runs the code we will write
@@ -51,7 +52,7 @@ Q. Do I need any Prior Experience in R
 A. No, This class requires NO expreience in R. We will cover everything you need to know within the course.
 
 Q. I don't have administrative access to my computer, how will I be able to install the necessary software?
-A. While it's best to work on your own machine, a standalone cloud based environment will be available for people to use.
+A. While it's best to work on your own machine, a standalone cloud based environment will be available for people to use. This environment can launched by clicking the badge at the top of this document
 
 
 
