@@ -1,0 +1,85 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+```{r}
+library(ggplot2)
+p1 <- ggplot(mtcars) + 
+  geom_point(aes(mpg, disp,)) + 
+  ggtitle('Plot 1')
+
+p2 <- ggplot(mtcars) + 
+  geom_boxplot(aes(gear, disp, group = gear, fill=as.character(gear))) + 
+  ggtitle('Plot 2') + 
+    guides(fill = guide_legend(title = 'gear'))
+
+p3 <- ggplot(mtcars) + 
+  geom_point(aes(hp, wt, colour = mpg)) + 
+  ggtitle('Plot 3')
+
+p4 <- ggplot(mtcars) + 
+  geom_bar(aes(gear)) + 
+  facet_wrap(~cyl) + 
+  ggtitle('Plot 4')
+```
+
+
+```{r fig.height=8, fig.width=8}
+library(patchwork)
+p1+p2+p3+p4
+
+```
+
+```{r, fig.width=4, fig.height=10}
+all_plots <- p1+p2+p3+p4 
+#all_plots + plot_layout(ncol = 1)
+```
+
+```{r}
+design <- '
+AAAB
+AAAC
+AAAD
+'
+
+all_plots + plot_layout(design = design, guides = 'collect') & theme(legend.position = 'top')
+```
+
+
+```{r}
+install.packages(c('plotly', 'ggiraph'), type = 'source')
+
+```
+```{r}
+library(ggiraph) 
+library(tidyverse)
+ 
+plot_interactive <-  ggplot(mtcars) + 
+  geom_point_interactive(aes(hp, wt, colour = mpg,tooltip = carb)) + 
+  ggtitle('Plot 3')
+
+girafe(ggobj = plot_interactive)
+```
+
+
+```{r}
+library(plotly)
+
+plot_static <- ggplot(mtcars) + 
+  geom_point(aes(hp, wt, colour = mpg)) + 
+  ggtitle('Plot 3') +
+  theme_classic()
+plot_static %>% ggplotly()
+```
+
+
+
+
+
+
+
+
+
+

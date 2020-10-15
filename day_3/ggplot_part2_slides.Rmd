@@ -1,0 +1,230 @@
+---
+title: "ggplot - continued"
+author: "Vinay Swamy"
+date: "9/14/2020"
+output:
+  ioslides_presentation: 
+    widescreen: true
+---
+
+
+<style>
+slides > slide {
+  overflow-x: auto !important;
+  overflow-y: auto !important;
+}
+</style>
+```{r setup, echo=FALSE, include=F, message=FALSE}
+knitr::opts_chunk$set(fig.height = 3, fig.width =5)
+options(warn = -1)
+options(tibble.print_max = 5)
+library(tidyverse)
+```
+
+## Using multiple geoms in a plot
+- Up until now we have been using one `geom_` layer in a plot, which often does the trick; but sometimes, we want to include multiple geoms in the same plot
+
+- for example, fitting a line to some points; we want both the points and the fitted line
+
+```{r}
+ggplot(mpg) +
+    geom_point(aes(x=displ, y=hwy)) + 
+    theme_minimal()
+
+```
+
+## Using multiple geoms in a plot
+
+```{r}
+ggplot(mpg, aes(displ, hwy)) +
+  geom_point() +
+  geom_smooth(method = 'lm') + 
+    theme_minimal()
+```
+
+- notice how I set the `aes` within the `ggplot` function. When you provide an aesthetic mapping in the `ggplot` function, it  *globally* defines aesthetics for all geoms in the plot
+
+## Using multiple geoms in a plot
+
+- we can even do this with two different data sets; Suppose for example that I want to make a box plot, but I want to add a point for the max and min for each data set.
+
+```{r}
+ggplot(data =iris) + 
+    geom_boxplot( aes(x=Species, y=Petal.Length)) + 
+    theme_classic()
+
+```
+
+- while box plots normally show points for outliers, I want to max it more obvious
+
+## Using multiple geoms in a plot
+
+- first lets reshape some data 
+
+```{r}
+library(dplyr)
+iris_min_max <- iris %>% 
+    select(Species, Petal.Length) %>% 
+    group_by(Species) %>% 
+    summarise(max = max(Petal.Length), 
+              min= min(Petal.Length)) %>% 
+    tidyr::pivot_longer(-Species)
+iris_min_max
+```
+
+## Using multiple geoms in a plot
+
+```{r}
+ggplot() + 
+    geom_boxplot(data =iris, aes(x=Species, y=Petal.Length)) + 
+    geom_point(data = iris_min_max, aes(x=Species, y=value), color='red')+
+    theme_classic()
+
+```
+- like `aes` when we provide the an input for the `data` parameter in `ggplot`, it is set for globally, but we can also choose to use different in each `geom` layer
+
+## Using multiple geoms in a plot
+
+- notice what happens when I flip the order of the geoms 
+
+```{r}
+ggplot() + 
+    geom_point(data = iris_min_max, aes(x=Species, y=value), color='red')+
+    geom_boxplot(data =iris, aes(x=Species, y=Petal.Length)) + 
+    theme_classic()
+```
+
+- layers are always plotted the in the order they are provided
+
+## adding labels to plots 
+- we often want to label specific data points or values within out plots within out plots, we can do this with `geom_label` or `geom_text`
+
+- Consider the following scatter plot. Lets say I want to add labels to show the model of car for the points with the highest mpg
+```{r}
+mtcars <- mtcars %>% mutate(name = rownames(.))
+ggplot(mtcars) + 
+    geom_point(aes(x=qsec, y= mpg))
+```
+
+## adding labels to plots
+
+```{r}
+top5_mpg <-  mtcars %>% select(name, mpg, qsec) %>% arrange(desc(mpg)) %>% head(5)
+
+ggplot() + 
+    geom_point(data = mtcars, aes(x=qsec, y= mpg)) + 
+    geom_label(data = top5_mpg,aes(x=qsec, y= mpg, label = name)) 
+
+```
+- this works, but doesn't look super clean. If these points were more dense, the labels might hide them ; because the location of the labels need to be specified before hand, it can be difficult to use the vanilla `geom_text` or `geom_label`. 
+
+## `ggrepel`
+
+- the package `ggrepel` provides some improved functions for labeling, namely `geom_text_repel` and `geom_label_repel`. Both are drop-in replacements for `geom_text` and `geom_label` respectively
+
+```{r}
+library(ggrepel)
+ggplot() + 
+    geom_point(data = mtcars, aes(x=qsec, y= mpg)) + 
+    geom_label_repel(data = top5_mpg,aes(x=qsec, y= mpg, label = name))
+```
+- the `_repel` labeling functions will automagically space them selves away from points, while simultaneously avoiding other elements in the plot.
+
+## `ggrepel`
+
+- when the points get too far, lines will be drawn to show which label corresponds to which location
+```{r}
+library(ggrepel)
+ ggplot() + 
+    geom_point(data = mtcars, aes(x=qsec, y= mpg)) + 
+    geom_label_repel(data = top5_mpg,aes(x=qsec, y= mpg, label = name), nudge_y = 2)
+```
+
+## error bars
+- error bars are a fundamental part of scientific plots, and are supported in ggplot with `geom_errorbar`
+
+- for example, lets make a bar plot for the Petal width in the iris data, and show the error bars for the measurement; I'll using the [standard error](https://en.wikipedia.org/wiki/Standard_error) as the type of error for the measurement. The formula for standard error is $\frac{\sigma}{\sqrt{n}}$,  where $\sigma$ is the standard deviation, and $n$ is the number of samples;
+
+## error bars
+
+```{r}
+# first calculate the average length for each flower specie
+avg_petal_width <- iris %>% 
+    select(Species, Petal.Width) %>% 
+    group_by(Species) %>% 
+    summarise(avg_width = mean(Petal.Width), 
+              sdev_width = sd(Petal.Width), 
+              n = n()) %>% 
+    mutate(std_err =sdev_width/sqrt(n))
+avg_petal_width
+
+```
+
+## error bars
+
+- now make the plot with error bars
+
+```{r}
+ggplot(avg_petal_width) + 
+    geom_col(aes(x=Species, y=avg_width, fill = ), width = .5) +
+    geom_errorbar(aes(x=Species, ymin = avg_width - std_err, ymax = avg_width + std_err),  width = .5) 
+```
+
+## error bars
+- not bad but could be a little prettier
+
+```{r}
+ggplot(avg_petal_width) + 
+    geom_errorbar(aes(x=Species, ymin = avg_width - std_err, ymax = avg_width + std_err),  width = .5)  + 
+    geom_col(aes(x=Species, y=avg_width, fill = Species ), width = .5) +
+    xlab('Iris Subspecies') + 
+    ylab('Petal Width') + 
+    ggtitle('Iris Petal Width Across Subspecies') + 
+    theme_classic()
+```
+
+## ordering discrete axes
+- here's a simple bar plot. I'm summarizing the data to count the number of entries for each, and then using `geom_col`
+```{r}
+data(mpg)
+mpg_count <- mpg %>% group_by(class) %>% summarise(count = n())
+ggplot(mpg_count) + 
+  geom_col(aes(x=class, y=count, fill = class))
+```
+
+## ordering discrete axes
+- suppose i want to order bars that they from smallest to largest. Lets try ordering the data first
+```{r}
+mpg_count_arranges <- mpg_count %>% arrange(count)
+ggplot(mpg_count_arranges) + 
+  geom_col(aes(x=class, y=count, fill = class))
+```
+
+## ordering discrete axes
+- This doesn't work because under the hood, ggplot converts all character vectors to factors
+- when a character is converted to a factor, the factor is arranged in alphabetical order
+- when you order a dataframe,  to maintain the ordering you must convert any character columns you want to include in the plot to factors
+
+## ordering discrete axes
+```{r}
+mpg_count_arranges <- mpg_count %>% arrange(count) %>% mutate(class = factor(class, levels = class))
+ggplot(mpg_count_arranges) + 
+  geom_col(aes(x=class, y=count, fill = class))
+```
+
+## making faceted plots
+- it can be useful to show the same plot across multiple conditions. 
+
+```{r}
+ggplot(mpg) + 
+  geom_boxplot(aes(x=manufacturer, y=cty)) + 
+  facet_wrap(~class) + 
+  theme_classic()+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+- this is generally useful when you have a categorical variable that has subtypes.
+
+
+
+

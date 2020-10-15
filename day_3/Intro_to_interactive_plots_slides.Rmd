@@ -2,8 +2,17 @@
 title: "Interactive Plots"
 author: "Vinay Swamy"
 date: "9/26/2020"
-output: ioslides_presentation
+output:
+  ioslides_presentation: 
+    widescreen: true
 ---
+
+<style>
+slides > slide {
+  overflow-x: auto !important;
+  overflow-y: auto !important;
+}
+</style>
 
 ## Interactive plots are tricky
 - An interactive plot is any plot that is reactive to use input;
@@ -12,6 +21,11 @@ output: ioslides_presentation
 
 ## `ggiraph`
 - A simple and lightweight interactive plotting library is `ggiraph`. It use `ggplot` style syntax, and provides some drop in replacement for some `ggplot` geoms 
+
+```{r, include=FALSE}
+library(tidyverse)
+
+```
 
 ```{r}
 library(ggplot2)
