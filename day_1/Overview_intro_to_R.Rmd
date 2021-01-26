@@ -1,29 +1,100 @@
 ---
-title: "Intro to R"
+title: "Welcome to to BIOF076"
 author: "Vinay Swamy"
 date: "8/26/2020"
 output:
   ioslides_presentation: 
-    widescreen: true
+    widescreen: true 
 ---
-<style>
-slides > slide {
-  overflow-x: auto !important;
-  overflow-y: auto !important;
-}
-</style>
 
-# Intro to programming
+## Course Goals
 
-## Programming fundamentals
+- Learn basic programming concepts using the R programming language
+- Learn how to use data manipulation libraries to prepare data for plotting
+- Learn how to use plotting libraries to make visualizations
 
-- The goal of this session is to acquaint you with some common programming concepts and how to use them in R
+## Course Overview 
+ 
+- Day 1: Introduction to R; Learning to make basic plots with `ggplot2`
+- Day 2: Manipluating data in R; Creating complex plots with `ggplot2`
+- Day 3: Created Figures, reports, and posters; Useful Plots to Know
+- Day 4: Making Interactive webapps with Shiny
+- Day 5: Final Project and Project presentations  
 
-## How does code work 
-- We write commands in a certain format, and a program reads those commands and does things
-- The format we write in is called syntax, and the program that does something with them  is called the interpreter
-- Syntax is extremely important - if we don't format our commands correctly, the interpreter won't understand how to run the commands properly
-- As you see code in the slides below, pay close attention to the way it is formatted
+## Lecture Format
+- We'll move between lecture and exercises fairly often(10-20min lecture, 10-20 min exercises)
+- Slides are available on the course repo, and in canvas
+- exercises are also in the github repo. 
+
+## Workship Final Project
+- Ideally, you'll use what you learn in the course to help you with your own work, like
+  - creating and assembling multiple plots into a figure for paper, 
+  - creating a poster for your next conference, 
+  - building an interactive webapp to explore data with
+
+## What is R and why is it good for making visualizations
+
+- R is a **programming language** designed for statistics 
+- Researchers who needed to use statistics used R because it is free and open source.
+- Researchers need to make plots and figures to put in publications, so they began developing plotting packages for R
+- As biology is growing more and more computational , more biologists are using R for analysis and visualization
+
+## Example Visualization 
+<div class="columns-2">
+```{r, echo=FALSE}
+knitr::include_graphics('../src/fetal_retina_diff_exp-1.png', dpi=1000)
+```
+
+
+
+- this is an example of a figure made entirely in R. 
+- (hopefully) At the end of this course you'll be able to make something like this
+</div>
+ 
+## R is useful for making interactive visualizations
+- R also excels at making fast, interactive webapps, like this [covid-19 tracker](https://vac-lshtm.shinyapps.io/ncov_tracker/?_ga=2.255768001.835685898.1601257185-1821184268.1598473205)
+
+
+# A Brief Overview on Programming and Computers
+
+## What is programming
+- In a nutshell, it's providing a set of instructions to a computer to perform a specific task
+- Computers can do these tasks extremely fast, allowing us to accomplish a lot more than manually performing a task, ie using a calculator vs doing math by hand
+
+## How will we be using programming?
+- In this course, we will be writing code to manipulate data/information. 
+- Data can be anything - a file stored on your hard drive, or numbers as you enter them into a calculator
+- This is, in general, is the most common application of programming
+
+## Manipulating data within the context of creating visualization
+- In order to go from raw data( spreadsheet, text file, etc) to a picture generally requires two things:
+1. A method specifiying the layout and aesthtics for a visualization. For reasons I will explain later, raw data will need to be formatted an re-arranged into a specific format that can be used for visualization
+2. Converting raw data into the format suitable for plotting.
+
+## How do computers represent data
+- Computers have two primary ways for storing data: *disk* and *memory*
+- Disk: The disk is your hard drive. By design, disk's *can* store a lot of information, but accessing and manipulating it is slow
+- Memory: (also known as RAM) Basically the exact opposite of disk - *cannot* store a lot of, but what is stored can be accessed quickly.
+- Storing and manipulating information in memory is one of the core functions of any programming language. R, in particular, is a memory hungry langauge
+
+## Programming fundamentals - Syntax
+- As mentioned early, programming creates set of instructions that control a computer. Computers only "understand" machine code, such as binary - 1's and 0's. For example, the letter `A` in binary is`01000001`. 
+- It would be a real pain to write in pure binary( no one does this), and so we use programming languages which are much more readable by humans. 
+- For any given programming language, there is a core program that converts instructions written in the programming language to machine code. For R, the program that understands converts R code is called the R interpreter.
+
+
+## Programming languages vs Written and spoken languages
+- The two are similar in that they both have a defined grammar and syntax that govern how they are written. 
+- However, programming languages are **MUCH** more strict than spoken languages. 
+- Syntax is extremely important - if we don't format our commands correctly, the interpreter won't understand how to run the commands properly. 
+- Interpreters are unforgiving - a single mistake will cause your code to fail. 
+- 99/100 times if you get an error while coding, it will be a syntax error
+- As you see code in the slides below, pay close attention to the way it is formatted. 
+
+## What you should and should not memorize
+- There's no quick and easy trick to learn syntax - its something you'll have to memorize. 
+- However, always try to understand conceptually whats going on around the syntax
+
 
 ## Variable 
 - Variables are core programming principle
@@ -46,6 +117,11 @@ my_variable
 - `1var <- 5` bad
 - creating a variable is often called "declaring" 
 - once a variable is declared, it will keep that value and exist until the R session is ended
+
+
+## Lets Practice
+- open Rstudio on your computer
+
 
 ## Types of Variables
 
@@ -132,6 +208,13 @@ vec
 ```
 
 ## Time for some Exercises
+
+
+## Rstudio 
+
+- Rstudio is a integrated development environment for R
+- We'll be using Rstudio for writing and running our code
+- The advantage of using Rstudio,is that it offers useful tools like plot viewers, variable exploreres, keyboard shortcuts and more
 
 ## Type coercion
 
@@ -579,5 +662,7 @@ numeric_df / numeric_df$left
 ```
 
 Note that the value infinity exists in R, and called `Inf`. 
+
+
 
 
