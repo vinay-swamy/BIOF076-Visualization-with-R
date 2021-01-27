@@ -74,7 +74,7 @@ knitr::include_graphics('../src/fetal_retina_diff_exp-1.png', dpi=1000)
 ## How do computers represent data
 - Computers have two primary ways for storing data: *disk* and *memory*
 - Disk: The disk is your hard drive. By design, disk's *can* store a lot of information, but accessing and manipulating it is slow
-- Memory: (also known as RAM) Basically the exact opposite of disk - *cannot* store a lot of, but what is stored can be accessed quickly.
+- Memory: (also known as RAM) Basically the exact opposite of disk - *cannot* store a lot of, but what is stored can be accessed and manipulated quickly
 - Storing and manipulating information in memory is one of the core functions of any programming language. R, in particular, is a memory hungry langauge
 
 ## Programming fundamentals - Syntax
@@ -98,19 +98,26 @@ knitr::include_graphics('../src/fetal_retina_diff_exp-1.png', dpi=1000)
 
 ## Variable 
 - Variables are core programming principle
-- Formally, a variable is named location in memory. Memory in this instance refers to RAM, not storage/disk
 - We use variables to store data so we have easy access to it 
 ```{r}
 my_variable=5
 my_variable
 ```
-- in R there are two ways to assign data to variable, with `=` as above, or `<-`. They mean slightly different things, but are essentially the same. Most people us the `<-`. The keyboard shortcut for `<-` is alt/option + -
+- note the syntax
+
+## Variable
+- Formally, a variable is named location in memory. (Memory in this instance refers to RAM, not storage/disk)
+- Any variable you declare will only exist within the R session its declared in. Once we close an R session, all variables were using will be deleted, and memory will be returned to the system.
+
+## Variable 
+
+- in R there are two ways to assign data to variable, with `=` as above, or `<-`. They mean slightly different things, but are essentially the same. Most people us the `<-`. The keyboard shortcut for `<-` is `alt/option` + `-`
 ```{r}
 my_variable <- 5
 my_variable
 ```
 
-## Variable 
+## variable names
 - the name of a variable must be a continuous string of letters and numbers, and must start with a letter, and can contain the any of these symbols `. - _`. NO SPACES
 - `my_var <- 5` good
 - `my var <- 5` bad
@@ -118,10 +125,19 @@ my_variable
 - creating a variable is often called "declaring" 
 - once a variable is declared, it will keep that value and exist until the R session is ended
 
+## choosing a variable name
+- make an effort to use descriptive variable names. (this is a *very* good habit to build)
+- `var1 = 0.01` bad
+- `minimum_pvalue = 0.01 ` good. 
 
 ## Lets Practice
 - open Rstudio on your computer
 
+## Rstudio 
+
+- Rstudio is a integrated development environment for R
+- We'll be using Rstudio for writing and running our code
+- The advantage of using Rstudio,is that it offers useful tools like plot viewers, variable exploreres, keyboard shortcuts and more
 
 ## Types of Variables
 
@@ -136,16 +152,22 @@ x <- hello  #bad
 
 ```
 
+## Why are there different kinds of variables
+- Computers can only store numerical values in memory. This is easy for numerical data, but for lexographic data, a mapping between letters and numbers must be created. 
+- `Numeric` and `logical` data types require the least amount of memory, followed by `factor`, and `character` at the end.
+
+
 ## Vectors
-- A vector is a type of variable that stores multiple values. Each individual item in a vector is called an Element. Note the syntax for defining a vector
+- A vector is a type of variable that stores multiple values. 
 ```{r}
 Vector <- c(1,2,3)
 ```
+- Each individual item in a vector is called an Element. Note the syntax for defining a vector
 - one of the quirks about R is that every base type is a vector, but we'll talk more about this later
 
 ## Vectors
 
-- Vectors can be joined, or concatenated similar to how they created
+- Vectors can be joined, or concatenated similar to how they are created
 
 ```{r}
 l1 <- c(1, 2, 3)
@@ -184,7 +206,7 @@ vec[locs]
 
 ## Indexing 
 
--  to select a continuous range of values, we can use the `:` operator. This is called *slicing *
+-  to select a continuous range of values, we can use the `:` operator. This is called *slicing*
 
 ```{r}
 vec[1:3]
@@ -203,18 +225,7 @@ vec
 - This permanently changes the vector, so be careful about changing vectors like this
 
 
-```{r}
-
-```
-
 ## Time for some Exercises
-
-
-## Rstudio 
-
-- Rstudio is a integrated development environment for R
-- We'll be using Rstudio for writing and running our code
-- The advantage of using Rstudio,is that it offers useful tools like plot viewers, variable exploreres, keyboard shortcuts and more
 
 ## Type coercion
 
@@ -259,7 +270,6 @@ c(0, 2) * c(1, 2, 3, 4)
 ```{r error=TRUE}
 'h'+'i'
 ```
-
 
 ## Functions 
 
@@ -467,8 +477,6 @@ example_df[c(1, 3), 1:2]
 
 ```{r}
 example_df[2,]
-
-
 ```
 - or multiple rows 
 ```{r}

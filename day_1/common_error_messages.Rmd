@@ -1,0 +1,70 @@
+---
+title: "Common Errors"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r setup}
+knitr::opts_chunk$set(error = T)
+```
+
+
+This is a non-exhaustive list of common errors you may run into. Please remember that the error messages you may see will not be *exactly* like the one you see here. 
+
+
+Error:
+Trying to use a variable that does not exist
+
+```{r}
+print(missing_var)
+```
+
+Solution:
+make sure to declare the variable. If you think you have already declared the variable, double check you have spelled the variable name correctly
+```{r}
+missing_var = 'Hello'
+print(missing_var)
+```
+
+
+Error - missing closing quotes
+
+```{r}
+bad_var <- 'hello
+```
+
+Solution:
+add quotes to end of string
+
+```{r}
+bad_var <- 'hello'
+```
+
+
+Error:
+
+```{r}
+'1 '+'2'
+```
+
+Solution:
+make sure you use use numeric data for mathematical operations 
+```{r}
+1 +2
+```
+
+
+Error:
+
+```{r}
+sum(c(5 3))
+```
+
+Solution:
+Add missing comma
+
+```{r}
+sum(c(5,3))
+```
+

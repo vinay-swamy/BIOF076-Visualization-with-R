@@ -17,6 +17,8 @@ knitr::opts_chunk$set(fig.height = 5, fig.width =5)
 options(warn = -1)
 ```
 
+
+
 ## Libraries in R
 
 - up until now we either been using functions included within the base R environment and if function is not available in base R, we have written our own. 
@@ -30,7 +32,7 @@ library(RBedtools)
 ```
 - once a library is loaded, all its functions will be available to you
 
-## ggplot2 - better plotting than base R
+## Plotting in R
 - making plots has always been a core function of R, and as such the base environment contains its own functions for plotting
 
 ## ggplot2 - better plotting than base R
@@ -49,7 +51,6 @@ plot(x, y)
 - the `ggplot2` plotting libraries are written under the core philosophy of the "Grammar of Graphics"
 - the "Grammar of Graphics" is a framework that enables users to concisely describe any element of a graphic or plot
 - this grammar should be uniformly defined across functions for making any kind of plot
-
 - lets look through a couple of examples. I'll be exploring the Iris data set which comes pre loaded with R. It contains data about the flowers of different iris species 
 
 ```{r, echo=F, include=FALSE}
@@ -70,6 +71,7 @@ head(iris)
 
 ## basic plots 
 - a scatter plot, like before
+- take note of the code for each of these plots
 
 ```{r}
 ggplot(data=iris) +
@@ -353,7 +355,7 @@ ggplot(data=iris) +
 ```
 
 ## Violin plots
--in a violin plot, the width of the plot corresponds to the "density" of the data. It's similar to a histogram, but rather than count the number observations, it uses a mathematical function to approximate a smooth curve fit to the histogram, where the area under the curve sums to 1 
+- in a violin plot, the width of the plot corresponds to the "density" of the data. It's similar to a histogram, but rather than count the number observations, it uses a mathematical function to approximate a smooth curve fit to the histogram, where the area under the curve sums to 1 
 - This allows you to easily compare distributions between multiple variables.
 - Generally, v iolin plots are much more informative than box plots, and its almost always better to use a violin pot over a box plot. 
 
