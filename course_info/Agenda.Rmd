@@ -1,10 +1,8 @@
 ---
 title: '**BIOF 076: Visualization with R**'
 author: " Instructor: Vinay Swamy"
-date: "October 5th-9th"
+date: "March 1st-5th"
 output: 
-  word_document:
-    default
   pdf_document:
     default
 subtitle: Creating publication quality figures and interactive web apps with the R
@@ -34,7 +32,7 @@ Our engagement during this workshop will take several forms:
 * Communications: There will be a slack group created for the class.
  
 # Software and Materials 
-We will have two sessions to install all software before the course at **10am** and **4pm** on **Friday, October 2nd**. Some of the main software we will be using:
+We will have two sessions to install all software before the course at **10am** and **4pm** on **Friday, February 26th**. Some of the main software we will be using:
 
 * Software
   + R language base system -  the core interpreter for the R language that runs the code we will write
@@ -52,47 +50,52 @@ We will have two sessions to install all software before the course at **10am** 
 library(tidyverse)
 library(knitr)
 library(kableExtra)
-sch <- 'Monday	9AM-9:50AM	Course Introduction/ Basic Programming in R - Part 1
-Monday	10AM-10:50AM	Basic Programming in R - Part 2
-Monday	11AM-12PM	Using the ggplot2 library - Basic Plots 
-Monday	12PM-1:00PM	Break
-Monday	1PM-1:50PM 	Manipulating Data with the tidyverse Part 1
-Monday	2PM-2:50PM	Using the ggplot2 library - Customizing themes and Aesthetics
-Monday	3pm-3:50PM	Office hours 
-Tuesday	9AM-9:50AM	Review / Conditional programming 
-Tuesday	10AM-10:50AM	Manipulating Data with the tidyverse Part 2
-Tuesday	11AM-12PM	Using the ggplot2 library - Complex Plots 
-Tuesday	12PM-1:00PM	Break 
-Tuesday	1PM-1:50PM 	Extensions to Ggplot 
-Tuesday	2PM-2:50PM	Plotting with Maps  and making Animated plots 
-Tuesday	3pm-3:50PM	Office hours
-Wednesday	9AM-9:50AM	Review/ Making Heatmaps 
-Wednesday	10AM-10:50AM	Combining multiple plots / Intro to R Markdown 
-Wednesday	11AM-12PM	Designing plots to accurately represent data
-Wednesday	12PM-1:00PM	Break 
-Wednesday	1PM-1:50PM 	Making Copycat Plots  - Building intuition for making novel plots 
-Wednesday	2PM-2:50PM	Interactive plots with Plotly
-Wednesday	3pm-3:50PM	Office Hours 
-Thursday	9AM-9:50AM	Review/Intro To Shiny 
-Thursday	10AM-10:50AM	Shiny - UI
-Thursday	11AM-12PM	Shiny - server
-Thursday	12PM-1:00PM	Break 
-Thursday	1PM-1:50PM 	Deploying Shiny apps
-Thursday	2PM-2:50PM	Complex Shiny Apps 
-Thursday	3pm-3:50PM	Office Hours
-Friday	9AM-9:50AM	Course Summary 
-Friday	10AM-10:50AM	Student Project  Development
-Friday	11AM-12PM	Student Project  Development
-Friday	12PM-1:00PM	Break 
-Friday	1PM-1:50PM 	Student project presentations 
-Friday	2PM-2:50PM	Student project presentations 
-Friday	3pm-3:50PM	Office Hours'
-schedule <- read.table(text = sch,sep = '\t', col.names = c('Day','Time','Topic'))
+sch <- 'Monday,9AM-9:50AM,Course Introduction/Basic Programming in R - Part 1
+Monday,10AM-10:50AM,Basic Programming in R - Part 2
+Monday,11AM-12PM,Basic Programming in R - Part 3
+Monday,12PM-1:00PM,Break
+Monday,1PM-1:50PM,Using the ggplot2 library - Basic Plots 
+Monday,2PM-2:50PM,Using the ggplot2 library - Customizing themes and Aesthetics
+Monday,3pm-3:50PM,Office hours 
+Tuesday,9AM-9:50AM,Review / Conditional programming 
+Tuesday,10AM-10:50AM,Manipulating Data with the tidyverse Part 1
+Tuesday,11AM-12PM,Manipulating Data with the tidyverse Part 2
+Tuesday,12PM-1:00PM,Break 
+Tuesday,1PM-1:50PM,Manipulating Data with the tidyverse Part 3  
+Tuesday,2PM-2:50PM,Using the ggplot2 library - Complex Plots
+Tuesday,3pm-3:50PM,Office hours
+Wednesday,9AM-9:50AM,Extensions to ggplot 
+Wednesday,10AM-10:50AM,Combining multiple plots to make Figures 
+Wednesday,11AM-12PM,Plotting with Maps and making Animated plots 
+Wednesday,12PM-1:00PM,Break 
+Wednesday,1PM-1:50PM,Intro to R Markdown 
+Wednesday,2PM-2:50PM,Making Copycat Plots - Building intuition for making novel plots 
+Wednesday,3pm-3:50PM,Office Hours 
+Thursday,9AM-9:50AM,Review/Interactive plots with Plotly
+Thursday,10AM-10:50AM,Intro To Shiny 
+Thursday,11AM-12PM,Shiny - UI
+Thursday,12PM-1:00PM,Break 
+Thursday,1PM-1:50PM,Shiny - server
+Thursday,2PM-2:50PM,Complex Shiny Apps 
+Thursday,3pm-3:50PM,Office Hours
+Friday,9AM-9:50AM,Course Summary 
+Friday,10AM-10:50AM,Student Project  Development
+Friday,11AM-12PM,Student Project  Development
+Friday,12PM-1:00PM,Break 
+Friday,1PM-1:50PM,Student project presentations 
+Friday,2PM-2:50PM,Student project presentations 
+Friday,3pm-3:50PM,Office Hours'
+
+schedule <- read.table(text = sch,sep = ',', col.names = c('Day','Time','Topic'))
+
 ```
 ```{r, echo=F}
 kbl(schedule, booktabs = T, longtable=T) %>% 
         collapse_rows(1,latex_hline = "major", valign = "middle")
 ```
+
+#### A note on the schedule 
+- We will try to cover presented in the schedule. However, it is very possible we will move slower than anticipated, and so any material we do not cover within the first 4 days will be covered on the final day(Friday) in lieu of the presentations
 
 # Office Hours
 Office hours will be held at the end of each day from 3-4PM. 
