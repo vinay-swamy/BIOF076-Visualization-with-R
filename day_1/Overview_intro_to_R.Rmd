@@ -22,30 +22,35 @@ output:
 - Day 5: Final Project and Project presentations  
 
 ## Lecture Format
+
 - We'll move between lecture and exercises fairly often(10-20min lecture, 10-20 min exercises)
 - Slides are available on the course repo, and in canvas
 - exercises are also in the github repo. 
 
 ## Workship Final Project
+
 - Ideally, you'll use what you learn in the course to help you with your own work, like
   - creating and assembling multiple plots into a figure for paper, 
   - creating a poster for your next conference, 
   - building an interactive webapp to explore data with
 
+## How to best take advantage of this course
+- The more you participate, the more you'll get out of it - ask questions, and answer the questions I ask you.
+- Make sure you understand material to the best of your ability as we are covering it. Much of what we learn early on in the course is vital to material later in the course. 
+- Its best to ask questions out loud, but I'll do my best to monitor the chat as well.
+
 ## What is R and why is it good for making visualizations
 
-- R is a **programming language** designed for statistics 
-- Researchers who needed to use statistics used R because it is free and open source.
+- R is a **programming language** designed for statistics, used heavily in multiple fields of research.
+- Researchers who needed to use statistics turned to R because it is free and open source.
 - Researchers need to make plots and figures to put in publications, so they began developing plotting packages for R
-- As biology is growing more and more computational , more biologists are using R for analysis and visualization
+- As biology is growing more and more computational, more biologists are using R for analysis and visualization
 
 ## Example Visualization 
 <div class="columns-2">
 ```{r, echo=FALSE}
 knitr::include_graphics('../src/fetal_retina_diff_exp-1.png', dpi=1000)
 ```
-
-
 
 - this is an example of a figure made entirely in R. 
 - (hopefully) At the end of this course you'll be able to make something like this
@@ -62,20 +67,28 @@ knitr::include_graphics('../src/fetal_retina_diff_exp-1.png', dpi=1000)
 - Computers can do these tasks extremely fast, allowing us to accomplish a lot more than manually performing a task, ie using a calculator vs doing math by hand
 
 ## How will we be using programming?
+
 - In this course, we will be writing code to manipulate data/information. 
 - Data can be anything - a file stored on your hard drive, or numbers as you enter them into a calculator
 - This is, in general, is the most common application of programming
 
 ## Manipulating data within the context of creating visualization
+
 - In order to go from raw data( spreadsheet, text file, etc) to a picture generally requires two things:
 1. A method specifiying the layout and aesthtics for a visualization. For reasons I will explain later, raw data will need to be formatted an re-arranged into a specific format that can be used for visualization
-2. Converting raw data into the format suitable for plotting.
+2. Converting raw data into the aforementioned format suitable for plotting.
 
 ## How do computers represent data
 - Computers have two primary ways for storing data: *disk* and *memory*
 - Disk: The disk is your hard drive. By design, disk's *can* store a lot of information, but accessing and manipulating it is slow
 - Memory: (also known as RAM) Basically the exact opposite of disk - *cannot* store a lot of, but what is stored can be accessed and manipulated quickly
 - Storing and manipulating information in memory is one of the core functions of any programming language. R, in particular, is a memory hungry langauge
+
+## Plain text files
+- Most code is written and stored in plain text files, for files that have nothing in them except text
+- These do not include Microsoft office file formats 
+- common text file formats - .txt, .tsv, .csv etc
+- you can check if a file is plain text by trying to open it with notepad or textedit
 
 ## Programming fundamentals - Syntax
 - As mentioned early, programming creates set of instructions that control a computer. Computers only "understand" machine code, such as binary - 1's and 0's. For example, the letter `A` in binary is`01000001`. 
