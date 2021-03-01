@@ -27,18 +27,19 @@ output:
 - Slides are available on the course repo, and in canvas
 - exercises are also in the github repo. 
 
-## Workship Final Project
-
-- Ideally, you'll use what you learn in the course to help you with your own work, like
-  - creating and assembling multiple plots into a figure for paper, 
-  - creating a poster for your next conference, 
-  - building an interactive webapp to explore data with
 
 ## How to best take advantage of this course
 - The more you participate, the more you'll get out of it - ask questions, and answer the questions I ask you.
 - Make sure you understand material to the best of your ability as we are covering it. Much of what we learn early on in the course is vital to material later in the course. 
 - Its best to ask questions out loud, but I'll do my best to monitor the chat as well.
 
+## Workship Final Project
+
+- Ideally, you'll use what you learn in the course to help you with your own work, like
+  - creating and assembling multiple plots into a figure for paper, 
+  - creating a poster for your next conference, 
+  - building an interactive webapp to explore data with
+  
 ## What is R and why is it good for making visualizations
 
 - R is a **programming language** designed for statistics, used heavily in multiple fields of research.

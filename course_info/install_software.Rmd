@@ -3,8 +3,6 @@ title: "Sofware setup"
 output:
   pdf_document:
       default
-  word_document: 
-     keep_md: yes
 ---
 
 NOTE: for those that are unable to install software, a cloud environment will be provided for them to work in. This environment requries a github account, so follow the instructions to create one below
@@ -46,7 +44,7 @@ https://apps.apple.com/us/app/xcode/id497799835?mt=12
 Launch Rstudio - in the console panels, run the following commands
 
 ```
-install.packages(c('devtools','tidyverse' )
+install.packages(c("devtools","tidyverse")
 library(tidyverse)
 ```
 
