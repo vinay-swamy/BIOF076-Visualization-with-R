@@ -1,4 +1,4 @@
-FROM vinayswamy/biof076-docker:0.1
+FROM vinayswamy/biof076-docker:0.2
 LABEL maintainer='Unknown'
 USER root
 COPY . ${HOME}
