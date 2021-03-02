@@ -3,6 +3,7 @@ title: "R Notebook"
 output: html_notebook
 ---
 
+Here are come plots to work with 
 
 ```{r}
 library(ggplot2)
@@ -25,17 +26,22 @@ p4 <- ggplot(mtcars) +
   ggtitle('Plot 4')
 ```
 
+- add the plots together one by one, no orientation
 
 ```{r fig.height=8, fig.width=8}
 library(patchwork)
-p1+p2+p3+p4
+
 
 ```
+
+- add plots, but make only one column of plots 
 
 ```{r, fig.width=4, fig.height=10}
-all_plots <- p1+p2+p3+p4 
-#all_plots + plot_layout(ncol = 1)
+
+
 ```
+
+- use a desgin and `plot_layout` to make plot 1 bigger than the rest of the plots 
 
 ```{r}
 design <- '
@@ -52,26 +58,26 @@ all_plots + plot_layout(design = design, guides = 'collect') & theme(legend.posi
 install.packages(c('plotly', 'ggiraph'), type = 'source')
 
 ```
+
+
+- make this an interactive plot with `girafe`, displaying the carb column 
+
 ```{r}
 library(ggiraph) 
 library(tidyverse)
  
 plot_interactive <-  ggplot(mtcars) + 
-  geom_point_interactive(aes(hp, wt, colour = mpg,tooltip = carb)) + 
+  geom_point(aes(hp, wt, colour = mpg)) + 
   ggtitle('Plot 3')
 
 girafe(ggobj = plot_interactive)
 ```
 
+remake the above plot with plotly
 
 ```{r}
 library(plotly)
 
-plot_static <- ggplot(mtcars) + 
-  geom_point(aes(hp, wt, colour = mpg)) + 
-  ggtitle('Plot 3') +
-  theme_classic()
-plot_static %>% ggplotly()
 ```
 
 

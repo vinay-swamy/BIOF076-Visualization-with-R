@@ -4,33 +4,10 @@ output: html_notebook
 ---
 
 
-```{r}
-#remotes::install_github("coolbutuseless/ggpattern")
-library(ggpattern)
-ggpattern::geom
-library(ggpattern)
-df <- data.frame(level = c("a", "b", "c", 'd'), outcome = c(2.3, 1.9, 3.2, 1))
-
-ggplot(df) +
-  geom_col_pattern(
-    aes(level, outcome, pattern_fill = level), 
-    pattern = 'stripe',
-    fill    = 'white',
-    colour  = 'black'
-  ) +
-  theme_bw(18) +
-  theme(legend.position = 'none') + 
-  labs(
-    title    = "ggpattern::geom_pattern_col()",
-    subtitle = "pattern = 'stripe'"
-  )
-```
+install the ggpattern package 
 
 ```{r}
-iris_extra <- iris %>% mutate(flowering_time = sample(c('day', 'night'),size = nrow(iris), replace = T) )
-?geom_bar_pattern
-ggplot(iris_extra) + 
-  geom_bar_pattern(aes(x= Species, pattern = flowering_time, fill = Species), position = 'dodge')
+remotes::install_github("coolbutuseless/ggpattern")
 ```
 
 
@@ -56,20 +33,12 @@ gapminder_data <- read_tsv('../src/gapminder_2007.tsv.gz')
 ```
 
 
-
-
 ## revisting the line graph from earlier with `ggpubr`
 
 ![](../src/reporter_assay_plot.png)
 
-```{r}
-
-```
-
-
-
 Remember this plot?
-use `ggline` to remake the line graph we made a few exercises ago
+use `ggpubr::ggline` to remake the line graph we made a few exercises ago
 
 ```{r}
 install.packages('ggpubr')
@@ -77,28 +46,12 @@ install.packages('ggpubr')
 
 ```{r}
 library(ggpubr)
-library(tidyverse)
-ggline(ToothGrowth, "dose", "len",
-   linetype = "supp", shape = "supp",
-   color = "supp", palette = c("#00AFBB", "#E7B800"), add='mean_se')
-
 ```
 
 
 
 ```{r}
 
-data <- read_tsv('../src/Reporter_assay_results.tsv.gz') %>% 
-  pivot_longer(c(WildType, Mutant), names_to = 'condition', values_to = 'SU')
-
-ggline(data = data, 
-       x='Time',
-       y='SU',
-       color = 'condition',
-       add='mean_se'
-       )
-
-getwd()
 
 ```
 
@@ -113,7 +66,7 @@ filter the data to the last time point, and make a boxplot with `ggboxplot`. Inc
 - customize the plots with some themes and palettes from 
 
 ```{r}
-install.packages('gapminder')
+install.packages('gapminder') # this installs the gapminder dataset into R
 install.packages('gganimate', type = 'source')
 install.packages('ggsci')
 ```
@@ -124,56 +77,12 @@ library(gapminder)
 library(ggplot2)
 library(gganimate)
 library(ggsci)
-
-ggplot(gapminder, aes(gdpPercap, lifeExp, size = pop, color = continent)) +
-  geom_point(alpha = 0.5, show.legend = FALSE) +
-  facet_wrap(~continent)+
-  scale_color_aaas()+
-  scale_size(range = c(2, 12)) +
-  scale_x_log10()+
-  transition_time(year)
-gg
+gapminder
  
-#anim_save('../src/gapminder_bubble_animated.gif', p)
-```
-
-```{r }
-knitr::include_graphics('../src/gapminder_bubble_animated.gif')
 
 ```
 
 
-```{r}
-
-library(sf)
-library(ggspatial)
-library(tidyverse)
-
-nc <- st_read(system.file("shape/nc.shp", package="sf"))
-nc_table <- as_tibble(nc) %>% rename(shape_data = geometry)
-ggplot(data = nc ) +
-    geom_sf() + 
-    theme_bw()
-class(nc)
-colnames(nc_table)
-ggplot(nc_table)+
-  geom_sf(aes(geometry =  shape_data))
-data("USArrests")
-USArrests
-states <- maps::map("state", plot = FALSE, fill = TRUE) %>% st_as_sf() %>% 
-    as_tibble %>% 
-    rename(state = ID, 
-           geometry = geom)
-states <- states %>% 
-    mutate(state = tolower(state))
-arrests <- USArrests %>% rownames_to_column('state')
-
-arrestData_with_mapData <- arrests %>%
-    mutate(state = tolower(state)) %>% 
-    inner_join( states)
-ggplot(nc_table)+
-  geom_sf(aes(geometry =  shape_data))
-```
 
 ## plotting with maps 
 
@@ -190,47 +99,18 @@ md_shape <- read_sf('~/Downloads/Maryland_Physical_Boundaries_-_County_Boundarie
 ```
 
 Were going to take this data and make this:
-As a starting point, this is the generaly workflow. Load data > join county level data to zip level data > aggreagte data to the county level  >  join map data
+As a starting point, this is the generaly workflow. 
+
+Load data > join county level data to zip level data > aggreagte data to the county level  >  join map data
 - first add the county information to the covid data. check how many counties are shared between the covid data and the map data 
-
-```{r}
-md_covid_cases <- read_tsv('../src/MD_COVID_cases_by_zip.tsv.gz')
-md_county_to_zip <- read_tsv('../src/maryland_zipcode_to_county.tsv.gz')
-md_shape <- read_sf('~/Downloads/Maryland_Physical_Boundaries_-_County_Boundaries__Generalized_-shp/Maryland_Physical_Boundaries_-_County_Boundaries__Generalized_.shp')
-colnames(md_county_to_zip) <- c('ZIP_CODE', 'county')
-md_covid_with_county <- inner_join(md_county_to_zip, md_covid_cases)
-md_covid_with_county[is.na(md_covid_with_county)] <- 0
-```
-```{r}
-md_covid_by_county <-  md_covid_with_county %>% 
-  select(-ZIP_CODE) %>% 
-  pivot_longer(-county, names_to = 'date', values_to = 'number_of_cases') %>% 
-  group_by(county, date) %>% 
-  summarise(total_cases = sum(number_of_cases)) 
-```
-```{r}
- md_shape_tbl <- md_shape %>% 
-  as_tibble %>% 
-  mutate(county = tolower(county))
-
-md_covid_shape <-  inner_join(md_shape_tbl, md_covid_by_county) %>% 
-  filter(date == '05_21_2020')
-```
-```{r}
-ggplot(md_covid_shape) + 
-  geom_sf(aes(geometry = geometry, fill = total_cases))
-```
-
+- your should end up with a plot that colors each map region based on the the number of covid cases
 
 
 ```{r}
-arrestData_with_mapData <- arrests %>%
-    mutate(state = tolower(state)) %>% 
-    inner_join( states)
-ggplot(arrestData_with_mapData)+
-  geom_sf(aes(geometry =  shape_data, fill  = Assaults))
-```
 
+
+
+```
 
 
 

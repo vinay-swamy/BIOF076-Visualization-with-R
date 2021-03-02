@@ -9,56 +9,30 @@ We're going to work with one of the plots we made earlier
 
 ```{r}
 library(ggplot2)
-ggplot(iris) + 
-    geom_point(aes(x=Sepal.Length, y=Sepal.Width, color = Species)) + 
-    ggtitle(' Width vs Length for Iris Sepals') + 
-    xlab('Sepal Length')+
-    theme(plot.title = element_text(size = 12, family = 'Palatino'))
-```
-
-
-```{r}
 ggplot(mpg) + 
   geom_bar(aes(x=manufacturer, fill = class)) 
-
 ```
+
+
 
 Assign descriptive axis labels and a plot title to the plot
-```
-ggplot(iris) + 
-    geom_point(aes(x=Sepal.Length, y=Sepal.Width, color = Species)) + 
-    ggtitle(' ') + 
-    xlab('')+
-    theme(plot.title = element_text(size = 12, family = 'Palatino'))
-```
-
 ```{r}
 ggplot(mpg) + 
-    geom_bar(aes(x=manufacturer, fill = class))  + 
-    xlab('Car Manufacturer') + 
-    ylab('Number of Cars') +
-    ggtitle('Class of car manufactured by Company')
-```
-
-
-```{r}
-ggplot(iris) + 
-    geom_point(aes(x=Sepal.Length, y=Sepal.Width, color = Species)) + 
-    ggtitle(' ') + 
-    xlab('')+
-    theme( axis.text.x = element_text( angle = 90, hjust = -1))
+  geom_bar(aes(x=manufacturer, fill = class))  + 
+  xlab('Car Manufacturer') + 
+  ylab('Number of Cars') + 
+  ggtitle('Car Production')
 ```
 
 fix the labels similar to how it was done in the example
 
 ```{r}
 ggplot(mpg) + 
-    geom_bar(aes(x=manufacturer, fill = class))  + 
-    xlab('Car Manufacturer') + 
-    ylab('Number of Cars') +
-    ggtitle('Class of car manufactured by Company') + 
-    theme( axis.text.x = element_text( angle = 45, hjust = 1), 
-           axis.title.y =element_text(angle = 0, vjust = .5))
+  geom_bar(aes(x=manufacturer, fill = class))  + 
+  xlab('Car Manufacturer') + 
+  ylab('Number of Cars') + 
+  ggtitle('Car Production') + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
     
 
 ```
@@ -68,54 +42,35 @@ change the y axis title so it is parallel to the x axis title
 
 ```{r}
 ggplot(mpg) + 
-    geom_bar(aes(x=manufacturer, fill = class))  + 
-    xlab('Car Manufacturer') + 
-    ylab('Number of Cars') +
-    ggtitle('Class of car manufactured by Company') + 
-    theme( axis.text = element_text( angle = 45, hjust = 1))
+  geom_bar(aes(x=manufacturer, fill = class))  + 
+  xlab('Car Manufacturer') + 
+  ylab('Number of Cars') + 
+  ggtitle('Car Production') + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), 
+        axis.title.y =  element_text(angle = 0))
 ```
 
 change the font of the title to AvantGarde, the color to red
 
 ```{r}
-
 ggplot(mpg) + 
-    geom_bar(aes(x=manufacturer, fill = class))  + 
-    xlab('Car Manufacturer') + 
-    ylab('Number of Cars') +
-    ggtitle('Class of car manufactured by Company') + 
-    theme( plot.title = element_text(family = 'Palatino', 
-                                     color = 'red'))
+  geom_bar(aes(x=manufacturer, fill = class))  + 
+  xlab('Car Manufacturer') + 
+  ylab('Number of Cars') + 
+  ggtitle('Car Production') + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), 
+        axis.title.y =  element_text(angle = 0), 
+        text = element_text(family = 'Palatino'))
 
 ```
 
 
-```{r}
 
-```
 
 
 now use guide to reposition the legend to the top of the plot 
 ```{r}
-ggplot(iris) + 
-    geom_point(aes(x=Sepal.Length, y=Sepal.Width, color = Species)) + 
-    ggtitle(' ') + 
-    xlab('')+ 
-    guides(color = guide_legend(title.position = 'bottom' ))
 
-
-```
-
-```{r}
-
-ggplot(mpg) + 
-    geom_bar(aes(x=manufacturer, fill = class))  + 
-    xlab('Car Manufacturer') + 
-    ylab('Number of Cars') +
-    ggtitle('Class of car manufactured by Company') + 
-    theme( plot.title = element_text(family = 'Palatino', 
-                                        color = 'red')) + 
-    guides(fill = guide_legend(title = 'Type of car',  title.position = 'bottom' ))
 
 ```
 
@@ -133,9 +88,6 @@ storms
 make a violin plot for `pressure`, using `status` as the x variable. Give axes appropriate titles. 
 
 ```{r}
-
-ggplot(storms) + 
-    geom_violin(aes(x=status, y=pressure, fill = status))
 
 ```
 
@@ -162,42 +114,18 @@ pick a palette and use the appriate `scale_..._discrete` function to color your 
 
 ```{r}
 
-color_palette = pals::alphabet()
-names(pals) <- NULL
-ggplot(storms) + 
-    geom_violin(aes(x=status, y=pressure, fill = status))+
-    scale_fill_discrete(type = pals[c(3, 6, 8)])
-color_palette
+
 ```
 
 
-```{r}
-unique(storms$status)
-storms_color_mapping <- c( 
-                   "tropical depression" = "#94FFB5"  ,  
-                   "tropical storm" = "740AFF"  ,   
-                   "hurricane"  = "#426600")
-storms_color_mapping 
-```
 
 now pick colors from different palettes, and use them as part of a `scale_...manual`. 
 
 ```{r}
-
-iris_color_mapping <- storms_color_mapping
-names(iris_color_mapping) <- as.character(unique(iris$Species))
-ggplot(iris) + 
-    geom_boxplot(aes(x=Species, y= Sepal.Length, fill = Species))+ 
-    scale_fill_manual(values = iris_color_mapping)
-guides(y= guide_axis(...))
 ```
 
 
 ```{r}
-
-ggplot(storms) + 
-    geom_violin(aes(x=status, y=pressure, fill = status)) + 
-    scale_fill_manual(values = storms_color_mapping)
 
 ```
 
@@ -213,19 +141,6 @@ make a scatter plot of `wind` vs `pressure`, using the `category` to color the p
 ![](../src/gapminder_bubbleplot.png)
 
 
-```{r}
-library(ggplot2)
-ggplot(iris) + 
-    geom_point(aes(x=Sepal.Length, 
-                   y= Sepal.Width, 
-                   size = Petal.Length, 
-                   color = Species),
-               alpha = .25
-               )
-
-```
-
-
 - this is a bubble plot. We're going to remake this plot with ggplot.
 - gdpPercap as the x axis 
 - lifeExp as the y axis
@@ -233,41 +148,12 @@ ggplot(iris) +
 - continent as the color
 - alpha changed globally
 
-
-```{r}
-ggplot(data) + 
-    geom_point( aes( x=  gdpPercap, 
-                     y= lifeExp,
-                     size = pop, 
-                     color = continent),
-                alpha = .4
-                ) +
-    ylab('Life Expetancy') + 
-    ggtitle('Population Demographics across the World') + 
-    theme_bw()
-```
-
-
-
 ```{r, fig.height=4}
+
 library(readr)
 data <- read_tsv('../src/gapminder_2007.tsv.gz')
 ```
 
-```{r}
 
-```
-
-
-
-```{r}
-install.packages('readr')
-library('readr')
-```
-
-```{r}
-zz=gzfile('../src/gapminder_2007.tsv.gz','rt')   
-data=read.table(zz,sep = '\t',header = T, stringsAsFactors = F)
-```
 
 

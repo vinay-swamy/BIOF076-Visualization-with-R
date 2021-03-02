@@ -176,6 +176,15 @@ sum(vector_of_means)
 
 ```
 
+
+
+```{r}
+
+
+```
+
+
+
 ## Writing your own functions 
 write your own function that takes a number as an input, and adds the number `5` to it
 
@@ -219,6 +228,7 @@ You can explore the values in list in the environment viewer. click the arrow on
 list_to_view <- list(a='v', 
                      b=c(1,4,6,7,5), 
                      x=c('c', 'd'))
+
 ```
 
 Decalre a list with two using two vectors below. when declaring the list, name the `a` vector condition_a, and the `b` vector condition_b
@@ -227,19 +237,25 @@ Decalre a list with two using two vectors below. when declaring the list, name t
 a <- c(0,1,2,3,4)
 b <- c(0,2,4,6,8)
 
+experiment <- list(condition_a = a,  
+                   condition_b = b)
 
+experiment
 ```
 "
 using the `names` function, change the names of condition_a to "wild_type", and condition_b to "knock_out"
 
 ```{r ex_18}
-
+names(experiment) <-  c('wild_type', "knock_out")
+experiment
 ```
 
 
 change the last value in wild_type from 4 to -1 (hint: you will need to first access wild_type within the list, and then acces the first element within wild_type)
 
 ```{r ex_19}
+
+experiment$wild_type[5] <- -1
 
 ```
 
@@ -279,23 +295,38 @@ The autocomplete generally works pretty well and will save you a lot of time.
 - calculate the revenue per employee and store it in new columns
 
 ```{r ex_21}
-
+faang_data$rev_per_employee <- faang_data$revenue / faang_data$n_employees
+faang_data
 ```
 
 - the `which.min` function returns the index for the maximum value in a vector. Use this to identify the company with the highest revenue and select its ceo
 
 ```{r ex_22}
 
+highest_rev <- which.min(faang_data$revenue)
+faang_data$ceo[highest_rev]
+
 ```
 
 - use the `paste` function to add the last names to the ceos missing last names. ( Mark zuckerberg, tim cook, and jeff bezos in case you do not know)
+
+```{r}
+last_names <- c( 'zuckerberg', 'cook',  'bezos')
+faang_data$ceo[1:3] <- paste(faang_data$ceo[1:3],last_names )
+faang_data
+```
 
 
 - write a function that takes a column name as input and returns the mean, and use it to calculate the mean of the `revenue` and `n_employees` columns in `faang_data`
 
 ```{r}
 
-\
+calculate_mean <- function(df, col_name){
+  return(mean(df[,col_name]))
+}
+
+calculate_mean(df=faang_data, col_name = 'revenue')
+
 
 ```
 
@@ -303,8 +334,15 @@ The autocomplete generally works pretty well and will save you a lot of time.
 
 ```{r ex_20}
 
+faang_data <- data.frame(name = c('Facebook', 'apple', 'amazon', 'netflix', 'google'), 
+                         revenue = c(3000000000, 4000000000, 5000000000, 3000000000, 3000000000),
+                         n_employees=c(2000, 8000, 10000, 5000, 12000),
+                         ceo = c('mark', 'tim', 'jeff', 'reed hastings', 'sundar pichai' ),
+                         service = c('ads', 'tech', 'shipping', 'streaming', 'ads')
+                         )
 
-
+faang_data$name <- as.character(faang_data$name)
+str(faang_data)
 ```
 
 
