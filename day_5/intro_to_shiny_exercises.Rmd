@@ -39,16 +39,6 @@ After each step, makes sure the app runs successfully( if the app launches, and 
 - add a DT::DToutput to UI and DT::renderDT to the server
 
 
-## working with real(ish) data 
-- we're going add the plots and table from our Rmarkdown  exercise into shiny
-- create a new folder, and create an app inside 
-- copy thr data you need into this folder
-- make a new app.R
-- we're going to make a new app, that display's each of our columns. 
-- in the first column, add the volcano plot and the table. use DT::renderDT in server and DT::DToutput in the UI
-- second column -  add the heatmap
-- third column - text box to select gene name, use gene name to filter expression data, and make violin plot for filtered gene.
-
 
 
 
