@@ -1,0 +1,173 @@
+---
+title: "Useful Links and Librarys"
+output:
+  pdf_document: default
+urlcolor: blue
+---
+
+## Rstudio cheatsheets
+
+Quick references for common packages. See more cheatsheets [here](https://rstudio.com/resources/cheatsheets/)
+
+- [dplyr](https://github.com/rstudio/cheatsheets/raw/master/data-transformation.pdf)
+- [Rmarkdown](https://github.com/rstudio/cheatsheets/raw/master/rmarkdown-2.0.pdf)
+- [shiny](https://github.com/rstudio/cheatsheets/raw/master/shiny.pdf)
+- [ggplot](https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf)
+- [base R](http://github.com/rstudio/cheatsheets/raw/master/base-r.pdf)
+
+### Useful Libraries for Visualization
+
+[ComplexHeatmap](https://jokergoo.github.io/ComplexHeatmap-reference/book/)
+
+- Non-ggplot based package for plotting Heatmaps. 
+- Heatmaps are usefult visualizations for showing subpopulations in clustered data
+- Has extensive documentation and is extremelt flexible. 
+
+[ComplexUpset](https://github.com/krassowski/complex-upset)
+
+- Non-ggplot based package for ploting upset plots 
+- upset plots are useful for visualizing interactions between sets 
+
+[DT](https://rstudio.github.io/DT/)
+
+- Create interactive data tables in Rmarkdown and Shiny
+
+[RColorBrewer](https://cran.r-project.org/web/packages/RColorBrewer/index.html) 
+
+- create diverse color palettes for plots. Can generate both discrete and continous palettes
+
+[circlize](https://jokergoo.github.io/circlize_book/book/)
+
+- Create circos plots and circular color scales 
+
+[dplyr](https://dplyr.tidyverse.org)
+
+- an *excellent* toolbox for cleaning and manipulating data
+
+[flextable](https://davidgohel.github.io/flextable/)
+
+- create precisely formatted tables when using Rmarkdown to generate `.docx` files 
+
+[gapminder](https://cran.r-project.org/web/packages/gapminder/README.html)
+
+- load thes `gapminder` dataset as a `data.frame`, and contains information about population, life expectancy and GDP. 
+- Use data set for testing out plots
+
+[ggalluvial](https://cran.r-project.org/web/packages/ggalluvial/vignettes/ggalluvial.html)
+
+- Generate Alluvial plots using ggplot syntax
+- alluvial plots are useful for visualizing subsets in categorical data, or changes in composition of catogorical data over time 
+
+[gganimate](https://gganimate.com)
+
+- Turn (almost) any ggplot into an animated figure. 
+
+[gghalves](https://github.com/erocoar/gghalves)
+
+- Plot half geoms(violin/boxplot/points)
+- useful for showing changes between two similar conditions 
+
+[ggiraph](https://davidgohel.github.io/ggiraph/articles/offcran/using_ggiraph.html)
+
+- Uses ggplot syntax to add interactivity to plots by adding tooltip(show info when hovering mouse over position)
+ 
+[ggpattern](https://github.com/coolbutuseless/ggpattern)
+
+- Add shading patterns to ggplots
+
+[ggplot2](https://ggplot2.tidyverse.org)
+
+- The best plotting library in R. uses the Grammar of Graphic(gg) to define a concises syntax for generating plots 
+- `ggplots` are copmosed of several key components
+    - `ggplot(data)` - create a new blank plot
+    - `geom_...` - add some sort of visualization(points, boxplots, etc), and
+    - `aes()` - generate and aesthetic mapping between columns in `data` and visual aesthtics in `geom_...`
+    - save plots using `ggplot::ggsave`
+
+[ggplotify](https://github.com/GuangchuangYu/ggplotify)
+
+- Convert any plot generated in R into a `ggplot` object. 
+- This allows plots generated from non-gpglot based libraries to be merged with other plots through `patchwork`, or saved using `ggplot::ggsave`
+
+[ggpubr](https://rpkgs.datanovia.com/ggpubr/)
+
+- an alternative plotting package that provides simpler functions for generating plots, and provides fucntions for for may
+
+[ggrepel](https://ggrepel.slowkow.com)
+
+- generate text and labels on `ggplots` that *repel* from each other, so they don't crowd each other, or  other elements in the plot 
+
+[ggridges](https://wilkelab.org/ggridges/)
+
+- create ridge plots in `ggplot`. 
+- ridge plots are usful for visualizing continuous distributions across many variables
+
+[ggsci](https://cran.r-project.org/web/packages/ggsci/vignettes/ggsci.html)
+
+- provides alternative color palettes that are inspired by plots from different scientific journals
+
+[ggspatial](https://github.com/paleolimbot/ggspatial)
+
+- an extension to ggplot for plotting map data. 
+- uses spatial data defined by the `sf` pacakge
+
+[ggthemes](https://yutannihilation.github.io/allYourFigureAreBelongToUs/ggthemes/)
+
+- a collection of themes and color palettes inspired by popular websites
+
+[ggtree](https://github.com/YuLab-SMU/ggtree)
+
+- an extension to `ggplot` for visualizing trees and dendrograms 
+
+[kableExtra](https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html)
+- An extension to `Rmarkdown` that allows you to better format tables 
+
+[knitr](https://yihui.org/knitr/)
+
+- the core library behind `Rmarkdown`
+- use knitr to control `Rmarkdown` and create high-quality reports and documents with embedded code 
+
+[maps](https://cran.r-project.org/web/packages/maps/maps.pdf)
+- provides spatial info for common maps(world, USA, etc)
+
+[pals](https://cran.r-project.org/web/packages/pals/vignettes/pals_examples.html)
+
+- a comprehensive set of colot palettes for R
+- in my opinion, the best package for generating color palettes
+
+[patchwork](https://patchwork.data-imaginist.com)
+- a useful library for asselmbing multiple `ggplots` into a single figure
+- combine plots with intuitive operators like `+`, `/` and , `|`, as well as specify custom layouts 
+
+[plotly](https://plotly.com/r/)
+
+- a  feature-rich library for making interactive visualizations that can be embedding in `Rmarkdown` reports or `shiny` apps 
+
+[redoc](https://github.com/noamross/redoc)
+
+- seamlessly(ish) move between Rmarkdown <==> Microsoft Word
+
+[sf](https://r-spatial.github.io/sf/)
+
+- a package for working with geospatial data in R
+
+[shiny](https://shiny.rstudio.com)
+
+- the core package for interactive visualizations in R. 
+- Build fast and dynamic webapps that can be hosted locally or on a webserver
+
+[tidyverse](https://www.tidyverse.org)
+
+- an *amazing* collection of packages for data science in R. 
+    - tibble: a new data type analogous to a `data.frame`, but with more consistent indexing, and no type coercion
+    - dplyr: a series of functions for subsetting, filtering, changing, and summarizing dataframes/tibbles
+    -  tidyr: functions for tidying data(more on that later)
+    -  stringr: library for efficiently working with strings
+    - readr: efficiently read/write data
+    - forcats: library for efficiently working with factors
+    - purrr: adds common programming methods from other languages into
+    - using `library(tidyverse)` makes it easy to load these all at once; but you can load them individually if you choose 
+
+    
+
+

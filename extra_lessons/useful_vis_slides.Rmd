@@ -4,6 +4,13 @@ author: "Vinay Swamy"
 date: "9/26/2020"
 output: ioslides_presentation
 ---
+
+<style>
+slides > slide {
+  overflow-x: auto !important;
+  overflow-y: auto !important;
+}
+</style>
 ```{r, include=F}
 library(tidyverse)
 ```
@@ -65,6 +72,7 @@ example_data_wide
 ## The `ComplexUpset` package
 - once we have the data formatted, plotting is fairly simple
 ```{r}
+library(ComplexUpset)
 cols_to_intersect <- c('red', 'yellow', 'blue')
 upset(data = example_data_wide, intersect = cols_to_intersect)
 ```
@@ -187,6 +195,7 @@ ggplot(data=df, aes(x=label, y=count, fill=label)) +
 
 ## the raincloud plot
 ```{r}
+library(gghalves)
 ggplot(df, aes(x = label, y = count, fill = label, color = label)) +
   geom_half_violin(side = 'r') + 
   geom_half_point(range_scale=.5, side = 'l', alpha = .3, shape=16) + 

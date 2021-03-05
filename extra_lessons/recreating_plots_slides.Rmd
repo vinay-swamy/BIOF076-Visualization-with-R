@@ -4,7 +4,12 @@ author: "Vinay Swamy"
 date: "10/4/2020"
 output: ioslides_presentation
 ---
-
+<style>
+slides > slide {
+  overflow-x: auto !important;
+  overflow-y: auto !important;
+}
+</style>
 
 ## We've covered a lot of visualiztion tools
 - We extensively covered multiple visualization packages, with most of them centered around the `ggplot` API
@@ -19,24 +24,23 @@ output: ioslides_presentation
   - What are the aesethetic properties - color scheme, point size, pattern etc (looking at legends helps for this  )
   - What are the graphical parameters - X/y axis labels/gridlines, legend orientation
  
-## Example -  Dot plot 
-- the X axis labels are Gene ID, and the Y axis labels are cell type IDs
+
+## Another example - recreating heatmaps in ggplot
+
 ```{r}
-knitr::include_graphics('../src/sc_dot_plot.jpg')
+library(ComplexHeatmap)
+Heatmap(log2(gen_exp + 1))
 ```
 
-## lets recreate this dotplot
- 
- 
-## Another example - recreating heatmaps in ggplot
-- I don't want to beat a dead horse here with heatmaps
+## Whe
+
 
 
 ```{r, fig.height=8, fig.width=8}
 library(ggtree)
 library(patchwork)
 gen_exp <- readRDS('../src/gene_expression_ss.RDS')
-gene_cluster <- hclust(dist(gen_exp), method = 'Euclidian')
+gene_cluster <- hclust(dist(gen_exp))
 sample_cluster <- hclust(dist(gen_exp %>% t()))
 
 gene_exp_long <- gen_exp %>% rownames_to_column('gene_name') %>% 
@@ -54,13 +58,13 @@ hm <- ggplot(gene_exp_long) +
     theme(axis.text.x = element_text(angle = 90))
 
 design <-'
-#C
-BA'
+#CCCC
+BAAAA
+BAAAA
+BAAAA
+BAAAA'
 hm + row_dend + col_dend   +plot_layout(design = design)
 ```
 
-```{r}
-library(ComplexHeatmap)
-Heatmap(log2(gen_exp + 1), )
-```
+
 

@@ -31,31 +31,30 @@ p4 <- ggplot(mtcars) +
 ```{r fig.height=8, fig.width=8}
 library(patchwork)
 
-
+p1 + p2 + p3 + p4
 ```
 
 - add plots, but make only one column of plots 
 
 ```{r, fig.width=4, fig.height=10}
-
-
+p1 + p2 + p3 + p4 +plot_layout(ncol=1)
 ```
 
 - use a desgin and `plot_layout` to make plot 1 bigger than the rest of the plots 
 
 ```{r}
-design <- '
-AAAB
-AAAC
-AAAD
-'
+des <-'
+ABB
+CCC
+DDD'
 
-all_plots + plot_layout(design = design, guides = 'collect') & theme(legend.position = 'top')
+p1 + p2 + p3 + p4 + plot_layout(design = des) + plot_annotation(tag_levels = 'I')
+
 ```
 
 
 ```{r}
-install.packages(c('plotly', 'ggiraph'), type = 'source')
+install.packages(c('plotly', 'ggiraph'))
 
 ```
 
@@ -67,7 +66,7 @@ library(ggiraph)
 library(tidyverse)
  
 plot_interactive <-  ggplot(mtcars) + 
-  geom_point(aes(hp, wt, colour = mpg)) + 
+  geom_point_interactive(aes(hp, wt, colour = mpg)) + 
   ggtitle('Plot 3')
 
 girafe(ggobj = plot_interactive)
@@ -77,7 +76,7 @@ remake the above plot with plotly
 
 ```{r}
 library(plotly)
-
+plot_ly(mpg, x=~cty, y=~hwy, z =~displ)
 ```
 
 

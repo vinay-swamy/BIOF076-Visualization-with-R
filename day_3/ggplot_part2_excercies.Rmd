@@ -16,6 +16,10 @@ knitr::include_graphics('../src/example_vio_box.png')
 
 ```{r}
 data("ToothGrowth") 
+ggplot(ToothGrowth) + 
+    geom_violin(aes(x=supp, y= len, fill = supp), width = .5, color = 'white') + 
+    geom_boxplot(aes(x=supp, y= len), width = .1, fill = 'black', color = 'white') + 
+    theme_classic()
 
 ```
 
@@ -26,6 +30,25 @@ data("ToothGrowth")
 
 ```{r}
 data <- read_tsv('../src/gapminder_2007.tsv.gz')
+
+
+countries_to_label <- data %>% select(continent, country) %>% 
+  group_by(continent) %>% 
+  summarise(c1 = country[1], 
+            c2 = country[2], 
+            c3 = country[3]) %>% 
+  pivot_longer(-continent, values_to = 'country', names_to = 'tmp') %>% 
+  select(-tmp) %>% 
+  inner_join(data)
+  
+
+ggplot() + 
+  geom_point(data= data, aes(x= gdpPercap, y=lifeExp, 
+                             color = continent, size = pop), alpha = .5) +
+  geom_label_repel(data = countries_to_label, aes(x= gdpPercap, y=lifeExp, 
+                                                  label = country)) + 
+  guides(size = guide_legend(title = 'Population (M)'))+
+  facet_wrap(~continent)
 ```
 
 
@@ -46,10 +69,31 @@ knitr::include_graphics('../src/reporter_assay_plot.png')
 
 - groupby each time and conndition, summarise and calculate mean, standard deviation `sd`, number of obersvations per group `n()`  
 
-add a column to the dats  for standard error, sd/n
+add a column to the data for standard error, sd/n
 
 ```{r}
 data <- read_tsv('../src/Reporter_assay_results.tsv.gz')
+
+data_long <- data %>% pivot_longer(c(-Time, -Replicate), names_to = 'condition', values_to = 'obs') %>% 
+    group_by(Time, condition) %>% 
+    summarise(avg_SU = mean(obs), 
+              sd_SU = sd(obs), 
+              n=n()) %>% 
+    mutate(error = sd_SU / sqrt(n))
+    
+labdf <- tibble(x=8, y=12, label = "Reaction Temperature\nDecreased")
+shape_map <- c( "Mutant" = 16, "WildType" = 18)
+ggplot(data = data_long) + 
+    geom_errorbar(aes(x=Time, ymin = avg_SU - error, ymax = avg_SU + error ), width = .5) +
+    geom_vline(xintercept = 8, color = 'red')+
+    geom_point(aes(x=Time, y=avg_SU, color = condition, shape = condition), size = 2) + 
+    geom_line(aes(x=Time, y=avg_SU, color = condition)) +
+    geom_label_repel(data = labdf, aes(x=x, y=y, label=label),nudge_x = 10, nudge_y = -2)+ 
+    scale_shape_manual(values =shape_map ) + 
+    theme_classic()
+    
+    
+
 
 ```
 
@@ -58,17 +102,53 @@ data <- read_tsv('../src/Reporter_assay_results.tsv.gz')
 - this is dumbbell plot. 
 ![](../src/dumbell_plot.png)
 
+```{r}
+knitr::include_graphics('../src/dumbell_plot.png')
+```
+
 - the are analgous to a dodged bar plot, where the height, or in this case width, corresponds to the number of cases 
 - the data for this plot is in the file '../src/health.csv.gz'
 couple hints: you will need to sort this data before plotting it. Remember how discrete axes are ordered in ggplot
 
+```{r}
+library(tidyverse)
+data <- read_tsv( '../src/US_health.tsv.gz')
 
+data_sorted <- data %>% arrange(desc(percent) ) %>% 
+  mutate(Area = factor(Area, levels =unique(Area)),
+         year = factor(year, levels = c(2014, 2013)))
+
+data_wide <- data %>% 
+  pivot_wider(names_from = year, values_from = percent) %>% 
+  arrange(desc(`2014`)) %>% 
+  mutate(Area = factor(Area, levels = levels(data_sorted$Area)))
+
+ggplot() + 
+    geom_segment(data = data_wide, aes(y = Area, yend = Area, x=`2014`, xend=`2013`))+
+    geom_point(data=data_sorted, aes(x=percent, y=Area, color= year)) + 
+    scale_x_continuous( limits = c(0,.3),labels = function(x) paste0(x*100, "%")) +
+    theme_classic() +
+    theme(panel.grid.major.x = element_line(color = 'black'))
+
+
+
+
+
+```
 
 
 ```{r}
+b <- ggplot(mtcars, aes(wt, mpg)) +
+  geom_point()
 
-data <- read_tsv( '../src/US_health.tsv.gz')
+df <- data.frame(x1 = 2.62, x2 = 3.57, y1 = 21.0, y2 = 15.0)
+b +
+ geom_curve(aes(x = x1, y = y1, xend = x2, yend = y2, colour = "curve"), data = df) +
+ geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2, colour = "segment"), data = df)
 
 ```
+
+
+
 
 
