@@ -34,7 +34,7 @@ slides > slide {
 ## How does a website work 
 - Understanding how a website works will help a lot with writing shiny apps. 
 - Every website has two main components - a server(backend) and a User Interface(UI/frontend).
-- The UI handles all the interacttivity, scrolling, text input, buttons, etc.
+- The UI handles all the interactivity, scrolling, text input, buttons, etc.
 - The server is where data required to run the app is stored, and where computation to power the site is run.
 
 ## Example - Google
@@ -120,7 +120,7 @@ bins <- seq(min(x), max(x), length.out = input$bins + 1)
 
 ## the server output
 - the `output` argument contains "empty" outputIDs, that are connected to the outputs in UI
-- outputs must alway be some kind `render*` object
+- outputs must always be some kind `render*` object
 ```{r, eval = F}
 output$distPlot <- renderPlot({ 
         x    <- faithful$waiting
@@ -149,7 +149,7 @@ server <- function(input, output) {
 }
 ```
 - notice that server relies a lot more on expressions, chunks of code demarcated by `{}`. This makes it much easier to write server code. 
-- Remember that any code invloving computations must be run in server; the UI is only for UI, and server is for everything else
+- Remember that any code involving computations must be run in server; the UI is only for UI, and server is for everything else
 
 ## writing shiny code
 - Shiny code works best in an `Rscript`. This is nothing more than a text file with a `.R` extension. We won't be able to run code interactively like a notebook
@@ -158,7 +158,7 @@ server <- function(input, output) {
 
 ## loading data when using shiny
 
-- make sure you read in all the data you need at the beginning of your script. If you read data in within shiny code, the data will be run in constanly and get very slow.
+- make sure you read in all the data you need at the beginning of your script. If you read data in within shiny code, the data will be run in constantly and get very slow.
 
 ## more control over layout - columns
 - as opposed to a single column with `mainPanel`, you can designate multiple columns within `fluidPage`

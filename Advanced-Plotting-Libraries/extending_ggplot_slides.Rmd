@@ -80,8 +80,8 @@ ggviolin(ToothGrowth, x = "dose", y = "len", fill = "dose",
 
 
 ## the `ggpubr` library
-- `ggpubr will can also apply transformations ot data for you
-- For example, summarizing a range of point to theur average value
+- `ggpubr will can also apply transformations to data for you
+- For example, summarizing a range of point to there average value
 
 ```{r}
 ggline(ToothGrowth, "dose", "len",

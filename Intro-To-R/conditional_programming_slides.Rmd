@@ -109,7 +109,7 @@ str(comp)
 ```
 
 ## logical operations over vectors
-- to compare two vectors wrap the comparison in the `all` function to chekc if *all* elements match each other; `any` to see if at least one elements between the two match
+- to compare two vectors wrap the comparison in the `all` function to check if *all* elements match each other; `any` to see if at least one elements between the two match
 
 ```{r}
 x <- c(1, 9, 6, 2, 3, 6)
@@ -118,7 +118,7 @@ all(x==y)
 ```
 
 ## the `==` operator
-- the `==` is the equality opeator, and checks whether two values are **exactly** the same 
+- the `==` is the equality operator, and checks whether two values are **exactly** the same 
 
 ```{r}
 5==5
@@ -159,7 +159,7 @@ vec_1[vec_1 %in% vec_2]
 - Note that because it check whether elements of the *left* are in the *right*, a vector equal to the length of the left is returned
 
 ## the `else` block
-- when you're using an `if` statement, generally if the coniditon for the `if` statement is not met, you somthing else to happen
+- when you're using an `if` statement, generally if the condition for the `if` statement is not met, you something else to happen
 
 ```{r}
 
@@ -215,7 +215,7 @@ weather_report_if_else(T)
 ```
 
 ## the `else` block
-- This is an example of "leaky" control flow, where the two outcomes are not proerly separated; This is why its best practice to always inlcude an `else` block as part of an if statement
+- This is an example of "leaky" control flow, where the two outcomes are not properly separated; This is why its best practice to always include an `else` block as part of an if statement
 
 ## accounting for multiple conditions
 - some times, we want to account for more than just 2 outcomes. This is done by adding `else if` blocks 
@@ -258,7 +258,7 @@ weather_report(is_sunny = T, is_raining = T)
 
 ## logical indexing
 
-- one of the most pratical uses of logical operators is for logical indexing.
+- one of the most practical uses of logical operators is for logical indexing.
 - in logical indexing we select elements that meet a certain condition
 
 ```{r}

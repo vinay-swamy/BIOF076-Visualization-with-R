@@ -187,7 +187,7 @@ ggplot(mpg) +
 
 ## colors in R
 - color palettes refer the to the set of colors you use within your plot.
-- chosing the right color scheme for plot is an under appreciated, but crucial step.
+- choosing the right color scheme for plot is an under appreciated, but crucial step.
 
 ```{r}
 length(colors())
@@ -196,7 +196,7 @@ length(colors())
 - there are 657 distinct colors (though 200 of these are different shades of grey)
 
 ## What considerations should go into picking a color
-- Theres been a lot research on what types of colors are best for plots
+- There's been a lot research on what types of colors are best for plots
 -  TLDR - plots using color work best when there are *divergent* colors. 
 - This can be especially difficult when choosing a continuous fill, because certain colors don't work well as a gradient
 - Consider the following palette
@@ -390,6 +390,6 @@ ggplot(iris) +
 ```
 
 ## width
-- always a good idea to spend some time looking through the documentation about what aethetics work for what geoms 
+- always a good idea to spend some time looking through the documentation about what aesthetics work for what geoms 
 
 

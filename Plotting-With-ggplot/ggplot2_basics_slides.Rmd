@@ -149,7 +149,7 @@ ggplot(data=iris) +
 - the `theme` function allows you to tweak a large number of graphical settings for a plot, but we will cover these later. For now, use one of the default themes(`theme_minimal`, `theme_gray`, `theme_void`, `theme_classic` ), or no theme.
 
 ## discrete vs continuous data
-- continuous data is always numerical, and has a range of valuesm, IE height, temperature, gene expression
+- continuous data is always numerical, and has a range of values, IE height, temperature, gene expression
 - discrete or categorical data is a set of fixed values - names, labels etc.
 
 ## lets practice
@@ -214,7 +214,7 @@ ggplot(economics_long) +
 -note that these just draw curves, not points. We'll talk about how to do both in another lecture.
 
 ## horizontal and vertical lines
-- horizontal and verticals lines can be drawn with `geom_hline` and `geom_vline` respectively. As these are just single lines, they don't need data attatched to it
+- horizontal and verticals lines can be drawn with `geom_hline` and `geom_vline` respectively. As these are just single lines, they don't need data attached to it
 ```{r}
 ggplot() + 
   geom_hline(yintercept = 5, color = 'blue') + 
@@ -357,7 +357,7 @@ ggplot(data=iris) +
 ## Violin plots
 - in a violin plot, the width of the plot corresponds to the "density" of the data. It's similar to a histogram, but rather than count the number observations, it uses a mathematical function to approximate a smooth curve fit to the histogram, where the area under the curve sums to 1 
 - This allows you to easily compare distributions between multiple variables.
-- Generally, v iolin plots are much more informative than box plots, and its almost always better to use a violin pot over a box plot. 
+- Generally, v violin plots are much more informative than box plots, and its almost always better to use a violin pot over a box plot. 
 
 ## lets do more exercises
 

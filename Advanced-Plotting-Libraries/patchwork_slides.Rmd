@@ -27,7 +27,7 @@ p1 + p2
 ```
 
 - the `patchwork` extends common operators to plots to create an intuitive syntax to make plots, as well as provide functions that specifically 
--  under the hood, `patchwork` , generates a "grid", and assigns plots to specific locations within that grid. In almost asll cases the grid must be square 
+-  under the hood, `patchwork` , generates a "grid", and assigns plots to specific locations within that grid. In almost all cases the grid must be square 
 
 ## combining plots 
 
@@ -66,7 +66,7 @@ p1|p2|p3
 p1 / p2 /p3
 ```
 
-- these options can be nested , using parathenses 
+- these options can be nested , using parentheses
 
 ```{r}
 p1 |(p2 /p3)
@@ -87,7 +87,7 @@ p1 |  sp
 p1 + p2 + p3 + p4 + plot_layout(nrow=1)
 ```
 
-- but whats most useful is created a custom layout, usign the designed. I create layout vector, `des`. 
+- but whats most useful is created a custom layout, using the designed. I create layout vector, `des`. 
 
 ```{r}
 des <- '
@@ -150,7 +150,7 @@ all_plots + plot_annotation(tag_levels = 'A')
 ## using non-`ggplot` plots in patchwork
 
 - unfortunately, only plots made with `ggplot` are compatible with patchwork.
-- Thankfully, there's another package `ggplotify` that will convery any plot into a ggplot 
+- Thankfully, there's another package `ggplotify` that will convert any plot into a ggplot 
 
 ```{r}
 library(ComplexHeatmap)
@@ -183,7 +183,7 @@ class(hm_ggplot)
 
 ```
 
-- its important to note that when using `as.ggplot`, all graphical parameters are fixed, and cant be modifed by `themes`. Make sure you adjust plots accordingly in 
+- its important to note that when using `as.ggplot`, all graphical parameters are fixed, and cant be modified by `themes`. Make sure you adjust plots accordingly in 
 
 ```{r}
 p1+hm_ggplot &theme(text = element_text('mono'))

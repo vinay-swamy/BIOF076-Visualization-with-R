@@ -141,7 +141,7 @@ data
 - the location of a file on your computer is called its `path`
 
 ## file paths 
-- This is an absolute file path `/Users/swamyvs/personal/BIOF076-Visualization-with-R/day_2` 
+- This is an absolute file path `/Users/swamyvs/personal/BIOF076-Visualization-with-R/Using-The-Tidyverse` 
 - All paths start with '/' on unix(macOS/linux) systems. 
 - On Windows, absolute paths always start with the drive name: `C:/User/local...`
 - No matter where you are, absolute paths always point to the same location
@@ -163,7 +163,7 @@ setwd('/Users/swamyvs/')
 ## the working directory
 - use the `dir` function to show what files and folders are in the the working directory
 ```{r, warning=FALSE}
-setwd("/Users/swamyvs/personal/BIOF076-Visualization-with-R/day_2")
+setwd("/Users/swamyvs/personal/BIOF076-Visualization-with-R/Using-The-Tidyverse/")
 dir()
 ```
 
@@ -179,7 +179,7 @@ getwd()
 
 ```{r}
 setwd('../')
-read_csv('day_2/dummy.csv')
+read_csv('Using-The-Tidyverse/dummy.csv')
 ```
 
 ##  local filepaths 
@@ -420,7 +420,7 @@ economics %>% pivot_longer(cols = -date,
 ```
 
 ## grouping and summarizing data 
-- we often want to generate summary statistics for subcharacterics/subpopulations of our data
+- we often want to generate summary statistics for subcharacteristics/subpopulations of our data
 - for example, calculating the the average value by day in  `economics_long` data. we do this by using the `group_by` and `summarise` functions from `dplyr`
 
 ```{r}

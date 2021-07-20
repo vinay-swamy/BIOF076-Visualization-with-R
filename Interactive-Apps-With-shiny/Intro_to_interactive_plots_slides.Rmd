@@ -16,8 +16,8 @@ slides > slide {
 
 ## Interactive plots are tricky
 - An interactive plot is any plot that is reactive to use input;
-- It can be diffcult to both develop and share interactive plots, as extensive libraries are needed for both of these parts
-- There are a couple of packages for making interactive plots in R. While these packages make it relatively easy to make interactive plots, sharing them cna be a little more tricky, and We'll cover it a little more in future classes
+- It can be difficult to both develop and share interactive plots, as extensive libraries are needed for both of these parts
+- There are a couple of packages for making interactive plots in R. While these packages make it relatively easy to make interactive plots, sharing them can be a little more tricky, and We'll cover it a little more in future classes
 
 ## `ggiraph`
 - A simple and lightweight interactive plotting library is `ggiraph`. It use `ggplot` style syntax, and provides some drop in replacement for some `ggplot` geoms 

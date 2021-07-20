@@ -197,8 +197,6 @@ ___
 -  poster down is remarkably easy to use. install the package and set the output in the document header as `output: posterdown::posterdown_html`.
 - a few other settings can be tweaked in the yaml like including a logo or setting the number of columns
 
-## lets make a poster
--  we'll be making a poster with the data you brought today with posterdown
 
 
 
