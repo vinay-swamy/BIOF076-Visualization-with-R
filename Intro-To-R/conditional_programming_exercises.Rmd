@@ -1,0 +1,130 @@
+---
+title: "Review + tidying data"
+output: html_notebook
+---
+
+## conditional programming practice
+
+
+select all elements greater than 0 in the vector below using a logical vector
+
+```{r}
+vec <- rnorm(10000, 0, sd=10)
+elements_greater_then_0 <- vec > 0
+vec[elements_greater_then_0]
+vec[vec > 0]
+```
+
+We'll be using some sample data from New York Air Quality Measurements. Notice how some of the data is missing
+
+```{r}
+data("airquality")
+airquality
+```
+
+the `is.na` function takes a vector as input and returns `TRUE` when there is a `NA`, and `FALSE` otherwise. Use the `is.na` function on the `Ozone` column and print the results
+```
+whole_data_frame_na <- is.na(example_datafram)
+example_datafram[whole_data_frame_na ] <- 0
+```
+
+```{r}
+airquality
+```
+
+
+try to calculate the mean for the `Ozone` column 
+`mean(  )` 
+```{r}
+mean(airquality$Ozone)
+```
+
+
+For the `Ozone` column values that are NOT(!) `NA`, and calculate the mean and store it in a variable
+
+```{r}
+valid_mean <- mean(airquality$Ozone[!is.na(airquality$Ozone)])
+
+```
+
+select the `NA` values in the `Ozone` and set them to the mean value we calculated earlier
+
+```{r}
+airquality$Ozone[is.na(airquality$Ozone)] <- valid_mean
+```
+
+
+use the `%in%` operator to select values from the `Month` column equal to 6 or 7. Store this in a variable
+
+```{r}
+is_june_july <-  airquality$Month %in%c(6, 7)
+```
+
+use the above logical indexing vector to select rows from the `airquality` dataframe; keep all columns 
+
+```{r}
+airquality[is_june_july, ]
+```
+
+
+
+use the `ifelse` function to replace the numbers corresponding to each month with their actual names () 6 -> "June", 7->"July")
+
+```{r}
+aq_subset <- airquality[is_june_july, ]
+aq_subset$Month <- ifelse(test = aq_subset$Month == 6, 
+                           yes = 'June',
+                           no = 'July')
+
+```
+
+make a boxplot for the `Ozone` levels for each month, coloring boxplots by month, 
+
+```{r}
+ggplot(aq_subset) + 
+    geom_boxplot(aes(x=Month, y=Ozone, fill = Month)) + 
+    theme_classic()
+
+```
+
+
+## putting it all together 
+
+Heres a slightly more complicated task.
+Working with the `mpg` dataset, write a function that takes as an input the name of a car manufacturer, filters the `mpg` data based on that value, and then plots the a bar plot of the `class` column, colored by `class`. 
+Note: when plotting a `ggplot` within a function you must `print` it out.
+
+It might help to write out the code for the `if` statement first and then incorporate it into a function.
+
+```{r}
+data(mpg)
+mpg
+plot_manufactuer <- function(manufac_name){
+    
+    if( sum(mpg$manufacturer == manufac_name) > 0){
+    is_manufactuer <- mpg$manufacturer == manufac_name
+    mpg_ss <- mpg[is_manufactuer,]
+    
+    plot <- ggplot(data = mpg_ss) + 
+        geom_bar(aes(x=class, fill = class)) + 
+        theme_minimal()
+    print(plot)
+    } else{
+        print('NO MATCH')
+    }
+}
+
+plot_manufactuer('ASDF')
+
+
+```
+
+within the same function, add an `if` statement to check if the input of the function actually is in the mpg dataframe, and if its not print an error message and return from the function. This called error handling, and an important concept to know if your code ever has ro be used by someone else 
+
+```{r}
+
+```
+
+
+
+

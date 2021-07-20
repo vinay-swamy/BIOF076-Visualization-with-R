@@ -1,0 +1,90 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+Here are come plots to work with 
+
+```{r}
+library(ggplot2)
+p1 <- ggplot(mtcars) + 
+  geom_point(aes(mpg, disp,)) + 
+  ggtitle('Plot 1')
+
+p2 <- ggplot(mtcars) + 
+  geom_boxplot(aes(gear, disp, group = gear, fill=as.character(gear))) + 
+  ggtitle('Plot 2') + 
+    guides(fill = guide_legend(title = 'gear'))
+
+p3 <- ggplot(mtcars) + 
+  geom_point(aes(hp, wt, colour = mpg)) + 
+  ggtitle('Plot 3')
+
+p4 <- ggplot(mtcars) + 
+  geom_bar(aes(gear)) + 
+  facet_wrap(~cyl) + 
+  ggtitle('Plot 4')
+```
+
+- add the plots together one by one, no orientation
+
+```{r fig.height=8, fig.width=8}
+library(patchwork)
+
+p1 + p2 + p3 + p4
+```
+
+- add plots, but make only one column of plots 
+
+```{r, fig.width=4, fig.height=10}
+p1 + p2 + p3 + p4 +plot_layout(ncol=1)
+```
+
+- use a desgin and `plot_layout` to make plot 1 bigger than the rest of the plots 
+
+```{r}
+des <-'
+ABB
+CCC
+DDD'
+
+p1 + p2 + p3 + p4 + plot_layout(design = des) + plot_annotation(tag_levels = 'I')
+
+```
+
+
+```{r}
+install.packages(c('plotly', 'ggiraph'))
+
+```
+
+
+- make this an interactive plot with `girafe`, displaying the carb column 
+
+```{r}
+library(ggiraph) 
+library(tidyverse)
+ 
+plot_interactive <-  ggplot(mtcars) + 
+  geom_point_interactive(aes(hp, wt, colour = mpg)) + 
+  ggtitle('Plot 3')
+
+girafe(ggobj = plot_interactive)
+```
+
+remake the above plot with plotly
+
+```{r}
+library(plotly)
+plot_ly(mpg, x=~cty, y=~hwy, z =~displ)
+```
+
+
+
+
+
+
+
+
+
+

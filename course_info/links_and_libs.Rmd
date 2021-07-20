@@ -8,24 +8,23 @@ urlcolor: blue
 ## Rstudio cheatsheets
 
 Quick references for common packages. See more cheatsheets [here](https://rstudio.com/resources/cheatsheets/)
-
-- [dplyr](https://github.com/rstudio/cheatsheets/raw/master/data-transformation.pdf)
-- [Rmarkdown](https://github.com/rstudio/cheatsheets/raw/master/rmarkdown-2.0.pdf)
-- [shiny](https://github.com/rstudio/cheatsheets/raw/master/shiny.pdf)
-- [ggplot](https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf)
-- [base R](http://github.com/rstudio/cheatsheets/raw/master/base-r.pdf)
+- [base R](http://github.com/rstudio/cheatsheets/raw/master/base-r.pdf) : tips and tricks for base R
+- [dplyr](https://github.com/rstudio/cheatsheets/raw/master/data-transformation.pdf) : manipulating and tidying data
+- [ggplot](https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf) : core plotting library 
+- [shiny](https://github.com/rstudio/cheatsheets/raw/master/shiny.pdf) : interactive visualizations
+- [Rmarkdown](https://github.com/rstudio/cheatsheets/raw/master/rmarkdown-2.0.pdf) : creating notebooks and reports
 
 ### Useful Libraries for Visualization
 
 [ComplexHeatmap](https://jokergoo.github.io/ComplexHeatmap-reference/book/)
 
 - Non-ggplot based package for plotting Heatmaps. 
-- Heatmaps are usefult visualizations for showing subpopulations in clustered data
-- Has extensive documentation and is extremelt flexible. 
+- Heatmaps are useful visualizations for showing subpopulations in clustered data
+- Has extensive documentation and is extremely flexible. 
 
 [ComplexUpset](https://github.com/krassowski/complex-upset)
 
-- Non-ggplot based package for ploting upset plots 
+- Non-ggplot based package for plotting upset plots 
 - upset plots are useful for visualizing interactions between sets 
 
 [DT](https://rstudio.github.io/DT/)

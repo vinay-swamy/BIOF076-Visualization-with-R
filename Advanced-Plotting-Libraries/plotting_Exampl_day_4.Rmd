@@ -1,0 +1,64 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+
+```{r}
+library(tidyverse)
+iris
+pca_out <- prcomp(iris[,1:4])
+pca_x <- pca_out$x[,1:2] %>% as.data.frame()
+pca_x$species <- iris$Species
+ggplot(pca_x) + 
+    geom_point(aes(x=PC1, y=PC2, color = species)) +
+    theme_minimal()
+
+```
+
+
+
+```{r}
+data <- readRDS('../src/gene_expression_ss.RDS') %>% .[1:24, 1:24] %>% t()
+metadat <- read_tsv('../src/gene_expression_sample_tsv.gz')
+
+pca_out <- prcomp(data)
+pca_x <- pca_out$x %>% as.data.frame
+pca_x$Tissue <- metadat$Tissue
+
+ggplot(pca_x) + 
+    geom_point(aes(x=PC1, y=PC2, color = Tissue ), alpha = .7) +
+    theme_minimal()
+```
+
+
+
+
+
+```{r}
+knitr::include_graphics('~/Desktop/Screen Shot 2021-03-04 at 9.19.32 AM.png')
+```
+
+
+```{r}
+
+ggplot(mpg) +
+    geom_point(aes(x=class, y= model,color = cty, size=displ )) + 
+    theme_minimal()
+sc_data <- read_tsv('../src/pbmc_cell_expression.tsv.gz')
+
+sc_data_long <-  sc_data %>% 
+    pivot_longer(-colnames(sc_data)[1:4], names_to = 'gene_name', values_to = 'exp') %>% 
+    group_by(cell_type, gene_name) %>% 
+    summarise(avg_exp = mean(exp), 
+              n_expressing =sum( exp > 0),
+              pt_expressing = n_expressing/ n() *100
+              )
+ggplot(sc_data_long) +
+    geom_point(aes(x=gene_name, y= cell_type,color = avg_exp, size=pt_expressing )) + 
+    theme_minimal()
+
+```
+
+
