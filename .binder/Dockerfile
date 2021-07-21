@@ -1,4 +1,4 @@
-FROM vinayswamy/biof076-docker:0.3
+FROM vinayswamy/biof076-docker:0.4
 LABEL maintainer='Unknown'
 ENV NB_USER=rstudio
 USER root
