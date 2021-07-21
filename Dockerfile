@@ -3,7 +3,7 @@ USER root
 ENV RSTUDIO_VERSION 1.2.5042
 RUN /rocker_scripts/install_rstudio.sh
 
-#ENV NB_USER=jovyan
+ENV NB_USER=rstudio
 
 RUN /rocker_scripts/install_python.sh
 RUN /rocker_scripts/install_binder.sh
