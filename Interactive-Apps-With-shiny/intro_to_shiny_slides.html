@@ -300,7 +300,7 @@ plotOutput(outputId = &quot;distPlot&quot;)</pre>
 <li>unlike the UI, which is itself a predefined function, the server is a unique function that we design for each app</li>
 </ul>
 
-<pre class = 'prettyprint lang-r'>server &lt;- function(input, output) {
+<pre class = 'prettyprint lang-r'>server &lt;- function(input, output, session) {
     output$distPlot &lt;- renderPlot({ 
         x    &lt;- faithful$waiting
         bins &lt;- seq(min(x), max(x), length.out = input$bins + 1)
@@ -315,6 +315,7 @@ plotOutput(outputId = &quot;distPlot&quot;)</pre>
 
 <ul>
 <li>the <code>input</code> and <code>ouptut</code> <em>must</em> be specified as arguments, and are almost always the only arguments for the function.</li>
+<li>the <code>session</code> argument is optional, and can some times be required for more complicated apps. the session is a way to store information about the specific run of an app, ie so it can be saved and loaded again.</li>
 </ul>
 
 </article></slide><slide class=""><hgroup><h2>the server input</h2></hgroup><article  id="the-server-input">
@@ -361,16 +362,19 @@ bins &lt;- seq(min(x), max(x), length.out = input$bins + 1)</pre>
 }</pre>
 
 <ul>
+<li>The key portion of the <code>server</code> functions is the use of <code>renderPlot</code>, which is how we generate the plot associated with the <code>plotOutput</code> defined in the UI</li>
 <li>notice that server relies a lot more on expressions, chunks of code demarcated by <code>{}</code>. This makes it much easier to write server code.</li>
 <li>Remember that any code involving computations must be run in server; the UI is only for UI, and server is for everything else</li>
 </ul>
 
-</article></slide><slide class=""><hgroup><h2>writing shiny code</h2></hgroup><article  id="writing-shiny-code">
+</article></slide><slide class=""><hgroup><h2>Commonly used UI-server combos</h2></hgroup><article  id="commonly-used-ui-server-combos">
 
 <ul>
-<li>Shiny code works best in an <code>Rscript</code>. This is nothing more than a text file with a <code>.R</code> extension. We won’t be able to run code interactively like a notebook</li>
-<li>However Rstudio provides a little help to run shiny apps.</li>
-<li>Open the file &lsquo;shiny_examples/basic_app.R&rsquo;</li>
+<li>UI: <code>plotOutput</code>, server :<code>renderPlot</code> - display a plot</li>
+<li>UI: <code>tableOutput</code>, server :<code>renderTable</code> - display a <code>data.frame</code></li>
+<li>UI: <code>textOutput</code>, server :<code>renderText</code> - display plain text</li>
+<li>UI: <code>dataTableOutput</code>, server: <code>renderDataTable</code> - display an interactive viewer for a <code>data.frame</code></li>
+<li>There are many other additional packages that add different types of app output, but almost all will follow</li>
 </ul>
 
 </article></slide><slide class=""><hgroup><h2>loading data when using shiny</h2></hgroup><article  id="loading-data-when-using-shiny">
@@ -379,31 +383,141 @@ bins &lt;- seq(min(x), max(x), length.out = input$bins + 1)</pre>
 <li>make sure you read in all the data you need at the beginning of your script. If you read data in within shiny code, the data will be run in constantly and get very slow.</li>
 </ul>
 
+</article></slide><slide class=""><hgroup><h2>Putting it all together</h2></hgroup><article  id="putting-it-all-together">
+
+<ul>
+<li>Combining the server and UI functions, we get a complete app:</li>
+</ul>
+
+<pre >library(shiny)
+ui &lt;- fluidPage(
+    # App title ----
+    titlePanel(&quot;Hello Shiny!&quot;),
+    # Sidebar layout with input and output definitions ----
+    sidebarLayout(
+        # Sidebar panel for inputs ----
+        sidebarPanel(
+            # Input: Slider for the number of bins ----
+            sliderInput(inputId = &quot;bins&quot;, label = &quot;Number of bins:&quot;, min = 1,max = 50, value = 30)
+        ),
+        # Main panel for displaying outputs ----
+        mainPanel(
+            # Output: Histogram ----
+            plotOutput(outputId = &quot;distPlot&quot;)
+        )
+    )
+)
+
+server &lt;- function(input, output) {
+    output$distPlot &lt;- renderPlot({ 
+        x    &lt;- faithful$waiting
+        bins &lt;- seq(min(x), max(x), length.out = input$bins + 1)
+        
+        hist(x, breaks = bins, col = &quot;#75AADB&quot;, border = &quot;white&quot;,
+             xlab = &quot;Waiting time to next eruption (in mins)&quot;,
+             main = &quot;Histogram of waiting times&quot;)
+        
+    })
+    
+}
+shinyApp(ui = ui, server = server)</pre>
+
+</article></slide><slide class=""><hgroup><h2>writing shiny code</h2></hgroup><article  id="writing-shiny-code">
+
+<ul>
+<li>Shiny code works best in an <code>Rscript</code>. This is nothing more than a text file with a <code>.R</code> extension. We won’t be able to run code interactively like a notebook</li>
+<li>However Rstudio provides a little help to run shiny apps.</li>
+<li>Open the file &lsquo;shiny_examples/basic_app.R&rsquo;</li>
+<li>A new shiny app template is available in Rstudio (File &gt; New File &gt; Shiny Web app)</li>
+</ul>
+
 </article></slide><slide class=""><hgroup><h2>more control over layout - columns</h2></hgroup><article  id="more-control-over-layout---columns">
 
 <ul>
 <li>as opposed to a single column with <code>mainPanel</code>, you can designate multiple columns within <code>fluidPage</code> with the <code>column</code> function</li>
 </ul>
 
-<pre >fluidPage(
+<pre >ui &lt;- fluidPage(
+    titlePanel(&#39;Example Shiny App&#39;),
+    column(5,
+          dataTableOutput(outputId = &#39;table&#39;),    
+        
+    ),
+    column(2),
+    column(5,
+        actionButton(inputId = &#39;plot_button&#39;,label = &#39;Draw Plot&#39; ),
+        plotOutput(outputId = &#39;scatter&#39;),
+        selectizeInput(inputId = &#39;flower_to_plot&#39;, 
+                    label = &#39;Pick a flower to visualiz&#39;, 
+                    selected = &quot;setosa&quot;, choices = c(&quot;setosa&quot;, &quot;versicolor&quot;,  &quot;virginica&quot;)),
+        sliderInput(inputId = &#39;point_size&#39;, label = &quot;Choose a point size&quot;, 
+                    value = 3, min = 1, max = 10)
+    )
     
-    column(3,
-           radioButtons(&quot;radio&quot;, &quot;Radio buttons&quot;,
-                        choices = list(&quot;Choice 1&quot; = 1, &quot;Choice 2&quot; = 2,
-                                       &quot;Choice 3&quot; = 3),selected = 1),
-           plotOutput(outputId = &quot;distPlot&quot;)),
-                        
-                                      
-    
-    column(3,
-           selectInput(&quot;select&quot;, &quot;Select box&quot;, 
-                       choices = list(&quot;Choice 1&quot; = 1, &quot;Choice 2&quot; = 2,
-                                      &quot;Choice 3&quot; = 3), selected = 1),
-           plotOutput(outputId = &quot;distPlot&quot;))
-        )</pre>
+)</pre>
 
 <ul>
 <li>the first number in the column corresponds to the width; the width of one page is 12, so these columns each take up a quarter of the screen</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Handling Reactive values</h2></hgroup><article  id="handling-reactive-values">
+
+<ul>
+<li>Reactive Values are generally any value that that’s’ part of the UI, ie anything a user can change</li>
+<li>Reactive Values are supposed to be only accessed from inside the <code>render...</code> portion of server code</li>
+<li>Often times, we will only want display something after some user action has happened, ie drawing a plot after a button is pressed</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Handling Reactive values</h2></hgroup><article  id="handling-reactive-values-1">
+
+<ul>
+<li>consider the following UI:</li>
+</ul>
+
+<pre >ui &lt;- fluidPage(
+    titlePanel(&#39;Example Shiny App&#39;),
+    column(5,
+          dataTableOutput(outputId = &#39;table&#39;),    
+        
+    ),
+    column(2),
+    column(5,
+        actionButton(inputId = &#39;plot_button&#39;,label = &#39;Draw Plot&#39; ),
+        plotOutput(outputId = &#39;scatter&#39;),
+        selectizeInput(inputId = &#39;flower_to_plot&#39;, 
+                    label = &#39;Pick a flower to visualiz&#39;, 
+                    selected = &quot;setosa&quot;, choices = c(&quot;setosa&quot;, &quot;versicolor&quot;,  &quot;virginica&quot;)),
+        sliderInput(inputId = &#39;point_size&#39;, label = &quot;Choose a point size&quot;, 
+                    value = 3, min = 1, max = 10)
+    )
+    
+)</pre>
+
+<ul>
+<li>I want to the plot to be displayed <em>only after</em> I select all input and click the draw button</li>
+<li>This functionality must be handled in the server portion of the code</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Handling Reactive values</h2></hgroup><article  id="handling-reactive-values-2">
+
+<ul>
+<li>the server code:</li>
+</ul>
+
+<pre >server &lt;- function(input, output) {
+   
+    observeEvent(input$plot_button, {
+        output$scatter &lt;- renderPlot({
+            data_to_plot &lt;- iris %&gt;%
+                filter(Species == input$flower_to_plot)
+            ggplot(data= data_to_plot) +
+                geom_point(aes(x=Petal.Width, y= Petal.Length), size = input$point_size) +
+                theme_minimal()
+        })
+    })</pre>
+
+<ul>
+<li>the <code>observeEvent</code> function will only execute code once a reactive input value has been filled. Here we use it for the button, but it can be used for any reactive input.</li>
 </ul></article></slide>
 
 

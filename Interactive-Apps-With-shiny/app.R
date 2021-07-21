@@ -13,7 +13,7 @@ ui <- fluidPage(
         actionButton(inputId = 'plot_button',label = 'Draw Plot' ),
         plotOutput(outputId = 'scatter'),
         selectizeInput(inputId = 'flower_to_plot', 
-                    label = 'Pick a flower to visualiz', 
+                    label = 'Pick a flower to visualize', 
                     selected = "setosa", choices = c("setosa", "versicolor",  "virginica")),
         sliderInput(inputId = 'point_size', label = "Choose a point size", 
                     value = 3, min = 1, max = 10)

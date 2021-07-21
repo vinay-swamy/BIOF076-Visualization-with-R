@@ -92,9 +92,11 @@ plotOutput(outputId = "distPlot")
 -  we can then access each element by its id in in the sever, and similarly set each output
 
 ## the server
+
 - unlike the UI, which is itself a predefined function, the server is a unique function that we design for each app 
+
 ```{r eval = F}
-server <- function(input, output) {
+server <- function(input, output, session) {
     output$distPlot <- renderPlot({ 
         x    <- faithful$waiting
         bins <- seq(min(x), max(x), length.out = input$bins + 1)
@@ -107,10 +109,14 @@ server <- function(input, output) {
     
 }
 ```
-- the `input` and `ouptut` *must* be specified as arguments, and are almost always the only arguments for the function.
+
+- the `input` and `ouptut` *must* be specified as arguments, and are almost always the only arguments for the function. 
+- the `session` argument is optional, and can some times be required for more complicated apps. the session is a way to store information about the specific run of an app, ie so it can be saved and loaded again. 
 
 ## the server input
+
 - `input` is a list where each element corresponds to an `inputID` within the UI. The value within each inputID corresponds to the specific UI element its associated with 
+
 ```{r, eval = F}
 ## from UI
 sliderInput(inputId = "bins", label = "Number of bins:", min = 1,max = 50, value = 30)
@@ -119,8 +125,10 @@ bins <- seq(min(x), max(x), length.out = input$bins + 1)
 ```
 
 ## the server output
+
 - the `output` argument contains "empty" outputIDs, that are connected to the outputs in UI
 - outputs must always be some kind `render*` object
+
 ```{r, eval = F}
 output$distPlot <- renderPlot({ 
         x    <- faithful$waiting
@@ -134,6 +142,7 @@ output$distPlot <- renderPlot({
 ```
 
 ## server formats
+
 ```{r eval=F}
 server <- function(input, output) {
     output$distPlot <- renderPlot({ 
@@ -148,40 +157,146 @@ server <- function(input, output) {
     
 }
 ```
+
+- The key portion of the `server` functions is the use of `renderPlot`, which is how we generate the plot associated with the `plotOutput` defined in the UI
 - notice that server relies a lot more on expressions, chunks of code demarcated by `{}`. This makes it much easier to write server code. 
 - Remember that any code involving computations must be run in server; the UI is only for UI, and server is for everything else
 
-## writing shiny code
-- Shiny code works best in an `Rscript`. This is nothing more than a text file with a `.R` extension. We won't be able to run code interactively like a notebook
-- However Rstudio provides a little help to run shiny apps. 
-- Open the file 'shiny_examples/basic_app.R'
+## Commonly used UI-server combos
+- UI: `plotOutput`, server :`renderPlot` - display a plot
+- UI: `tableOutput`, server :`renderTable` - display a `data.frame`
+- UI: `textOutput`, server :`renderText` - display plain text
+- UI: `dataTableOutput`, server: `renderDataTable` - display an interactive viewer for a `data.frame`
+- There are many other additional packages that add different types of app output, but almost all will follow
 
 ## loading data when using shiny
 
 - make sure you read in all the data you need at the beginning of your script. If you read data in within shiny code, the data will be run in constantly and get very slow.
 
+## Putting it all together
+
+- Combining the server and UI functions, we get a complete app:
+
+```
+library(shiny)
+ui <- fluidPage(
+    # App title ----
+    titlePanel("Hello Shiny!"),
+    # Sidebar layout with input and output definitions ----
+    sidebarLayout(
+        # Sidebar panel for inputs ----
+        sidebarPanel(
+            # Input: Slider for the number of bins ----
+            sliderInput(inputId = "bins", label = "Number of bins:", min = 1,max = 50, value = 30)
+        ),
+        # Main panel for displaying outputs ----
+        mainPanel(
+            # Output: Histogram ----
+            plotOutput(outputId = "distPlot")
+        )
+    )
+)
+
+server <- function(input, output) {
+    output$distPlot <- renderPlot({ 
+        x    <- faithful$waiting
+        bins <- seq(min(x), max(x), length.out = input$bins + 1)
+        
+        hist(x, breaks = bins, col = "#75AADB", border = "white",
+             xlab = "Waiting time to next eruption (in mins)",
+             main = "Histogram of waiting times")
+        
+    })
+    
+}
+shinyApp(ui = ui, server = server)
+```
+
+## writing shiny code
+
+- Shiny code works best in an `Rscript`. This is nothing more than a text file with a `.R` extension. We won't be able to run code interactively like a notebook
+- However Rstudio provides a little help to run shiny apps. 
+- Open the file 'shiny_examples/basic_app.R'
+- A new shiny app template is available in Rstudio (File > New File > Shiny Web app)
+
+
 ## more control over layout - columns
+
 - as opposed to a single column with `mainPanel`, you can designate multiple columns within `fluidPage`
 with the `column` function
 ```
-fluidPage(
+ui <- fluidPage(
+    titlePanel('Example Shiny App'),
+    column(5,
+          dataTableOutput(outputId = 'table'),    
+        
+    ),
+    column(2),
+    column(5,
+        actionButton(inputId = 'plot_button',label = 'Draw Plot' ),
+        plotOutput(outputId = 'scatter'),
+        selectizeInput(inputId = 'flower_to_plot', 
+                    label = 'Pick a flower to visualiz', 
+                    selected = "setosa", choices = c("setosa", "versicolor",  "virginica")),
+        sliderInput(inputId = 'point_size', label = "Choose a point size", 
+                    value = 3, min = 1, max = 10)
+    )
     
-    column(3,
-           radioButtons("radio", "Radio buttons",
-                        choices = list("Choice 1" = 1, "Choice 2" = 2,
-                                       "Choice 3" = 3),selected = 1),
-           plotOutput(outputId = "distPlot")),
-                        
-                                      
-    
-    column(3,
-           selectInput("select", "Select box", 
-                       choices = list("Choice 1" = 1, "Choice 2" = 2,
-                                      "Choice 3" = 3), selected = 1),
-           plotOutput(outputId = "distPlot"))
-        )
+)
 ```
 - the first number in the column corresponds to the width; the width of one page is 12, so these columns each take up a quarter of the screen
+
+## Handling Reactive values 
+
+- Reactive Values are generally any value that that's' part of the UI, ie anything a user can change
+- Reactive Values are supposed to be only accessed from inside the `render...` portion of server code
+- Often times, we will only want display something after some user action has happened, ie drawing a plot after a button is pressed
+
+## Handling Reactive values 
+
+- consider the following UI:
+```
+ui <- fluidPage(
+    titlePanel('Example Shiny App'),
+    column(5,
+          dataTableOutput(outputId = 'table'),    
+        
+    ),
+    column(2),
+    column(5,
+        actionButton(inputId = 'plot_button',label = 'Draw Plot' ),
+        plotOutput(outputId = 'scatter'),
+        selectizeInput(inputId = 'flower_to_plot', 
+                    label = 'Pick a flower to visualiz', 
+                    selected = "setosa", choices = c("setosa", "versicolor",  "virginica")),
+        sliderInput(inputId = 'point_size', label = "Choose a point size", 
+                    value = 3, min = 1, max = 10)
+    )
+    
+)
+```
+- I want to the plot to be displayed *only after* I select all input and click the draw button
+- This functionality must be handled in the server portion of the code
+
+## Handling Reactive values 
+
+- the server code:
+
+```
+server <- function(input, output) {
+   
+    observeEvent(input$plot_button, {
+        output$scatter <- renderPlot({
+            data_to_plot <- iris %>%
+                filter(Species == input$flower_to_plot)
+            ggplot(data= data_to_plot) +
+                geom_point(aes(x=Petal.Width, y= Petal.Length), size = input$point_size) +
+                theme_minimal()
+        })
+    })
+```
+
+- the `observeEvent` function will only execute code once a reactive input value has been filled. Here we use it for the button, but it can be used for any reactive input.
 
 
 
