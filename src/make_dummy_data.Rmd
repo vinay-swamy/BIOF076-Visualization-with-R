@@ -82,7 +82,7 @@ volcano_data <- bind_rows(
          log2fc = pos_l2fc
          )
 ) %>% mutate(significant = ifelse(pvalue <.05& (log2fc > 1 | log2fc < -1),'sig', 'not_sig'))
-write_tsv(volcano_data, '../day_5/diff_gene_exp.tsv.gz')
+write_tsv(volcano_data, '../src/diff_gene_exp.tsv.gz')
 sum(volcano_data$significant == 'sig')
 ```
 
