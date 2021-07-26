@@ -11,18 +11,7 @@ output: html_notebook
 
 - this is the boilerplate for your code. Copy and paste it into app.R 
 ```{r}
-ui <- fluidPage(
-    titlePanel(''),
-    mainPanel(
-              plotOutput(outputId = ''),
-              selectInput(inputId = '', label = '', selected = "", choices = c(""))
-              )
-)
-server <- function(input, output) {
-    
-}
 
-shinyApp(ui = ui, server = server)
 ```
 - reference 'shiny_examples/basic_app.R' for syntax guidelines, and use the `?` help operator if you get stuck
 

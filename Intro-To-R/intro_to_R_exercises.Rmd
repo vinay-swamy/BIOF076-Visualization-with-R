@@ -5,10 +5,11 @@ output: html_notebook
 
 This is an R notebook. It's a useful way to run code interactively. the blocks marked by the ticks are called chunks. press the play button to the top right of the chunk to run code. The title of the chunk is the test in the bracket. I will try to refer to chunks by their title. 
 
-```{r welcome}
+```{r }
 "Welcome to R"
 print('hello class')
 ```
+
 
 ```{r}
 
@@ -16,10 +17,16 @@ print('hello class')
 
 
 
+
+```{r}
+example <- 'test'
+```
+
+
 These first few chunks are working with variables. Run the chunk below. You should see a variable in the environment panel called "examlpe", storing the character "test"
 
 ```{r example_1}
-example <- 'test'
+example <- "test"
 ```
 
 Now run this chunk
@@ -32,7 +39,7 @@ this is an example of an error message, and you're gonna see a lot of them this 
 
 Sometimes, Rstudio is able to detect syntax errors, in this case a missing comma 
 ```{r}
-x <- c(1, 1)
+
 ```
 
 
@@ -41,19 +48,21 @@ Try these exercises ( dont type in the same line as the "```" ticks )
 Assign the number `5` to a variable named `x`
 
 ```{r ex_1}
-x=5
+x <- 5
 ```
 
 Assign the word 'hello' to a variable named `greeting`
 
 ```{r}
+
 greeting <- 'hello'
+
 ```
 
 Make a vector containing the numbers 3, 4, 5, and 6 
 
 ```{r ex_2}
-example_vector <- c(3, 4, 5, 6)
+
 
 ```
 
@@ -61,35 +70,35 @@ Note at that the Environment section, vectors also display their length and asso
 
 Make 2 vectors, the first with numbers 2,5,7,2 and the second with 3,4,523, and then join them together 
 ```{r ex_3}
-second_vector <- c(2,5,7,2)
 
-c(example_vector, second_vector)
+
+
 ```
 
 
 select the first element from the following vector
 
 ```{r ex_4}
-char_vec <- c('is', 'this', 'making', 'some', 'sense')
-example_vector[1]
+
+
 ```
 
 select the last element from `char_vec`
 
 ```{r ex_5}
-char_vec[5]
+
 ```
 
 select the the 1st, 3rd, and 5th elements from `char_vec`
 
 ```{r ex_6}
 
-char_veckiil[c(1, 2, 3)]
+
 ```
 
 
 ```{r}
-char_vec[2:5]
+
 ```
 
 select all values between the 2nd and 5th elements from `char_vec`
@@ -128,7 +137,7 @@ calculate the mean for this vector (try using the `mean` function)
 ```{r ex_9}
 vec <- c(23444, -12342, 23454, 64324, -45315)
 
-mean(x=vec)
+
 ```
 
 The vector below is randomly generated numeric vector of length between 1 and 100. Use `length` to find the length of `random_vector`. run it a couple times to see it change
@@ -136,8 +145,6 @@ The vector below is randomly generated numeric vector of length between 1 and 10
 ```{r ex_10}
 x=rnorm(n=100)
 
-last <- length(x)
-x[last]
 
 ```
 
@@ -147,13 +154,13 @@ use `paste` to concatente these two characters
 char1 <- 'hello'
 char2 <- 'world'
 
-paste(char1, char2)
+
 ```
 
 Now, change the separator between the two characters from a space to `-`. try running `?paste` for help
 
 ```{r ex_12}
-paste(char1, char2, sep = '-')
+
 ```
 
 calculate the mean for each vector, and then add together using  the `+` operator
@@ -162,7 +169,7 @@ calculate the mean for each vector, and then add together using  the `+` operato
 v1 <- c(1,4,23)
 v2 <- c(4,56,23,12)
 v3 <- c(123,4, -40, -50, 34)
-mean(v1) + mean(x = v2) + mean(x=v3)
+
 ```
 
 now calculate the mean for each above vector, but use the `sum` function.(hint: you need to make a vector)
@@ -170,9 +177,7 @@ now calculate the mean for each above vector, but use the `sum` function.(hint: 
 ```{r ex_14}
 
 vector_of_means <- c( mean(v1) , mean(x = v2) , mean(x=v3))
-sum(vector_of_means)
 
-?paste
 
 ```
 
@@ -189,15 +194,7 @@ sum(vector_of_means)
 write your own function that takes a number as an input, and adds the number `5` to it
 
 ```{r ex_15}
-outside_number <- 10
-add_five <- function(number){
-    
-    result <- outside_number + 5
-    print('inside')
-    return(result)
-    print('outside')
 
-}
 
 add_five(4)
 
@@ -211,10 +208,7 @@ v1 <- c(1,4,23)
 v2 <- c(4,56,23,12)
 v3 <- c(123,4, -40, -50, 34)
 
-last_element <- function(vec){
-  vec[length(vec)]
-  return(vec)
-}
+
 
 
 
@@ -237,17 +231,13 @@ Decalre a list with two using two vectors below. when declaring the list, name t
 a <- c(0,1,2,3,4)
 b <- c(0,2,4,6,8)
 
-experiment <- list(condition_a = a,  
-                   condition_b = b)
 
-experiment
 ```
 "
 using the `names` function, change the names of condition_a to "wild_type", and condition_b to "knock_out"
 
 ```{r ex_18}
-names(experiment) <-  c('wild_type', "knock_out")
-experiment
+
 ```
 
 
@@ -255,7 +245,7 @@ change the last value in wild_type from 4 to -1 (hint: you will need to first ac
 
 ```{r ex_19}
 
-experiment$wild_type[5] <- -1
+
 
 ```
 
@@ -295,16 +285,13 @@ The autocomplete generally works pretty well and will save you a lot of time.
 - calculate the revenue per employee and store it in new columns
 
 ```{r ex_21}
-faang_data$rev_per_employee <- faang_data$revenue / faang_data$n_employees
-faang_data
+
 ```
 
 - the `which.min` function returns the index for the maximum value in a vector. Use this to identify the company with the highest revenue and select its ceo
 
 ```{r ex_22}
 
-highest_rev <- which.min(faang_data$revenue)
-faang_data$ceo[highest_rev]
 
 ```
 
@@ -312,20 +299,13 @@ faang_data$ceo[highest_rev]
 
 ```{r}
 last_names <- c( 'zuckerberg', 'cook',  'bezos')
-faang_data$ceo[1:3] <- paste(faang_data$ceo[1:3],last_names )
-faang_data
+
 ```
 
 
 - write a function that takes a column name as input and returns the mean, and use it to calculate the mean of the `revenue` and `n_employees` columns in `faang_data`
 
 ```{r}
-
-calculate_mean <- function(df, col_name){
-  return(mean(df[,col_name]))
-}
-
-calculate_mean(df=faang_data, col_name = 'revenue')
 
 
 ```
@@ -341,8 +321,7 @@ faang_data <- data.frame(name = c('Facebook', 'apple', 'amazon', 'netflix', 'goo
                          service = c('ads', 'tech', 'shipping', 'streaming', 'ads')
                          )
 
-faang_data$name <- as.character(faang_data$name)
-str(faang_data)
+
 ```
 
 
