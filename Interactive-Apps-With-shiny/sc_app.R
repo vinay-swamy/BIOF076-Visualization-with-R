@@ -1,7 +1,7 @@
 library(tidyverse)
 library(shiny)
 
-data <- read_tsv('src/pbmc_cell_expression.tsv.gz')
+data <- read_tsv('../src/pbmc_cell_expression.tsv.gz')
 data_long <- data %>% pivot_longer(-colnames(data)[1:4], 
                           names_to ='gene',
                           values_to = 'exp')

@@ -14,18 +14,23 @@ remotes::install_github("coolbutuseless/ggpattern")
 ## gapminder and ggpattern
 
 ```{r}
-
 library(ggpattern)
-gapminder_ss <- read_tsv('../src/gapminder_2007.tsv.gz')
+library(tidyverse)
+gapminder_ss <- read_tsv('../src/gapminder_2007.tsv.gz') %>% 
+    mutate(gender = sample(c('M', 'F'), size = nrow(.), replace = T) )
+gapminder_summarized <- gapminder_ss %>% 
+    group_by(continent, gender) %>% 
+    summarise(avg_lifespan = mean(lifeExp))
+
 ```
 
 - I've added some data about gender to the `gapminder` dataset. use this data set to calculate the average lifespan per continent per gender. plot a bargraph with colors for each continents and patterns for each gender. 
 - hint: becasue the data is averaged, you will be using `geom_col`
 
 ```{r}
-gapminder_summarized <- gapminder_bygender %>% 
-    group_by(continent, gender) %>% 
-    summarise(avg_lifespan = mean(lifeExp))
+ggplot(gapminder_summarized) + 
+    geom_col_pattern(aes(x=continent, y=avg_lifespan, pattern = gender), position = 'dodge') +
+    theme_classic()
 
 ```
 
@@ -50,16 +55,30 @@ install.packages('ggpubr')
 ```{r}
 
 library(ggpubr)
-data <- read_tsv('../src/Reporter_assay_results.tsv.gz')
-data_long <- data %>% 
+data <- read_tsv('../src/Reporter_assay_results.tsv.gz') %>% 
+    pivot_longer(cols = c(WildType, Mutant), names_to = 'type', values_to = 'obs')
+
+ggline(
+    data = data, 
+    x="Time", 
+    y="obs", 
+    group = "type",
+    add = 'mean_se',
+    color = 'type',
+    shape = 'type'
+)
 
 ```
 
-
-
-
 filter the data to the last time point, and make a boxplot with `ggboxplot`. Include a test for a statstically significant change in the data on the plot. 
+
 ```{r}
+data <- read_tsv('../src/Reporter_assay_results.tsv.gz') %>% 
+    pivot_longer(cols = c(WildType, Mutant), names_to = 'type', values_to = 'obs') %>% 
+    filter(Time  == 24)
+
+ggboxplot(data=data, x="type", y="obs", fill = "type") + 
+    stat_compare_means(label = 'p.signif')
 
 ```
 
@@ -71,23 +90,47 @@ filter the data to the last time point, and make a boxplot with `ggboxplot`. Inc
 
 ```{r}
 install.packages('gapminder') # this installs the gapminder dataset into R
-install.packages('gganimate', type = 'source')
+install.packages('gganimate')
 install.packages('ggsci')
 ```
 
 
 ```{r}
+library(tidyverse)
 library(gapminder)
 library(ggplot2)
 library(gganimate)
 library(ggsci)
 
+ggplot(gapminder) +
+    geom_point(aes(x=gdpPercap, y= lifeExp, size = pop, color = contient), alpha = .5) +
+    scale_size(range = c(3,15))+
+    guides(size = guide_legend(title = 'Population (M)')) +
+    scale_color_discrete()
+    #ggsci::scale_color_aaas()+
+    theme_minimal()
+
+
+anim_save('example_animation.png', animation = plot)
 
 ```
 
 
-
 ## plotting with maps 
+
+```{r}
+install.packages('sf')
+install.packages('ggspatial')
+library(sf)
+library(ggspatial)
+```
+
+
+```{r}
+library(sf)
+library(ggspatial)
+```
+
 
 Lets make a plot with some real data. We're gonna be working with some data about COVID-19 testing in maryland. 
 '../src/MD_COVID_cases_by_zip.tsv.gz' contains the per day number of positive covid cases by zip code for about 160 days in the state of maryland. 
@@ -95,11 +138,13 @@ Lets make a plot with some real data. We're gonna be working with some data abou
 '../src/maryland_counties.shp' is a shapefile for counties in maryland (`st_read`)
 
 ```{r}
+library(sf)
+library(ggspatial)
 
 md_covid_cases <- read_tsv('../src/MD_COVID_cases_by_zip.tsv.gz')
 md_county_to_zip <- read_tsv('../src/maryland_zipcode_to_county.tsv.gz')
 
-download.file('https://opendata.arcgis.com/datasets/4c172f80b626490ea2cff7b699febedb_1.zip?outSR=%7B%22latestWkid%22%3A3857%2C%22wkid%22%3A102100%7D', 'maryland.zip')
+
 unzip('maryland.zip')
 md_shape <- read_sf("Maryland_Physical_Boundaries_-_County_Boundaries_(Generalized).shp")
 ```

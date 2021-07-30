@@ -5,49 +5,57 @@ output: html_notebook
 
 ## install complexHeatmap
 ```{r}
-install.packages(c('BiocManager','viridisLite' ) )
+install.packages(c('BiocManager','viridisLite' ))
 BiocManager::install('ComplexHeatmap')
-library(ComplexHeatmap)
+library(ComplexHeatmap) 
 library(tidyverse)
 ```
 
 - here is some example data we will be using
 - log transforming gene expression data is commonly done before plotting.
 ```{r}
+
 gene_expression_matrix <- readRDS('../src/gene_expression_ss.RDS')
+
 ```
 
 ## A single heatmap 
 
 - plot a heat map of the data 
 ```{r}
-
+Heatmap(gene_expression_matrix)
 ```
 
 - set the colors of the heat map using `colorRamp2`
+
 ```{r}
 library(circlize)
-
-
-
-
+col_fun = colorRamp2(c(0, 50, 100), c("purple", "green", "yellow"))
+col_fun(seq(-3, 3))
+Heatmap(gene_expression_matrix, name = "mat", col = col_fun)
 ```
 
 - set the color to the viridis palette. you can generate a vector of viridis colors by using `viridisLite::viridis`
 
 ```{r}
+Heatmap(gene_expression_matrix, name = "mat", col = viridisLite::viridis(100))
+
 
 ```
 
 - change the heatmap such that there is a white gap between each tile.
-```{r}
 
+```{r}
+Heatmap(gene_expression_matrix, name = "mat", col = viridisLite::viridis(100), 
+        rect_gp = gpar(col = "white", lwd = 5))
 ```
 
 - create row and column titles accordingly 
 
 ```{r}
-
+Heatmap(gene_expression_matrix, name = "mat", col = viridisLite::viridis(100), 
+        rect_gp = gpar(col = "white", lwd = 1), 
+        column_title = 'Samples', row_title = 'genes')
 ```
 
 
@@ -55,12 +63,25 @@ library(circlize)
 
 ```{r}
 
+Heatmap(gene_expression_matrix, name = "mat", col = viridisLite::viridis(100), 
+        rect_gp = gpar(col = "white", lwd = 1), 
+        column_title = 'Samples', row_title = 'genes', 
+        cluster_rows = F)
+
 ```
 
 ## 2.7 Heatmap split
+
 - split the heatmap into 3 subpieces, by column
 
 ```{r}
+
+
+Heatmap(gene_expression_matrix, name = "mat", col = viridisLite::viridis(100), 
+        rect_gp = gpar(col = "white", lwd = 1), 
+        column_title = 'Samples', row_title = 'genes', 
+        cluster_rows = F, 
+        column_km = 3)
 
 ```
 
@@ -69,12 +90,27 @@ library(circlize)
 - this file contains metadata about the samples in gene expression data. sample_accession corresponds to the name of each sample in the gene expression matrix.
 
 ```{r}
+
 sample_metadata <- read_tsv('../src/gene_expression_sample_tsv.gz')
+
 ```
 
 - create a simple column annotation that corresponds to the `Tissue` column in the sample metadata
 
 ```{r}
+
+ha <- HeatmapAnnotation(Tissue = sample_metadata$Tissue)
+
+Heatmap(gene_expression_matrix[,sample_metadata$sample_accession], 
+        name = "mat", 
+        col = viridisLite::viridis(100), 
+        rect_gp = gpar(col = "white", lwd = 1), 
+        column_title = 'Samples', row_title = 'genes', 
+        cluster_rows = F, 
+        column_km = 3, 
+        top_annotation = ha)
+
+
 
 ```
 

@@ -352,7 +352,8 @@ ggplot(arrestData_with_mapData) +
 ```
 
 ## cleaned up map
--lets pretty it up a little
+
+- lets pretty it up a little
 ```{r}
 
 ggplot(arrestData_with_mapData) + 
@@ -363,7 +364,8 @@ ggplot(arrestData_with_mapData) +
 
 ```
  
-# using coordinate systems 
+## using coordinate systems 
+
 - sometimes you don't even get a region, and just get latitudes, and longitudes
 
 - this is some example data about the locations of earthquakes in Fiji 

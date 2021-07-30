@@ -20,27 +20,45 @@ library(tidyverse)
 - Plots are designed to accruate convey relationships within data. Different kinds of plots are good at conveying different kinds of relationships. A mistake most people make is not understanding specifically what a plot is useful for. 
 
 - For example take the venn diagram 
-![](../src/basic_venn.png)
+
+```{r echo =F, fig.height=5, fig.width=5}
+knitr::include_graphics('../src/basic_venn.png')
+```
+
 
 - The venn diagram is designed to show the intersection between two sets, with the numbers repsenting the total in each different part of the set intersections. In this venn diagram text is the most onformative part of the plot. 
+
 - Good plots don't need text *inside the plot* to communicate the relationship they describe (not talking about legends, titles,etc). if a plot does have text, the plot should visually match the text 
 
-![](../src/standard_venn.png)
+
+```{r,  fig.height=5, fig.width=5}
+knitr::include_graphics('../src/standard_venn.png')
+```
+
 -  this venn diagram has been drawn proportionally(ish) so that the area matches the size of the set. Even without the text, the relationship between the data is clear.
 
 ## When not to use venn diagrams 
+
 - because simple venn diagrams are easy to interpret, the often get used for more complicated set interactions 
-![](../src/bad_venn.png)
+```{r echo=F}
+knitr::include_graphics('../src/bad_venn.png')
+```
+
+
 - This is an example of a bad venn diagram. Not only do the numbers not match the set sizes, it is difficult to easily see some of the more complicated set intersections.
 
 ## Upset Plots
 - A *far* superior way to showing set intersections is an Upset plot 
-![](../src/upset.png)
+
+```{r}
+knitr::include_graphics('../src/upset.png')
+```
 
 - the stick-and-ball plot at the bottom  represents the intersection between the sets. The bar plot at the top represents the size of the intersection. The bar plot to the left represents the size of the whole sets
 - Its much easier to pick out individual set intersections, ans compare sizes across multiple intersections
 
 - the `ComplexUpset` is my favorite package for plotting Upset plots. It uses `ggplot` under the hood, and provides a lot more flexibility compared to other packages
+
 ```{r, include=F}
 example_data <- tibble(id = sample(as.character(1:100) ,500, replace = T ), 
                        color = sample(c('red', 'blue', 'yellow'), 500,replace = T ) ) %>% 
@@ -52,18 +70,15 @@ example_data_wide[is.na(example_data_wide)] <- F
 ```
 
 ## The `ComplexUpset` package
+
 - the package requries you to have data formatted in a certain way. We've been working with tidy data, wherea single observation is repeated, but each observation-attribute is distinct
+
 ```{r}
 example_data
 ```
 
 ## The `ComplexUpset` package
 - `ComplexUpset` requires data to be in wide format, with a column for whether or not an observation has a particular attribute, and so one attribute for each column
-```{r}
-library(ggalluvial)
-
-Titanic %>% as_tibble() 
-```
 
 ```{r}
 example_data_wide
@@ -73,9 +88,10 @@ example_data_wide
 - once we have the data formatted, plotting is fairly simple
 ```{r}
 library(ComplexUpset)
-cols_to_intersect <- c('red', 'yellow', 'blue')
-upset(data = example_data_wide, intersect = cols_to_intersect)
+cols_to_intersect <- c('blue', 'yellow', 'red')
+upset(example_data_wide[,-1], intersect = cols_to_intersect, )
 ```
+
 - theres a lot more we can do with `complexUpset`; read through the documentation [here](https://krassowski.github.io/complex-upset/articles/Examples_R.html) to learn more 
 
 ## lets do some examples 
@@ -83,15 +99,21 @@ upset(data = example_data_wide, intersect = cols_to_intersect)
 ## Visualizing changes in set intersection 
 
 - A nice way to visualize *changes* in categorical data are alluvial  plots. It's a bit of a niche plot, but can be very useful if used properly.
-![](../src/sankey.png)
+
+```{r}
+knitr::include_graphics('../src/sankey.png')
+```
+
 
 - These are also known as sankey or waterfall plots.
 
 ## alluvial plots with `ggalluvial`
+
 - the package lets make alluvial plots using ggplot synatx
 - like `complexUpset`, `ggalluvial` requries data in wide format
 
 ```{r}
+data("Titanic")
 titanic_wide <- as_tibble(Titanic) %>% 
   mutate(passenger_ID = 1:nrow(.)) %>% select(passenger_ID,Freq=n, everything())
 titanic_wide

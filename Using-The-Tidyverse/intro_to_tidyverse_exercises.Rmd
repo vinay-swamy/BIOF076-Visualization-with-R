@@ -12,9 +12,17 @@ install.packages('tidyverse')
 library(tidyverse)
 ```
 
-You will be using the pipe function all lot; I recommend setting a key board short cut for it. Go to Tools > modify keyboard searchcuts > search for "pipe"  >  click to change the command. I find `alt + 2` or `option + 2` work well.
+You will be using the pipe function all lot; I recommend setting a key board short cut for it. Go to Tools > modify keyboard search cuts > search for "pipe"  >  click to change the command. I find `alt + 2` or `option + 2` work well.
 
 load the `dplyr` library
+
+- `select` select columns from a dataframe
+- `filter` subset a dataframe based on a logical operator or vector
+- `mutate` to add or change columns in a data frame
+- `arrange` to sort a dataframe based on a column
+- `pull` extract a column from a dataframe as a vector
+
+
 ```{r}
 library(dplyr)
 
@@ -27,40 +35,38 @@ data("starwars")
 starwars
 ```
 
-
-
 Select the `name` column from the `starwars` dataset. Store this in a variable 
 
 ```{r}
-
-
+name_selected <-  select(starwars, name)
 ```
 
 now `pull` the `name` column from the dataset. store this in a variable
 
 ```{r}
-
-
+name_pulled <- pull(starwars, name)
+name_pulled
 ```
 Notice the differences in the returned data. use `class` to examine both outputs 
 ```{r}
-class(selected_name)
-
+class(name_selected)
 ```
 select the name and height columns 
 ```{r}
 
-
+select(starwars, name, height)
 ```
+
+
  Using pipes to add to the previous command,  add a column with the height in inches.  the height column is currently in cm and  1 cm is 0.393701 inches 
 ```{r}
-
+starswars_height_inches <-  starwars %>% select( name, height) %>% mutate(height_inches = height *0.393701 )
 ```
 
-
 filter the starwars dataframe to get every person who has blue eyes 
-```{r}
 
+```{r}
+starwars %>% filter(eye_color == 'blue')
 ```
 
 filter the starwars dataframe to get rows whose homeworld is either Tatooine or Naboo	
@@ -69,6 +75,17 @@ hint use %in%
 
 
 ```
+
+
+```{r}
+
+starwars %>% 
+    group_by(eye_color, sex) %>% 
+    summarise(averge_height = mean(height))
+
+```
+
+
 
 
 ## Example - GTF file
@@ -83,18 +100,28 @@ read the data  >  select values that only correspond the to CDS(look at the `typ
 ```
 
 
-- filter this data to just CDS entries for the `type` column
-- select the following columns : type, transcript_id, start, end
-- group the filtered data by transcript_id, and summarise the data to select the smallest start and largest end for each CDS
-- with the summarised data frame, calculate(with mutate) the length of each CDS (end -start)
-- arrange data by the length is decreasinng order largest. 
+1. filter this data to just CDS entries for the `type` column
+2. select the following columns : type, transcript_id, start, end
+3. group the filtered data by transcript_id, 
+4. summarise the data to select the smallest start and largest end for each CDS 
+    - `min` - selects the smallest value from a vector
+    - `max` - selects 
+5. with the summarised data frame, calculate(with mutate) the length of each CDS (end -start)
+6. arrange data by the length is decreasinng order largest. 
 
 ```{r}
-
+library(tidyverse)
+library(readr)
 gtf <-  read_tsv('../src/gtf_example.tsv.gz')
 
-
-    
+gtf %>% 
+    filter(type == 'CDS') %>% 
+    select(type, transcript_id, start, end) %>% 
+    group_by(transcript_id) %>% 
+    summarise(s_start = min(start), 
+              l_end = max(end)) %>% 
+    mutate(length = l_end - s_start) %>% 
+    arrange(desc(length))
 
 ```
 
@@ -106,6 +133,12 @@ practice going from wide to long format using the pivot_longer function, using t
 
 ```{r}
 data("economics")
+pivot_longer(
+    data = economics,
+    cols = c(pce, pop, psavert, uempmed, unemploy),
+    names_to = 'observation_names',
+    values_to = 'observation_values'
+)
 
 ```
 
@@ -126,15 +159,31 @@ tx_exp <- read_tsv('../src/tx_expression_subset.tsv.gz')
 
 ```
  
-join tx2gene and the data we read in together, with tx2gene left side, and the expression data on the right hand side ex inner_join(gtf_gene, gtf_transcript)
+```{r}
+tx2gene <- gtf %>% select(gene_name, transcript_id) %>% distinct %>% filter(!is.na(transcript_id))
 
+
+```
  
 
+
+
+join tx2gene and the data we read in together, with tx2gene left side, and the expression data on the right hand side ex inner_join(gtf_gene, gtf_transcript)
+```{r}
+
+tx2gene %>% inner_join(tx_exp)
+
+```
+ 
 
 - remove the transcript id column, and convert the data from wide to long,
 
 ```{r}
-
+tx2gene %>% inner_join(tx_exp) %>% 
+    select(-transcript_id) %>% 
+    pivot_longer(cols = -gene_name, 
+                 names_to = 'sample_id',
+                 values_to = 'expression')
 ```
 
 
@@ -142,14 +191,33 @@ join tx2gene and the data we read in together, with tx2gene left side, and the e
 
 ```{r}
 
+tx2gene %>% 
+    filter( gene_name %in% c( 'DCX' , 'GRM3')) %>% 
+    inner_join(tx_exp) %>% 
+    select(-transcript_id) %>% 
+    pivot_longer(cols = -gene_name, 
+                 names_to = 'sample_id',
+                 values_to = 'expression') %>% 
+    group_by(gene_name, sample_id) %>% 
+    summarise(total_expression = sum(expression))
+
 ```
 
-- log scale the gene expressionn data 
+- log scale the gene expression data 
 
 ```{r}
+log2(expression + 1 )
 
-
-
+gene_exp_for_plotting <-  tx2gene %>% 
+    inner_join(tx_exp) %>% 
+    select(-transcript_id) %>% 
+    pivot_longer(cols = -gene_name, 
+                 names_to = 'sample_id',
+                 values_to = 'expression') %>% 
+    group_by(gene_name, sample_id) %>% 
+    summarise(total_expression = sum(expression)) %>% 
+    mutate(log2_expression = log2(total_expression + 1))
+    
 ```
 
 
@@ -157,7 +225,12 @@ join tx2gene and the data we read in together, with tx2gene left side, and the e
 
 ```{r}
 
-
+ggplot(gene_exp_for_plotting) + 
+    geom_boxplot(aes(x=gene_name, y=log2_expression, fill = gene_name)) + 
+    xlab('Gene Name') + 
+    ylab('log2 expression')+
+    guides(fill = guide_legend(title = 'Gene Name'))+
+    theme_minimal()
 
 ```
 

@@ -11,8 +11,6 @@ We're making plots in Rmarkdown; plots will display below the chunk once you run
 
 ## `geom_point`
 
-
-
 ```{r}
 install.packages('ggplot2')
 ```
@@ -31,14 +29,20 @@ CO2
 load the ggplot2 library, and make a scatter plot using `conc` for the x axis and `uptake` for the y axis.
 
 ```{r}
-
+ggplot(data=CO2) + 
+  geom_point(aes(x=conc, y=uptake)) + 
+  theme_minimal()
+  
 ```
 
 
 Now change all the points to the color red
 
 ```{r}
-
+ggplot(data=CO2) + 
+  geom_point(aes(x=conc, y=uptake), color = 'red') + 
+  theme_minimal()
+?geom_point
 ```
 
 
@@ -46,13 +50,17 @@ Change the color of the points to color by the `Type` column
 
 ```{r}
 
-
+ggplot(data=CO2) + 
+  geom_point(aes(x=conc, y=uptake, color = Type)) + 
+  theme_minimal()
 ```
 
 Change the color of the points to color by the `Plant` column
 
 ```{r}
-
+ggplot(data=CO2) + 
+  geom_point(aes(x=conc, y=uptake, color = Plant)) + 
+  theme_minimal()
 ```
 
 ```{r}
@@ -65,6 +73,10 @@ note that this coloring is a continuous coloring, ie a uniform transition betwee
 change the `Plant` column to a character and re create the plot above to see the change in color
 
 ```{r}
+CO2$Plant <- as.character(CO2$Plant)
+ggplot(data=CO2) + 
+  geom_point(aes(x=conc, y=uptake, color = Plant)) + 
+  theme_minimal()
 
 ```
 
@@ -72,6 +84,9 @@ change the `Plant` column to a character and re create the plot above to see the
 
 ```{r}
 
+ggplot(data=CO2) + 
+  geom_point(aes(x=conc, y=uptake, shape = Treatment ,color = Type)) + 
+  theme_minimal()
 
 ```
 
@@ -80,7 +95,9 @@ the `alpha` value of a `geom` sets how transparent it is, with 1 being fully vis
 set the `alpha` value for all points to .75, then .5, then .25 to see how the plot changes
 
 ```{r}
-
+ggplot(data=CO2) +
+  geom_point(aes(x=conc, y=uptake, shape = Treatment ,color = Type), alpha = .25) +
+  theme_minimal()
 
 ```
 
@@ -97,21 +114,33 @@ Indometh
 make a basic line graph comparing `time` and `conc` from the `Indometh` data 
 
 ```{r}
-
+ggplot(data = Indometh) + 
+  geom_line(aes(x=time, y=conc)) +
+  theme_classic()
 ```
-
 
 
 Now make seperate lines using a different color for `different subject`.
 ```{r}
+ggplot(data = Indometh) + 
+  geom_line(aes(x=time, y=conc, color =Subject)) +
+  theme_classic()
 
+Indometh$Subject <- as.character(Indometh$Subject)
 
+ggplot(data = Indometh) + 
+  geom_line(aes(x=time, y=conc, color =Subject)) +
+  theme_classic()
 
 ```
 
 instead of connecting the data, use fitted line to make a similar plot as above, with separate lines for each subject. Try out a couple different smoothing methods
 
 ```{r}
+ggplot(data = Indometh) + 
+  geom_smooth(aes(x=time, y=conc, color =Subject), se = F) +
+  theme_classic()
+
 
 ```
 
@@ -128,7 +157,9 @@ mpg
 make a bargraph for  the `manufacturer` column
 
 ```{r}
-
+ggplot(mpg) + 
+  geom_bar(aes(x=manufacturer)) +
+  theme_bw()
 
 
 ```
@@ -139,21 +170,32 @@ make a bargraph for  the `manufacturer` column
 plot a stacked bar chart using `class` as the coloring variable. 
 
 ```{r}
-
+ggplot(mpg) + 
+  geom_bar(aes(x=manufacturer, fill = class), position='stack') +
+  theme_bw()
 
 ```
 
 now plot a bargraph where the Y axis shows the `hwy` column, and `class` for the x axis
 
 ```{r}
+ggplot(mpg) + 
+  geom_bar(aes(x=manufacturer, fill = class), position='dodge') +
+  theme_bw()
 
 ```
 
 conver the `cyl` column to a `character`, and then make a dodged barplot using `cyl` as the coloring variable 
 
 ```{r}
+mpg$cyl <- as.character(mpg$cyl)
+
+ggplot(mpg) + 
+  geom_bar(aes(x=manufacturer, fill = cyl), position='dodge') +
+  theme_bw()
 
 ```
+
 
 ## Boxplots 
  
@@ -167,10 +209,11 @@ ToothGrowth
 use a boxplot to visualize the length(`len`) distributions for the different treatment conditions(`supp`). Use the `?` command if you get stuck
 
 ```{r}
+ggplot(ToothGrowth) + 
+  geom_boxplot(aes(x=supp, y=len)) +
+  theme_classic()
 
 ```
-
-
 
 
 add `theme_minimal` to this plot if you have not done so; note the changes 
@@ -180,19 +223,26 @@ add `theme_minimal` to this plot if you have not done so; note the changes
 `theme_classic()`
 
 ```{r}
-
-
-
+ggplot(ToothGrowth) + 
+  geom_boxplot(aes(x=supp, y=len)) +
+  theme_classic()
 ```
 
 
 change the shading(fill) of the box to fill the box based on treatment
+```{r}
+ggplot(ToothGrowth) + 
+  geom_boxplot(aes(x=supp, y=len, fill = supp)) +
+  theme_classic()
+```
 
 
 
 change the width of all boxplots 
 ```{r}
-
+ggplot(ToothGrowth) + 
+  geom_boxplot(aes(x=supp, y=len, fill = supp), width=.1) +
+  theme_classic()
 ```
 
 
@@ -222,28 +272,31 @@ hospital_data <- data.frame( ICU  =  c(rnorm(1000, -mu, si), rnorm(1000, mu, si)
 first, lets plot a boxplot; make multiple boxplots shaded by location
 
 ```{r}
-
+ggplot(hospital_data) + 
+  geom_boxplot(aes(x=Hospital_location, y=age, fill = Hospital_location))
 ```
 
 now plot make violin plots for each location; take note of the distributions 
 
 ```{r}
-
+ggplot(hospital_data) + 
+  geom_violin(aes(x=Hospital_location, y=age, color = Hospital_location))
 ```
 
 
 now plot histograms, again shaded by location
 
 ```{r}
-
+ggplot(hospital_data) + 
+  geom_histogram(aes(x=age, fill = Hospital_location ), bins = 100)
 
 ```
 
 `geom_freqpoly` is  drop-in replacement for `geom_histogram`: instead of drawing bar's for the count in each bin, it draws points at each count, and then draws a line through each point. Try it out with the above data, tweaking the coloring if necessary
 
-
 ```{r}
-
+ggplot(hospital_data) + 
+  geom_freqpoly(aes(x=age, color = Hospital_location ), bins = 100)
 ```
 
 
