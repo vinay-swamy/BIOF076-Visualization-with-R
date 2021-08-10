@@ -15,6 +15,7 @@ slides > slide {
 </style>
 ```{r setup, echo=FALSE}
 knitr::opts_chunk$set(fig.height = 3, fig.width =5)
+library(DT)
 options(warn = -1)
 ```
 
@@ -22,57 +23,7 @@ options(warn = -1)
 options(tibble.print_max = 5)
 ```
 
-## Review 
 
-## Data Types
-- We have covered 3 data types in R. What are they, and what is each one used for 
-
-## Data Types
-- `numeric` - used for numerical data ; `character` used for strings/text, factor - alternative to `character`, used in plotting.
-
-## List vs Vector
-
-- What is the major difference between a list and a vector
-
-## List vs Vector
-
-- vectors must be a single data type; lists can contain multiple data types, and can contain multiple data structures, IE lists of lists, lists of dataframes 
-
-
-## Dataframes
-- what type of data are dataframes used for 
-
-## Dataframes
-- tabular data like spreadsheets or csv's 
-
-## Indexing
-
-- how does indexing work for a vector
-- how does indexing work for a  list
-- how does indexing work for a  dataframe?
-
-## Indexing
-
-- vector
-    - `vec[i]`, for the ith  element in a vector
-    - `vec[i:j]` to select all elements between i and j 
-- list
-    - `lst[[i]]`, for the ith  element in a list
-    - `lst[i:j]`, to select all elements between i and j 
-- dataframe 
-    - `df[, i]` to select column number i; `df[i, ]
-    - `df[i,]` to select row number i; 
-    - `df[i:j, ]` / `df[,i:j]` for selecting a range of rows/columns 
-    
-- if an object has names, values can also be accessed by their name, instead of their numerical index
-
-##  ggplot
-
-- what are the three major components of a `ggplot`?
-
-##  ggplot
-
--  base `ggplot` layer, `geom` layer, `theme` layer
 
 ## data usually does not come with a bow on top
 
@@ -154,8 +105,10 @@ getwd()
 ```
 
 ## the working directory
--each `/` represents a different folder. In this, R is looking and writing to the `day_2` directory
+
+- each `/` represents a different folder. In this, R is looking and writing to the `day_2` directory
 -you can change the working directory by using `setwd`(this doesn't work super great inside an R notebook)
+
 ```{r, warning=FALSE}
 setwd('/Users/swamyvs/')
 ```
@@ -316,10 +269,22 @@ arrange(iris, Sepal.Width)
 
 
 ## the `arrange` function
+
 - note that this sorts is in ascending order. for descending order, wrap the column name in the `desc` function
+
 ```{r}
 arrange(iris, desc(Sepal.Width))
 ```
+
+## the `rename` function
+
+- this function will rename one or mor columns in a data.frame/tibble
+
+```{r}
+rename(iris, sepal_length=Sepal.Length)
+```
+
+- the syntax is structured <new_name> = <old_name>
 
 ## the `pull` function
 - the `pull` function allows you to extract a column from a data frame, similar to the `$` operator 
@@ -328,6 +293,7 @@ pull(iris, Sepal.Width) %>% head
 ```
 
 ## `dplyr` functions as "verbs"
+
 - Its best to think of each of these functions as an action or "verb" that we perform on the. 
 - For example within the `airquality` data:
 " In my data I want to keep only the rows correspond to the months 5, or 6, keep only the temp and species column, and change the month column so that we use the character names for the month instead of the numeric names"
@@ -365,7 +331,7 @@ df
 ## the "`.`" hidden variable in `%>%`
 -  when using the `%>%` operator, the output of each function is stored in a temporary variable called `.`
 ```{r}
-iris %>% pull(Sepal.Width) %>% head %>% print
+iris %>% pull(Sepal.Width) %>% head %>% print(.)
 ```
 
 ## the "`.`" hidden variable in `%>%`
@@ -374,6 +340,68 @@ iris %>% pull(Sepal.Width) %>% .[1]
 ```
 
 ## lets do some practice
+
+## grouping and summarizing data 
+- we often want to generate summary statistics for subcharacteristics/subpopulations of our data
+-  we do this by using the `group_by` and `summarise` functions from `dplyr`
+
+## grouping data
+
+- consider this data 
+
+```{r echo=F}
+example_df <- tibble(condition = rep(c('wt','ko'), 6), 
+       timepoint = rep(c('1hr', '2hr', '3hr', '4hr', '5hr', '6hr'), 2) %>% sort, 
+       ) %>% bind_rows(.,.,.) %>% 
+  mutate(replicate = rep(c('1', '2', '3'), 12) %>% sort, 
+         measurement = rnorm(36, 10, 2)) %>% 
+  sample_n(36, replace = F)
+```
+```{r}
+datatable(example_df)
+```
+
+
+## grouping data
+
+- when we use `group_by`, we create "sub-dataframes", based on common values in the grouping column(s)
+
+```{r, echo = F}
+example_df %>% arrange(condition) %>% datatable()
+```
+
+- We never actually see these "sub-dataframes" as it happens under the hood.
+
+## grouping data
+
+- `group_by` does nothing on its own; it always requires a second command to perform an operation on the groups
+
+```{r}
+example_df %>% group_by()
+```
+
+
+## grouping data
+
+- we can group on any number of columns
+
+```{r,echo = F}
+example_df %>% arrange(condition, timepoint) %>% datatable()
+```
+
+## summarizing data
+
+- `summarise` takes in the output of `group_by`, and performs operations on grouped columns
+
+```{r}
+example_df %>% group_by(condition) %>% summarise(total_measurment = sum(measurement))
+```
+
+- In this example, all values from the `measurement` column that belong to the `wt` group are added to together, and similar for `ko`
+- in previous version of dplyr(<1), it was required that there must be one value produced per group, but newer versions(>=1) allow for multiple values to be generated per group( the output for multiple values will be in long form - more on that in a few slides )
+- most often, you will be producing a 1:1 mapping between groups and summarised output
+
+## lets do some practice 
 
 ## wide vs long data 
 
@@ -394,6 +422,12 @@ economics_long %>% arrange(date) %>% as_tibble
 - the reason long format is preferred is that it reduces the number of columns in a data set, making it longer instead. 
 - remember that each column is a vector under the hood; computationally its more efficient to perform the same operation over a single large vector, rather than a series of smaller vectors/columns
 
+## merging tabular data
+
+- We've only been working with single data frames/tibbles, but we often will need to combine multiple data.frames together. 
+- In its simplest form, this is called binding. functions for this are provided in dplyr: `bind_rows` and `bind_cols`
+
+
 ## converting from wide to long
 - the `tidyr` package has a useful function called `pivot_longer` that allows you to convert from wide to long
 
@@ -411,7 +445,10 @@ economics %>%
 
 ## converting from wide to long
 
-- same thing a different way
+- same thing a different way, using the **negative selection syntax.**
+- we use the negative selection syntax to drop columns we *dont* want to pivot
+- this is useful when we have many columns that we want to pivot, but don't want to type them all out
+
 ```{r}
 #every column except the data column
 economics %>% pivot_longer(cols = -date,  
@@ -419,26 +456,6 @@ economics %>% pivot_longer(cols = -date,
                            values_to = 'obs') %>% as_tibble
 ```
 
-## grouping and summarizing data 
-- we often want to generate summary statistics for subcharacteristics/subpopulations of our data
-- for example, calculating the the average value by day in  `economics_long` data. we do this by using the `group_by` and `summarise` functions from `dplyr`
-
-```{r}
-economics_long %>% arrange(date) %>% as_tibble
-```
-
-## grouping and summarizing data 
-```{r}
-economics_long %>% 
-    group_by(date) %>% 
-    summarise(avg_value_per_day = mean(value))
-```
-
-- when grouping and summarizing data, always remember that what ever function your use to summaries `mean`, `max`, etc, must return a single value
-
-## merging tabular data
-- We've only been working with single data frames/tibbles, but we often will need to combine multiple data.frames together. 
-- In its simplest form, this is called binding. functions for this are provided in dplyr: `bind_rows` and `bind_cols`
 
 ## merging tabular data
 ```{r}
@@ -489,8 +506,10 @@ cb_iris <- bind_cols( iris_small, iris)
 ```{r}
 mpg %>% as_tibble
 ```
+
 ## joining data 
 - say i went out and figured out which models were gas powered and which ones were diesel
+
 ```{r}
 
 model2fuel <- tibble(model= unique(mpg$model), 

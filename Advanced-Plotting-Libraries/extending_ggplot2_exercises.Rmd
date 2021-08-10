@@ -27,58 +27,34 @@ gapminder_summarized <- gapminder_ss %>%
 - I've added some data about gender to the `gapminder` dataset. use this data set to calculate the average lifespan per continent per gender. plot a bargraph with colors for each continents and patterns for each gender. 
 - hint: becasue the data is averaged, you will be using `geom_col`
 
-```{r}
-ggplot(gapminder_summarized) + 
-    geom_col_pattern(aes(x=continent, y=avg_lifespan, pattern = gender), position = 'dodge') +
-    theme_classic()
+```{r ex_1}
 
 ```
 
 
-
 ## revisting the line graph from earlier with `ggpubr`
-
-![](../src/reporter_assay_plot.png)
 
 ```{r}
 knitr::include_graphics('../src/reporter_assay_plot.png')
 ```
 
-
 Remember this plot?
-use `ggpubr::ggline` to remake the line graph we made a few exercises ago
+use `ggpubr::ggline` to remake the line graph we made a few exercises ago. You will have to reshape the data from wide to long 
 
-```{r}
+```{r ex_2}
 install.packages('ggpubr')
 ```
 
-```{r}
+```{r ex_3}
 
 library(ggpubr)
-data <- read_tsv('../src/Reporter_assay_results.tsv.gz') %>% 
-    pivot_longer(cols = c(WildType, Mutant), names_to = 'type', values_to = 'obs')
-
-ggline(
-    data = data, 
-    x="Time", 
-    y="obs", 
-    group = "type",
-    add = 'mean_se',
-    color = 'type',
-    shape = 'type'
-)
+data <- read_tsv('../src/Reporter_assay_results.tsv.gz') 
 
 ```
 
-filter the data to the last time point, and make a boxplot with `ggboxplot`. Include a test for a statstically significant change in the data on the plot. 
+filter the data to the last time point, and make a boxplot with `ggboxplot`. Include a test for a statistically significant change in the data on the plot. 
 
-```{r}
-data <- read_tsv('../src/Reporter_assay_results.tsv.gz') %>% 
-    pivot_longer(cols = c(WildType, Mutant), names_to = 'type', values_to = 'obs') %>% 
-    filter(Time  == 24)
-
-ggboxplot(data=data, x="type", y="obs", fill = "type") + 
-    stat_compare_means(label = 'p.signif')
+```{r ex_4}
 
 ```
 
@@ -86,7 +62,7 @@ ggboxplot(data=data, x="type", y="obs", fill = "type") +
 ## gganimate
 
 - continuing with the gapminder dataset, remake the bubble plot we made yesterday. We'll be using the full dataset this time, and have data for many years. Create an animated version of the bubble plots we made earlier to visualize changes across time. 
-- customize the plots with some themes and palettes from 
+- customize the plots with some themes and palettes from `ggsci` or `ggthemes`
 
 ```{r}
 install.packages('gapminder') # this installs the gapminder dataset into R
@@ -95,26 +71,16 @@ install.packages('ggsci')
 ```
 
 
-```{r}
+```{r ex_5}
 library(tidyverse)
 library(gapminder)
 library(ggplot2)
 library(gganimate)
 library(ggsci)
 
-ggplot(gapminder) +
-    geom_point(aes(x=gdpPercap, y= lifeExp, size = pop, color = contient), alpha = .5) +
-    scale_size(range = c(3,15))+
-    guides(size = guide_legend(title = 'Population (M)')) +
-    scale_color_discrete()
-    #ggsci::scale_color_aaas()+
-    theme_minimal()
 
-
-anim_save('example_animation.png', animation = plot)
 
 ```
-
 
 ## plotting with maps 
 
@@ -137,6 +103,8 @@ Lets make a plot with some real data. We're gonna be working with some data abou
 '../src/maryland_zipcode_to_county.tsv.gz' contains a mapping for maryland zip code to counties
 '../src/maryland_counties.shp' is a shapefile for counties in maryland (`st_read`)
 
+run this chunk to load the data 
+
 ```{r}
 library(sf)
 library(ggspatial)
@@ -144,29 +112,25 @@ library(ggspatial)
 md_covid_cases <- read_tsv('../src/MD_COVID_cases_by_zip.tsv.gz')
 md_county_to_zip <- read_tsv('../src/maryland_zipcode_to_county.tsv.gz')
 
-
 unzip('maryland.zip')
-md_shape <- read_sf("Maryland_Physical_Boundaries_-_County_Boundaries_(Generalized).shp")
+shp_file = list.files(recursive = T, full.names = T) %>% {.[grepl("Maryland_Physical_Boundaries_-_County_Boundaries_(Generalized).shp", . , fixed = T)]}
+md_shape <- read_sf(shp_file)
 ```
 
-Were going to take this data and make this:
-As a starting point, this is the generaly workflow. 
+Were going to take this data and make plot of covid cases per county in maryland 
+As a starting point, this is the general workflow. 
 
-Load data > join county level data to zip level data > aggreagte data to the county level  >  join map data
-- first add the county information to the covid data. check how many counties are shared between the covid data and the map data 
-- your should end up with a plot that colors each map region based on the the number of covid cases
+- join county level data to zip level data
+- aggregate data to the county level 
+    - pivot from wide to long (hint: remember the negative selection syntax for pivot longer)
+    - summarise zip level to county level 
+- join map data(make sure the column(s) you are joining on have matches )
+- use ggspatial to plot the per-county covid cases. use the `viridis`( `scale_*_viridis_c`) palette for shading
 
-
-```{r}
+```{r ex_6}
 
 
 ```
-
-
-
-
-
-
 
 
 

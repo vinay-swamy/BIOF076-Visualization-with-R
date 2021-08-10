@@ -23,13 +23,15 @@ library(knitr)
 ## Learning how to use a new plotting package(or any package)
 
 - We've spent a good chunk of time going learning some libraries, but now I want show you how to learn to use a new package.
-- This is an *very* useful skill, but one that's not formally taught very often.
+- This is an *very* useful skill, as there are always new visualizations packages coming out.
 - Generally, people want to use a new package because they have some sort specific task/problem that can be solved by that package.
+- if you are looking for a package to do something, try googling <thing> R package, ie forest plot R package 
 
 ## Heatmaps 
 
 - As a case study for learning a new package, we're going to go learn how to plot heat maps, which are difficult to produce with `ggplot`
--  Heatmaps are a common type of plot for clustering data.
+- Heatmaps are a common type of plot for clustering data.
+
 ```{r, echo = F}
 include_graphics('../src/exapmle_heatmap.png')
 ```
@@ -43,6 +45,7 @@ include_graphics('../src/exapmle_heatmap.png')
 
 - `ComplexHeatmap` is package for, you guessed it, making heatmaps, and is probably the most popular package for doing so. 
 - its popularity comes from having a feature rich and well documented API
+
 ```{r echo =F}
 include_graphics('../src/complex_heatmap_example.png')
 ```
@@ -62,7 +65,9 @@ include_graphics('../src/complex_heatmap_example.png')
 
 ## `ComplexHeatmap` API
 - the documentation for `ComplexHeatmap is at https://jokergoo.github.io/ComplexHeatmap-reference/book/ and its quite extensive
+- most packages will have some sort of web-based documentation. At the very least, all packages will have documentation within R itself that you can view with the `?` command
 - It's completely different from `ggplot`, so don't assume what we have learned previously will transfer. 
+
 ## `ComplexHeatmap` exercises
 - We're going to do some exercises with this package. However instead me explaining how everything works before, you will first read through different parts of the documentation, then try and complete the exercises. 
 

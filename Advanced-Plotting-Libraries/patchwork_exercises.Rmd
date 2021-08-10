@@ -28,64 +28,28 @@ p4 <- ggplot(mtcars) +
 
 - add the plots together one by one, no orientation
 
-```{r}
-install.packages('patchwork')
-
-
-p1+p2+p3+p4
-```
-
-- add plots, but make only one column of plots 
-
-```{r, fig.width=4, fig.height=10}
-library(patchwork)
-p1+p2 +p3 +p4 + plot_layout(ncol = 1)
-```
-
-- use a desgin and `plot_layout` to make plot 1 bigger than the rest of the plots 
-
-```{r}
-des <-'
-ABB
-CCC
-DDD'
-
-
-des <- '
-AAAABB
-AAAABB
-AAAACC
-AAAACC
-DDDDDD
-DDDDDD'
-p1+p2 +p3 +p4 + plot_layout(design = des) + plot_annotation(tag_levels = 'A')
-?plot_annotation
-```
-
-
-```{r}
+```{r ex_1}
 
 ```
 
 
-- make this an interactive plot with `girafe`, displaying the carb column 
+- You can add the parameters `fig.width` and `fig.height` in the R chunk to change the plot output dimensions. An example of this is shown in the chunk below
+- add plots, but make only one column of plots. 
 
-```{r}
-library(ggiraph) 
-library(tidyverse)
- 
+```{r ex_2, fig.width=4, fig.height=10}
 
 ```
 
-remake the above plot with plotly
+- use a design vector and `plot_layout` to make plot 1 bigger than the rest of the plots 
 
-```{r}
-library(plotly)
+```{r ex_3}
 
 ```
 
 
+```{r ex_4}
 
+```
 
 
 

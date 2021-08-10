@@ -1,0 +1,99 @@
+---
+title: "Useful visualizations to know"
+output: html_notebook
+---
+
+## some example single cell RNA-seq data. 
+
+- in the file '../src/pbmc_cell_expression.tsv.gz', we have some single cell expression data. This is semi-real data from data generated from blood samples from 3 patients and contains information from Peripheral blood mononuclear cells (PBMCs).
+- read this data in and take  a look at it 
+
+```{r}
+data <- read_tsv('../src/pbmc_cell_expression.tsv.gz')
+```
+
+For each of the packages below, I have provided the corresponding documentation and examples website. I recommend you skim through each one and try out an example before trying it out on our data.
+
+## making Upset plots 
+
+- install `ComplexUpset`
+
+```{r}
+install.packages('remotes')
+remotes::install_github("krassowski/complex-upset")
+```
+
+DOCS: https://krassowski.github.io/complex-upset/articles/Examples_R.html
+
+- We're going to make an upset plot using our single cell data. 
+- Single cell data is very sparse, meaning that only few genes are detected in each cell. Select 3 genes from the above dataset, and make an upset plot for whether or not a gene is expressed in a cell. 
+- anything above a count of 0 is expressed, and anything with 0 counts is not expressed
+- remember that `complexUpset` needs columns corresponding to true/false for each attribute we are trying to compare. 
+- hint: remember that logical operators(>, <, !) can be applied directly to data.frames
+
+```{r ex_1}
+library(ComplexUpset)
+
+```
+
+
+
+## making alluvial plots 
+- install `ggalluvial`
+```{r ex_2}
+install.packages('ggalluvial')
+```
+
+DOCS: https://cran.r-project.org/web/packages/ggalluvial/vignettes/ggalluvial.html
+
+- a common step in single cell data is computationally labeling cells with their associated cell type. The data has the output of two labeling tools, in columns `cell_type` and `cell_type_relabeled`. 
+- make an alluvial plot, where the first column is `cell_type` and the second column is `cell_type_relabeled`, to visualize the in cell label from tool to tool 
+
+```{r ex_3}
+library(ggalluvial)
+ 
+
+```
+
+
+## ridge plots 
+- install ggridges 
+
+```{r}
+install.packages('ggridges')
+```
+
+DOCS: https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html
+
+- reshape the data from wide to long format, suitable for plotting
+- select a gene and make a ridge plot for its expression values for the different cell types
+- select multiple genes and make a faceted ridge plot for each gene.
+
+```{r ex_5}
+library(ggridges)
+
+
+```
+
+## Rainclouds 
+
+- install `gghalves`
+
+```{r}
+remotes::install_github('erocoar/gghalves')
+```
+
+DOCS: https://erocoar.github.io/gghalves/
+
+- working with the long dataset from before, filter out any expression values equal to zero. This will leave us with a long data frame of only expressed cells. 
+- select one gene and make a raincloud (violin + jittered scatterplot)  plot for each cell type. 
+- select multiple genes and make a faceted raincloud plot
+- Hint: you will need to use the `coord_flip` function to get the plot to be horizontal. use `?coord_flip` to see its usage
+
+```{r ex_6}
+
+```
+
+
+
+

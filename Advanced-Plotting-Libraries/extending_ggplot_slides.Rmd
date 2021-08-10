@@ -80,7 +80,7 @@ ggviolin(ToothGrowth, x = "dose", y = "len", fill = "dose",
 
 
 ## the `ggpubr` library
-- `ggpubr will can also apply transformations to data for you
+- `ggpubr` will can also apply transformations to data for you
 - For example, summarizing a range of point to there average value
 
 ```{r}
@@ -131,7 +131,9 @@ ggplot(df) +
 - with a little bit more code, multiple patterns can be added 
 
 ```{r}
-iris_dfac <-  iris %>% mutate(dfac = sample(c('long', 'short'),size = nrow(.), replace = T)) %>% group_by(Species, dfac) %>% 
+iris_dfac <-  iris %>% 
+  mutate(dfac = sample(c('long', 'short'),size = nrow(.), replace = T)) %>% 
+  group_by(Species, dfac) %>% 
     summarise(dcol = n())
 ggplot(iris_dfac)+ 
     geom_col_pattern(aes(x=Species, y=dcol, pattern_density = dfac, fill = Species),
@@ -285,7 +287,7 @@ ggplot(nc_table) +
 ```
 
 ## the `ggspatial` package
-- from here, we can treat the plot like a normal `ggplot, changing aesthetics as we please
+- from here, we can treat the plot like a normal `ggplot`, changing aesthetics as we please
 
 ```{r}
 ggplot(nc_table) + 

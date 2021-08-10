@@ -54,11 +54,15 @@ p4 <- ggplot(mtcars) +
 p1 + p2 + p3 + p4
 ```
 
+## combining plots 
+
 - to manually put plots to the side , use the `|`
 
 ```{r}
 p1|p2|p3
 ```
+
+## combining plots 
 
 - similarly, but vertical, use '/'
 
@@ -66,11 +70,15 @@ p1|p2|p3
 p1 / p2 /p3
 ```
 
+## combining plots 
+
 - these options can be nested , using parentheses
 
 ```{r}
 p1 |(p2 /p3)
 ```
+
+## combining plots 
 
 - or can be chained iteratively 
 
@@ -79,13 +87,18 @@ sp <- p2 /p3
 p1 |  sp
 ```
 
-- the `plot_layout` function is used to provide greater control to the arrangement of plots. When using the plot_layout function, first combine plots using the `+` operator, and then controls the arrangement using plot_layout
+## Specifying plot layouts 
 
+- the `plot_layout` function is used to provide greater control to the arrangement of plots. 
+- When using the plot_layout function, first combine plots using the `+` operator, and then control the arrangement using `plot_layout`
 
 - the number of rows and columns can be set with `nrow` or `ncol`
+
 ```{r}
 p1 + p2 + p3 + p4 + plot_layout(nrow=1)
 ```
+
+## Specifying plot layouts 
 
 - but whats most useful is created a custom layout, using the designed. I create layout vector, `des`. 
 
@@ -99,6 +112,8 @@ p1 + p2 + p3 + p4 + plot_layout(design = des )
 
 - the design vector must be rectangular
 
+## Specifying plot layouts 
+
 - '#' can be used to create an empty space 
 ```{r}
 des <- '
@@ -109,6 +124,8 @@ AACD'
 
 p1 + p2 + p3 + p4 + plot_layout(design = des )
 ```
+
+## Specifying plot layouts 
 
 - finally, we can adjust the location of legends, by specifying `guides = 'collect'`
 
@@ -125,11 +142,16 @@ p1 + p2 + p3 + p4 + plot_layout(design = des, guides = 'collect' )
 p1 + p2 + p3 + p4 + plot_layout(design = des, guides = 'collect' ) & theme_classic()
 ```
 
+## globally modifying plot paramters 
+
+- multiple theme modifiers can be chained together
+
 ```{r}
 p1 + p2 + p3 + p4 + plot_layout(design = des, guides = 'collect' ) & theme_classic() & theme(text = element_text('mono'))
 ```
 
 - or to fix the justification of legends , and remove titles 
+
 ```{r}
 
 all_plots <- p1 + p2 + p3 + p4 + plot_layout(design = des, guides = 'collect' ) & theme_classic() & theme(legend.box.just  = 'left') & ggtitle('')
@@ -152,7 +174,7 @@ all_plots + plot_annotation(tag_levels = 'A')
 - unfortunately, only plots made with `ggplot` are compatible with patchwork.
 - Thankfully, there's another package `ggplotify` that will convert any plot into a ggplot 
 
-```{r}
+```{r include = F}
 library(ComplexHeatmap)
 nr1 = 4; nr2 = 8; nr3 = 6; nr = nr1 + nr2 + nr3
 nc1 = 6; nc2 = 8; nc3 = 10; nc = nc1 + nc2 + nc3
@@ -169,6 +191,9 @@ mat = cbind(rbind(matrix(rnorm(nr1*nc1, mean = 1,   sd = 0.5), nr = nr1),
 mat = mat[sample(nr, nr), sample(nc, nc)] # random shuffle rows and columns
 rownames(mat) = paste0("row", seq_len(nr))
 colnames(mat) = paste0("column", seq_len(nc))
+```
+
+```{r}
 hm <- Heatmap(mat)
 class(hm)
 ```
@@ -183,12 +208,15 @@ class(hm_ggplot)
 
 ```
 
-- its important to note that when using `as.ggplot`, all graphical parameters are fixed, and cant be modified by `themes`. Make sure you adjust plots accordingly in 
+
+## using non-`ggplot` plots in patchwork
+
+- its important to note that when using `as.ggplot`, all graphical parameters are fixed, and cant be modified by `themes`. 
+- Make sure you adjust non-ggplot plots accordingly in whatever plotting package made them
 
 ```{r}
 p1+hm_ggplot &theme(text = element_text('mono'))
 ```
-
 
 ## Summary 
 
