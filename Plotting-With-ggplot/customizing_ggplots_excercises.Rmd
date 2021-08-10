@@ -7,76 +7,50 @@ output: html_notebook
 We're going to work with one of the plots we made earlier 
 
 
-```{r}
+```{r example_1}
 library(ggplot2)
 ggplot(mpg) + 
   geom_bar(aes(x=manufacturer, fill = class)) 
 ```
 
 
-
 Assign descriptive axis labels and a plot title to the plot
-```{r}
-ggplot(mpg) + 
-  geom_bar(aes(x=manufacturer, fill = class)) +
-    xlab('Car Manufacturer') + 
-    ylab(' Number of Cars') + 
-    ggtitle('Production of Cars')
+```{r ex_1}
+
 
 ```
 
 fix the labels similar to how it was done in the example
 
-```{r}
-ggplot(mpg) + 
-  geom_bar(aes(x=manufacturer, fill = class)) +
-    xlab('Car Manufacturer') + 
-    ylab(' Number of Cars') + 
-    ggtitle('Production of Cars') +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1 ))
+```{r ex_2}
+
 ```
 
 
 change the y axis title so it is parallel to the x axis title 
 
-```{r}
-ggplot(mpg) + 
-  geom_bar(aes(x=manufacturer, fill = class)) +
-    xlab('Car Manufacturer') + 
-    ylab(' Number of Cars') + 
-    ggtitle('Production of Cars') +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1 ), 
-          axis.title.y = element_text(angle = 0))
+```{r ex_3}
+
 ```
 
-change the font of the title to AvantGarde, the color to red
+change the font of the title to Palantino, the color to red
 
-```{r}
-ggplot(mpg) + 
-  geom_bar(aes(x=manufacturer, fill = class)) +
-    xlab('Car Manufacturer') + 
-    ylab(' Number of Cars') + 
-    ggtitle('Production of Cars') +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1 ), 
-          plot.title = element_text(family ='Palatino' ))
+```{r ex_4}
+
 ```
 
 
-now use guide to reposition the legend to the top of the plot 
-```{r}
-ggplot(mpg) + 
-  geom_bar(aes(x=manufacturer, fill = class)) +
-    xlab('Car Manufacturer') + 
-    ylab(' Number of Cars') + 
-    ggtitle('Production of Cars') +
-    theme(legend.position = 'bottom')
+now use guide to re-position the legend to the top of the plot 
+```{r ex_5}
+
 
 ```
 
 ## practice with colors
+
 - We'll be working with the `storms` data set in dplyr library(we havent covered this yet, but we will) for this part 
 
-```{r}
+```{r example_2}
 library(dplyr)
 data("storms")
 storms
@@ -84,7 +58,7 @@ storms
 
 make a violin plot for `pressure`, using `status` as the x variable. Give axes appropriate titles. 
 
-```{r}
+```{r ex_6}
 ggplot(storms) + 
     geom_violin(aes(x=status, y=pressure, fill = status)) + 
     xlab('storm type') + 
@@ -92,14 +66,12 @@ ggplot(storms) +
 ```
 
 explore the palettes in the `pals` package. I've written a function to let you plot color palletes 
-```{r}
+```{r example_3}
 install.packages('pals')
 install.packages('patchwork')
 ```
 
-
-
-```{r}
+```{r example_4}
 library(pals)
 library(patchwork)
 library(ggplot2)
@@ -112,62 +84,22 @@ plot_pal(pals::plasma(100))
 pick a palette and use the appriate `scale_..._discrete` function to color your plot based on the `status` column
 
 
-```{r}
-plot_pal(pals::alphabet(26))
-```
-
-```{r}
-
-pal2 <- RColorBrewer::brewer.pal(3, 'Set3')
-
-pals::alphabet(3)
-names(pal) <- NULL
-
-pal <-  pals::alphabet(3)
-pal
-
+```{r ex_7}
 
 ```
-
-
-```{r}
-
-ggplot(storms) + 
-    geom_violin(aes(x=status, y=pressure, fill = status)) + 
-    scale_fill_discrete(type = pal2)
-    xlab('storm type') + 
-    ylab('air pressure')
-
-
-```
-
 
 now pick colors from different palettes, and use them as part of a `scale_...manual`. 
 
-```{r}
-color_mapping <- c("tropical depression"  = 'blue', "tropical storm" = 'red', 'hurricane'='green' )
-color_mapping2 <- c('blue', 'red', 'green')
-names(color_mapping) <- unique(storms$status)
-ggplot(storms) + 
-    geom_violin(aes(x=status, y=pressure, fill = status)) + 
-    scale_fill_manual(values = color_mapping2)+
-    xlab('storm type') + 
-    ylab('air pressure')
+```{r ex_8}
+ 
 
 ```
 
 
-make a scatter plot of `wind` vs `pressure`, using the `category` to color the points using a contionus scale. make sure `category` is a continous variable
-```{r}
-pals::plasma(10)
+make a scatter plot of `wind` vs `pressure`, using the `category` to color the points using a contionus scale. Make sure you change  `category` to a numeric type with `as.numeric` first
 
-pal <-  pals::plasma(10)
-names(pal) <- NULL
+```{r ex_9}
 
-storms$category <- as.numeric(storms$category)
-ggplot(storms) + 
-    geom_point(aes(x=wind, y=pressure, color = category)) +
-    scale_color_gradientn(colors = pal)
 ```
 
 ## customizing multiple aesthetics 
@@ -178,25 +110,21 @@ ggplot(storms) +
 - this is a bubble plot. We're going to remake this plot with ggplot.
 - gdpPercap as the x axis 
 - lifeExp as the y axis
-- pop as the point size
+- pop as the point size( you will have to pass a mapping to size in `aes`)
 - continent as the color
 - alpha changed globally
+- check out the function `scale_size` to see how to adjust point sizes
+- use ggsave to save the plot to the disk, and adjust the output dimensions accordingly to match the example image
 
-```{r, fig.height=4}
-install.packages('ggrepel')
+
+```{r ex_10}
 library(readr)
 library(ggrepel)
 library(ggplot2)
 
 data <- read_tsv('../src/gapminder_2007.tsv.gz')
 
-ggplot(data) +
-  geom_point(aes(x=gdpPercap, y= lifeExp, size = pop, color = continent), alpha = .5) +
-  scale_size(range = c(3,15))+
-  guides(size = guide_legend(title = 'Population (M)')) +
-  theme_minimal()
 
-ggsave(filename = 'example_dotplot2.png', plot = plot, width = 4, height = 7,bg = 'white')
 
 
 ```

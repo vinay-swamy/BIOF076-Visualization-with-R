@@ -192,6 +192,12 @@ slides > slide {
 <li>all the <code>theme_...</code> functions we’ve been using are preset configurations of a theme</li>
 </ul>
 
+</article></slide><slide class=""><hgroup><h2>An aside on theme’s and graphical parameters</h2></hgroup><article  id="an-aside-on-themes-and-graphical-parameters">
+
+<ul>
+<li>while there is a bit of consistency on how to use and change different graphical parameters, much of it will feel a little arbitrary, and there’s no good way to learn how to change them with out trial and error/practice</li>
+</ul>
+
 </article></slide><slide class=""><hgroup><h2>Simple Theme modifiers</h2></hgroup><article  id="simple-theme-modifiers">
 
 <ul>
@@ -206,7 +212,7 @@ slides > slide {
 <pre class = 'prettyprint lang-r'>data(mpg)
 mpg</pre>
 
-<pre >## # A tibble: 234 x 11
+<pre >## # A tibble: 234 × 11
 ##    manufacturer model    displ  year   cyl trans   drv     cty   hwy fl    class
 ##    &lt;chr&gt;        &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;   &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;
 ##  1 audi         a4         1.8  1999     4 auto(l… f        18    29 p     comp…
@@ -235,7 +241,7 @@ mpg</pre>
 <pre class = 'prettyprint lang-r'>data(mpg)
 mpg</pre>
 
-<pre >## # A tibble: 234 x 11
+<pre >## # A tibble: 234 × 11
 ##    manufacturer model    displ  year   cyl trans   drv     cty   hwy fl    class
 ##    &lt;chr&gt;        &lt;chr&gt;    &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;   &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;
 ##  1 audi         a4         1.8  1999     4 auto(l… f        18    29 p     comp…
@@ -265,7 +271,8 @@ mpg</pre>
 
 <ul>
 <li>we can see in the <code>theme</code> function there are multiple inputs for textual parts of the text like <code>plot.title</code>, or <code>axis.text.x</code></li>
-<li>there are various setting for text - font, size color etc; These are controlled by the <code>element_text</code> function, the output of which we assign to to specific graphical parameter, like <code>axis.text</code>. these parameters change everything about the text, except the text itself; setting the text is done with functions like <code>xlab</code> or <code>ggtitle</code> or populated directly from the data</li>
+<li>there are various setting for text - font, size color etc; These are controlled by the <code>element_text</code> function, the output of which we assign to to specific graphical parameter, like <code>axis.text</code>.</li>
+<li>these parameters change everything about the text, except the text itself; setting the text is done with functions like <code>xlab</code> or <code>ggtitle</code> or populated directly from the data</li>
 </ul>
 
 </article></slide><slide class=""><hgroup><h2>changing text with <code>theme</code></h2></hgroup><article  id="changing-text-with-theme-1">
@@ -339,7 +346,7 @@ mpg</pre>
 
 <ul>
 <li>guides are an alternative method to setting graphical parameters in theme.</li>
-<li>They were introduced to ggplot after themes, and are generally a more intuitive interface for setting graphical parameters, but lack the full range of parameters offered by <code>theme</code></li>
+<li>They were introduced to ggplot after themes, and are generally an easier to use interface for setting graphical parameters, but lack the full range of parameters offered by <code>theme</code></li>
 </ul>
 
 </article></slide><slide class=""><hgroup><h2>guides</h2></hgroup><article  id="guides-1">

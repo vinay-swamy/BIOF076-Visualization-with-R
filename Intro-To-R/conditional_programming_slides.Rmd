@@ -13,6 +13,7 @@ slides > slide {
   overflow-y: auto !important;
 }
 </style>
+
 ```{r setup, echo=FALSE}
 knitr::opts_chunk$set(fig.height = 3, fig.width =5)
 ```
@@ -180,7 +181,7 @@ weather_report(is_sunny = F)
 
 ## the `else` block
 
--By just looking at the code below, what will the outputs of `weather_report_if_else(T)` and `weather_report_if(T)` be?
+- By just looking at the code below, what will the outputs of `weather_report_if_else(T)` and `weather_report_if(T)` be?
 ```{r}
 weather_report_if_else <- function(is_sunny){
     if(is_sunny){

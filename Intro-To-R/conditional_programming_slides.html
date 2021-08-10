@@ -389,7 +389,9 @@ weather_report(is_sunny = T)</pre>
 
 </article></slide><slide class=""><hgroup><h2>the <code>else</code> block</h2></hgroup><article  id="the-else-block-1">
 
-<p>-By just looking at the code below, what will the outputs of <code>weather_report_if_else(T)</code> and <code>weather_report_if(T)</code> be?</p>
+<ul>
+<li>By just looking at the code below, what will the outputs of <code>weather_report_if_else(T)</code> and <code>weather_report_if(T)</code> be?</li>
+</ul>
 
 <pre class = 'prettyprint lang-r'>weather_report_if_else &lt;- function(is_sunny){
     if(is_sunny){
@@ -528,7 +530,7 @@ ifelse(test = vec_greater_than_0, yes =Inf, no = -Inf  )# yes and no correspond 
 <pre class = 'prettyprint lang-r'>data(mpg)
 head(mpg)</pre>
 
-<pre >## # A tibble: 6 x 11
+<pre >## # A tibble: 6 × 11
 ##   manufacturer model displ  year   cyl trans      drv     cty   hwy fl    class 
 ##   &lt;chr&gt;        &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;      &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt; 
 ## 1 audi         a4      1.8  1999     4 auto(l5)   f        18    29 p     compa…
@@ -543,7 +545,7 @@ head(mpg)</pre>
 <pre class = 'prettyprint lang-r'>mpg$trans &lt;- replace(x = mpg$trans, list = mpg$trans == &#39;auto(l5)&#39;, &#39;auto L-5&#39;)
 head(mpg)</pre>
 
-<pre >## # A tibble: 6 x 11
+<pre >## # A tibble: 6 × 11
 ##   manufacturer model displ  year   cyl trans      drv     cty   hwy fl    class 
 ##   &lt;chr&gt;        &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;      &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt; 
 ## 1 audi         a4      1.8  1999     4 auto L-5   f        18    29 p     compa…
@@ -574,7 +576,7 @@ nrow(mpg[audi, ])</pre>
 
 <pre class = 'prettyprint lang-r'>head(mpg[audi, ])</pre>
 
-<pre >## # A tibble: 6 x 11
+<pre >## # A tibble: 6 × 11
 ##   manufacturer model displ  year   cyl trans      drv     cty   hwy fl    class 
 ##   &lt;chr&gt;        &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;      &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt; 
 ## 1 audi         a4      1.8  1999     4 auto L-5   f        18    29 p     compa…

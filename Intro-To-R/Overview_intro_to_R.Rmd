@@ -6,6 +6,13 @@ output:
   ioslides_presentation: 
     widescreen: true 
 ---
+<style>
+slides > slide {
+  overflow-x: auto !important;
+  overflow-y: auto !important;
+}
+</style>
+
 
 ## Course Goals
 
@@ -29,6 +36,7 @@ output:
 
 
 ## How to best take advantage of this course
+
 - The more you participate, the more you'll get out of it - ask questions, and answer the questions I ask you.
 - Make sure you understand material to the best of your ability as we are covering it. Much of what we learn early on in the course is vital to material later in the course. 
 - Its best to ask questions out loud, but I'll do my best to monitor the chat as well.
@@ -424,39 +432,66 @@ experiment[['condition_a']]
 ```
 
 ## Names
--vectors can also be given name
+
+- vectors can also be given name
 ```{r}
 named_vector <- c('first'=1,'second'=3, 'third'=5 )
 named_vector['third']
 ```
+
 - Note that named lists/vectors still retain their numerical index
+
 ```{r}
 named_vector[3]
 ```
 
 ## setting names 
+
 - the `names` function allows you to set the names of a list or vector *after* its declared
+
 ```{r}
 experiment <- list(c(1,2,3,4,5,5,6), 
                    c(0,0,0,0,2,3,0))
 experiment
 ```
+
 ## setting names  
+
 ```{r}
 names(experiment) <- c('condition_a', 'condition_b')
 experiment
 ```
--Note: when using `names`,  the vector of names must be the same length as the target list/vector
+
+- Note: when using `names`,  the vector of names must be the same length as the target list/vector
+
 
 ## list accessor
  
-- another way to access named data from a list is with the `$` operator 
+- another way to access named data from a list is with the `$` operator, aka the accessor operator
 
 ```{r}
 experiment$condition_a
 ```
 
+## Nonstandard names
+
+- it is possible to have list/vector names that do not follow the standard variable naming conventions we talked about earlier
+
+```{r}
+
+ns_name_vec <- list('Homo Sapiens' = 'human', 'Mus Musculus' = 'mouse')
+
+```
+
+- Sometimes we may have to use a name in a situation where we cannot quote, ie when using the `$` operator. In order to do this, we must enclose the name in backticks, the `\`` character
+
+```{r}
+ns_name_vec$`Homo Sapiens`
+```
+
+
 ## lets do some practice
+
 -  go to "working with lists"
 
 ## dataframes
@@ -504,38 +539,86 @@ example_df[2:3,]
 example_df[,1]
 ```
 
-- columns can also be accessed with the `$` plus there column name
+## Column names 
+
+- All `data.frames` have column names. This is a `character` vector of the length equal to the length of the number of columns.
+- Its often much easier to refer to a column by its name as opposed to its numerical index. 
+- The function `colnames` returns the column names for a `data.frame`
+
+```{r}
+colnames(example_df)
+```
+
+## Column names
+
+- the column names of `data.frame` can also be set using the `colnames` function
+
+```{r}
+new_df <- example_df
+new_df
+```
+
+```{r}
+colnames(new_df) <- c('column_a', 'Column_b')
+new_df
+```
+## Column names
+
+- we can change individual column names by subsetting the `colnames` call
+
+```{r}
+colnames(new_df)[1] <- 'COL_A'
+```
+
+## Column names as indexers 
+
+- individual columns can  be accessed with the `$` plus there column name
 
 ```{r}
 example_df$col_b
 ```
 
+- Alternatively, we can select one or more columns using the same syntax as numerical indexing 
+
+```{r}
+example_df[, c('col_b', 'col_a')]
+```
+
 ## indexing dataframes
 
--columns can also be accessed by their column name 
+- columns can also be accessed by their column name 
+
 ```{r}
 example_df[,'col_b']
 ```
 
 ## modifying data frames
+
 - data frames can be changed similar to lists
 
 ```{r}
 example_df
 ```
--using the accesor operator
+
+- using the accesor operator
+ 
 ```{r}
 example_df$col_b <- c('x', 'y', 'z')
 example_df
 ```
+
 ## modifying data frames
+
 - or the column name
+
 ```{r}
 example_df[,'col_b'] <- c('dog', 'cat', 'chicken')
 ```
  
 ## modifying data frames
+
 - do not try an edit a row in place; this is bad habit, as columns can have different data type. If you must edit a row in place, edit each element within the row, one at a time
+
 ```{r}
 example_df[2, 'col_a'] <- -1
 example_df[2, 'col_b'] <- 'kitten'
@@ -543,11 +626,14 @@ example_df
 ```
 
 ## modifying data frames 
+
 - new columns can be added by declaring a new index name or similarly with the accessor function
+
 ```{r}
 example_df[,'col_c'] <- c(-1,-2,-3)
 example_df
 ```
+
 ```{r}
 example_df$col_d <- c('apple', 'Facebook', 'Google')
 example_df
@@ -557,7 +643,7 @@ example_df
 
 - `Factors` are another data type, like `numeric`, or `character`. `Factors` are designed to be representations of characters that take up low memory.
 - in a `factor` vector, each unique value is mapped to a number. this mapping is not displayed, and is used under-the-hood. 
-- The unique values for each factor are called  its levels
+- The unique values for each factor are called  its `levels`
 - `Factors` are used because its easier to store numbers in memory than characters
 
 ```{r}
@@ -572,6 +658,7 @@ char_vec
 char_vec_factor <- factor(char_vec)
 char_vec_factor
 ```
+
 - the levels of a `factor` can be accessed by the `levels` function. 
 
 ```{r}
@@ -579,14 +666,29 @@ levels(char_vec_factor)
 ```
 
 ## Factors
+
 - levels must always be a unique set of values 
 
 ```{r, error = T}
 factor(char_vec, levels = c('a', 'a', 'b', 'c'))
 ```
 
+## Factors
+
+- the `unique` function will always return the unique values in a vector, and can be useful for setting the levels in a `factor`
+```{r}
+char_vec <- c('a', 'a', 'a', 'b', 'b', 'c')
+unique(char_vec)
+```
+
+```{r}
+factor(char_vec, levels = unique(char_vec))
+```
+
 ## ordering factors 
+
 - unlike characters or numbers which have an innate order, the ordered of `factors` is based on the ordering of their levels; 
+
 ```{r}
 char_vec_factor_arr <- factor(char_vec, levels =c('b', 'a', 'c') )
 char_vec_factor_arr
@@ -596,17 +698,22 @@ sort(char_vec_factor_arr)
 ```
 
 ## Factors vs characters
+
 - while they look similar they have very different properties. 
 
 ```{r}
 as.numeric(char_vec)
 ```
+
 ```{r}
 as.numeric(char_vec_factor)
 ```
 
 ## Factors in data frames 
-- data frames by default convert all `character` vectors to `factors`. This can be disabled when declaring a data frame using the argument`stringsAsFactors=F`
+
+- In older versions of R(<4), data frames by default converted all `character` vectors to `factors`. In newer R versions, R(4+) will keep all `character` vectors as `characters`
+
+- This can be disabled when declaring a data frame using the argument`stringsAsFactors=F`
 
 ```{r}
 example_df <- data.frame(col_a = c(1, 2, 3 ), 
@@ -627,6 +734,7 @@ str(example_df_no_fctr)
 - confusion between factors and characters is a very common mistake
 
 ## missing values
+
 - Sometimes, the data we work with will have missing values. We represent these values as `NA`, and consider the values as missing.
 
 ```{r}
@@ -651,7 +759,9 @@ str(as.numeric(character_numerals))
 ```
 
 ## math with data frames
+
 - Math with data frames works similarly to vectors, where mathematical operations happen element wise
+
 ```{r}
 numeric_df <- data.frame(left=c(0,0,0,0), right = c(1,2,4,5))
 

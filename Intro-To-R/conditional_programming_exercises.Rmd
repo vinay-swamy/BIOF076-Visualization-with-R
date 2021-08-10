@@ -3,85 +3,73 @@ title: "Review + tidying data"
 output: html_notebook
 ---
 
-## conditional programming practice
+First, lets clear the workspace.
 
+## conditional programming practice
 
 select all elements greater than 0 in the vector below using a logical vector
 
-```{r}
+```{r ex_1}
 vec <- rnorm(10000, 0, sd=10)
-vec[vec> 0]
+
 ```
 
 We'll be using some sample data from New York Air Quality Measurements. Notice how some of the data is missing
 
-```{r}
+```{r example_1}
 data("airquality")
 airquality
 ```
 
-the `is.na` function takes a vector as input and returns `TRUE` when there is a `NA`, and `FALSE` otherwise. Use the `is.na` function on the `Ozone` column and print the results
+the `is.na` function takes a vector as input and returns `TRUE` when there is a `NA`, and `FALSE` otherwise. 
+Use the `is.na` function on the `Ozone` column and print the results
+
+
+```{r ex_2}
 
 ```
-whole_data_frame_na <- is.na(example_datafram)
-example_datafram[whole_data_frame_na ] <- 0
+
+try to calculate the mean for the `Ozone` column using the `mean` function
+
+```{r ex_3}
+
 ```
-
-```{r}
-is.na(airquality$Ozone)
-```
-
-
-try to calculate the mean for the `Ozone` column 
-`mean(  )` 
-```{r}
-mean(airquality$Ozone)
-```
-
 
 For the `Ozone` column values that are NOT(!) `NA`, and calculate the mean and store it in a variable
 
-```{r}
-mean_ozone <-  mean(airquality$Ozone[!is.na(airquality$Ozone)])
+```{rex_4}
 
 ```
 
 select the `NA` values in the `Ozone` and set them to the mean value we calculated earlier
 
-```{r}
-airquality$Ozone[is.na(airquality$Ozone)] <- mean_ozone
-airquality$Ozone
-```
+```{r ex_5}
 
+
+```
 
 use the `%in%` operator to select values from the `Month` column equal to 6 or 7. Store this in a variable
 
-```{r}
-june_or_july <-  airquality$Month %in% c(6, 7)
+```{r ex_6}
+six_or_seven <-  c(6, 7)
 ```
 
 use the above logical indexing vector to select rows from the `airquality` dataframe; keep all columns 
 
-```{r}
-airquality_jj <-  airquality[june_or_july, ]
+```{r ex_7}
+
 ```
 
 use the `ifelse` function to replace the numbers corresponding to each month with their actual names () 6 -> "June", 7->"July")
 
-```{r}
-
-airquality_jj$Month <- ifelse(airquality_jj$Month == 7, 'July', 'June')
+```{r ex_8}
 
 
 ```
 
-make a boxplot for the `Ozone` levels for each month, coloring boxplots by month, 
+make a boxplot for the `Ozone` levels for each month, coloring boxplots by month. Remember to load the `ggplot` library using the `library` function
 
-```{r}
-
-library(ggplot2)
-ggplot(airquality_jj) + 
-    geom_boxplot(aes(x= Month, y=Ozone, fill = Month))
+```{r ex_9}
 
 ```
 
@@ -94,43 +82,25 @@ Note: when plotting a `ggplot` within a function you must `print` it out.
 
 It might help to write out the code for the `if` statement first and then incorporate it into a function.
 
-```{r}
+```{r ex_10}
 data("mpg")
 mpg
-filter_and_plot <- function(dataset, car_manufactuer){
-    filterd_mpg <- dataset[dataset$manufacturer == car_manufactuer, ] 
-ggplot(filterd_mpg) + 
-    geom_bar(aes(x=class))
-}
-    
-filter_and_plot(mpg, 'Mazda')
 
 
 ```
 
 within the same function, add an `if` statement to check if the input of the function actually is in the mpg dataframe, and if its not print an error message and return from the function. This called error handling, and an important concept to know if your code ever has ro be used by someone else 
 
-Things to use
+Operators and functions to use
 - `%in%`
 - `all/any`
-- `unique`
+    - `all` - takes a logical vector as input and  returns true if ALL elements in input are true
+    - `any` - takes a logical vector as input and  returns true if at least one element in input is true
+- `unique` - returns a vector of unique values from an input vector
 
-```{r}
-filter_and_plot <- function(dataset, car_manufactuer){
-    if(any(unique(dataset$manufacturer) %in% car_manufactuer)){
-        filterd_mpg <- dataset[dataset$manufacturer == car_manufactuer, ] 
-        ggplot(filterd_mpg) + 
-            geom_bar(aes(x=class))
-        
-    }else{
-        print('Car manufacturer not in dataset')
-        
-    }
+Use the `?` command to see the documentation and example usage for these functions 
 
-}
-
-filter_and_plot(mpg, 'audi')
-    
+```{r ex_11}
 
 
 ```

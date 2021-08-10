@@ -175,6 +175,13 @@ slide:not(.current) .plotly.html-widget{
           </hgroup>
   </slide>
 
+<style>
+slides > slide {
+  overflow-x: auto !important;
+  overflow-y: auto !important;
+}
+</style>
+
 <slide class=""><hgroup><h2>Course Goals</h2></hgroup><article  id="course-goals">
 
 <ul>
@@ -774,7 +781,9 @@ experiment[[&#39;condition_a&#39;]]</pre>
 
 </article></slide><slide class=""><hgroup><h2>Names</h2></hgroup><article  id="names-1">
 
-<p>-vectors can also be given name</p>
+<ul>
+<li>vectors can also be given name</li>
+</ul>
 
 <pre class = 'prettyprint lang-r'>named_vector &lt;- c(&#39;first&#39;=1,&#39;second&#39;=3, &#39;third&#39;=5 )
 named_vector[&#39;third&#39;]</pre>
@@ -818,17 +827,35 @@ experiment</pre>
 ## $condition_b
 ## [1] 0 0 0 0 2 3 0</pre>
 
-<p>-Note: when using <code>names</code>, the vector of names must be the same length as the target list/vector</p>
+<ul>
+<li>Note: when using <code>names</code>, the vector of names must be the same length as the target list/vector</li>
+</ul>
 
 </article></slide><slide class=""><hgroup><h2>list accessor</h2></hgroup><article  id="list-accessor">
 
 <ul>
-<li>another way to access named data from a list is with the <code>$</code> operator</li>
+<li>another way to access named data from a list is with the <code>$</code> operator, aka the accessor operator</li>
 </ul>
 
 <pre class = 'prettyprint lang-r'>experiment$condition_a</pre>
 
 <pre >## [1] 1 2 3 4 5 5 6</pre>
+
+</article></slide><slide class=""><hgroup><h2>Nonstandard names</h2></hgroup><article  id="nonstandard-names">
+
+<ul>
+<li>it is possible to have list/vector names that do not follow the standard variable naming conventions we talked about earlier</li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>ns_name_vec &lt;- list(&#39;Homo Sapiens&#39; = &#39;human&#39;, &#39;Mus Musculus&#39; = &#39;mouse&#39;)</pre>
+
+<ul>
+<li>Sometimes we may have to use a name in a situation where we cannot quote, ie when using the <code>$</code> operator. In order to do this, we must enclose the name in backticks, the ``` character</li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>ns_name_vec$`Homo Sapiens`</pre>
+
+<pre >## [1] &quot;human&quot;</pre>
 
 </article></slide><slide class=""><hgroup><h2>lets do some practice</h2></hgroup><article  id="lets-do-some-practice">
 
@@ -907,17 +934,74 @@ example_df</pre>
 
 <pre >## [1] 1 2 3</pre>
 
+</article></slide><slide class=""><hgroup><h2>Column names</h2></hgroup><article  id="column-names">
+
 <ul>
-<li>columns can also be accessed with the <code>$</code> plus there column name</li>
+<li>All <code>data.frames</code> have column names. This is a <code>character</code> vector of the length equal to the length of the number of columns.</li>
+<li>Its often much easier to refer to a column by its name as opposed to its numerical index.</li>
+<li>The function <code>colnames</code> returns the column names for a <code>data.frame</code></li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>colnames(example_df)</pre>
+
+<pre >## [1] &quot;col_a&quot; &quot;col_b&quot;</pre>
+
+</article></slide><slide class=""><hgroup><h2>Column names</h2></hgroup><article  id="column-names-1">
+
+<ul>
+<li>the column names of <code>data.frame</code> can also be set using the <code>colnames</code> function</li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>new_df &lt;- example_df
+new_df</pre>
+
+<pre >##   col_a col_b
+## 1     1     a
+## 2     2     b
+## 3     3     c</pre>
+
+<pre class = 'prettyprint lang-r'>colnames(new_df) &lt;- c(&#39;column_a&#39;, &#39;Column_b&#39;)
+new_df</pre>
+
+<pre >##   column_a Column_b
+## 1        1        a
+## 2        2        b
+## 3        3        c</pre>
+
+</article></slide><slide class=""><hgroup><h2>Column names</h2></hgroup><article  id="column-names-2">
+
+<ul>
+<li>we can change individual column names by subsetting the <code>colnames</code> call</li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>colnames(new_df)[1] &lt;- &#39;COL_A&#39;</pre>
+
+</article></slide><slide class=""><hgroup><h2>Column names as indexers</h2></hgroup><article  id="column-names-as-indexers">
+
+<ul>
+<li>individual columns can be accessed with the <code>$</code> plus there column name</li>
 </ul>
 
 <pre class = 'prettyprint lang-r'>example_df$col_b</pre>
 
 <pre >## [1] &quot;a&quot; &quot;b&quot; &quot;c&quot;</pre>
 
+<ul>
+<li>Alternatively, we can select one or more columns using the same syntax as numerical indexing</li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>example_df[, c(&#39;col_b&#39;, &#39;col_a&#39;)]</pre>
+
+<pre >##   col_b col_a
+## 1     a     1
+## 2     b     2
+## 3     c     3</pre>
+
 </article></slide><slide class=""><hgroup><h2>indexing dataframes</h2></hgroup><article  id="indexing-dataframes-3">
 
-<p>-columns can also be accessed by their column name</p>
+<ul>
+<li>columns can also be accessed by their column name</li>
+</ul>
 
 <pre class = 'prettyprint lang-r'>example_df[,&#39;col_b&#39;]</pre>
 
@@ -936,7 +1020,9 @@ example_df</pre>
 ## 2     2     b
 ## 3     3     c</pre>
 
-<p>-using the accesor operator</p>
+<ul>
+<li>using the accesor operator</li>
+</ul>
 
 <pre class = 'prettyprint lang-r'>example_df$col_b &lt;- c(&#39;x&#39;, &#39;y&#39;, &#39;z&#39;)
 example_df</pre>
@@ -996,7 +1082,7 @@ example_df</pre>
 <ul>
 <li><code>Factors</code> are another data type, like <code>numeric</code>, or <code>character</code>. <code>Factors</code> are designed to be representations of characters that take up low memory.</li>
 <li>in a <code>factor</code> vector, each unique value is mapped to a number. this mapping is not displayed, and is used under-the-hood.</li>
-<li>The unique values for each factor are called its levels</li>
+<li>The unique values for each factor are called its <code>levels</code></li>
 <li><code>Factors</code> are used because its easier to store numbers in memory than characters</li>
 </ul>
 
@@ -1030,6 +1116,22 @@ char_vec_factor</pre>
 <pre class = 'prettyprint lang-r'>factor(char_vec, levels = c(&#39;a&#39;, &#39;a&#39;, &#39;b&#39;, &#39;c&#39;))</pre>
 
 <pre >## Error in `levels&lt;-`(`*tmp*`, value = as.character(levels)): factor level [2] is duplicated</pre>
+
+</article></slide><slide class=""><hgroup><h2>Factors</h2></hgroup><article  id="factors-3">
+
+<ul>
+<li>the <code>unique</code> function will always return the unique values in a vector, and can be useful for setting the levels in a <code>factor</code></li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>char_vec &lt;- c(&#39;a&#39;, &#39;a&#39;, &#39;a&#39;, &#39;b&#39;, &#39;b&#39;, &#39;c&#39;)
+unique(char_vec)</pre>
+
+<pre >## [1] &quot;a&quot; &quot;b&quot; &quot;c&quot;</pre>
+
+<pre class = 'prettyprint lang-r'>factor(char_vec, levels = unique(char_vec))</pre>
+
+<pre >## [1] a a a b b c
+## Levels: a b c</pre>
 
 </article></slide><slide class=""><hgroup><h2>ordering factors</h2></hgroup><article  id="ordering-factors">
 
@@ -1067,7 +1169,8 @@ char_vec_factor_arr</pre>
 </article></slide><slide class=""><hgroup><h2>Factors in data frames</h2></hgroup><article  id="factors-in-data-frames">
 
 <ul>
-<li>data frames by default convert all <code>character</code> vectors to <code>factors</code>. This can be disabled when declaring a data frame using the argument<code>stringsAsFactors=F</code></li>
+<li><p>In older versions of R(&lt;4), data frames by default converted all <code>character</code> vectors to <code>factors</code>. In newer R versions, R(4+) will keep all <code>character</code> vectors as <code>characters</code></p></li>
+<li><p>This can be disabled when declaring a data frame using the argument<code>stringsAsFactors=F</code></p></li>
 </ul>
 
 <pre class = 'prettyprint lang-r'>example_df &lt;- data.frame(col_a = c(1, 2, 3 ), 
@@ -1078,7 +1181,7 @@ str(example_df)</pre>
 ##  $ col_a: num  1 2 3
 ##  $ col_b: chr  &quot;a&quot; &quot;b&quot; &quot;c&quot;</pre>
 
-</article></slide><slide class=""><hgroup><h2>Factors</h2></hgroup><article  id="factors-3">
+</article></slide><slide class=""><hgroup><h2>Factors</h2></hgroup><article  id="factors-4">
 
 <pre class = 'prettyprint lang-r'>example_df_no_fctr &lt;- data.frame(col_a = c(1, 2, 3 ), 
                                  col_b = c(&#39;a&#39;, &#39;b&#39;, &#39;c&#39;), 

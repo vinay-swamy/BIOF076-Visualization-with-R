@@ -6,52 +6,33 @@ output: html_notebook
 
 ## Using multiple geoms 
 
-- this is a more typical form a violin plot, showing both the violin distribution and box plot quantiles. Use multiple geoms to try and recreate this plot. This was generated using the `ToothGrowth` data set. Remember you can use the `?` command to look at the parameters for each geom 
+- this is a more typical form a violin plot, showing both the violin distribution and box plot quantiles. Use multiple geoms to try and recreate this plot. This was generated using the `ToothGrowth` data set. Remember you can use the `?` command to look at the parameters for each geom. use the `ggsave` function to save the plot to disk, and set the ouptut dimensions accordingly to match the example
 
 ```{r}
 knitr::include_graphics('../src/example_vio_box.png')
 ```
 
 
-```{r}
+```{r ex_1}
 data("ToothGrowth") 
 ToothGrowth
-plot <- ggplot(ToothGrowth, aes(x=supp,y=len)) +
-    geom_violin(aes( fill = supp ), color = 'white')+
-    geom_boxplot( width = .1, fill = 'black', color = 'white') + 
-    theme_classic()
-    
-ggsave('example_boxplot.png', plot = plot, height = 7, width = 5, bg = 'white')
+
 ```
 
 ## faceting plots 
 
 - Remember the bubble plot we made yesterday using the gapminder data set? We're going to re plot it
 - This time use `facet_wrap` to split the data up by continent and make a facted plot. Additionally, add labels for the country names for three countries from each continent
+    - you will make a separate data.frame for the labels 
 
-```{r}
+```{r ex_2}
 library(tidyverse)
 library(ggrepel)
 install.packages('ggrepel')
 
-data <- read_tsv('../src/gapminder_2007.tsv.gz') %>% 
-    arrange(pop) %>%
-    mutate(continent = factor( continent, levels = unique(continent)))
+data <- read_tsv('../src/gapminder_2007.tsv.gz') 
 
 
-label_data <- data %>% filter(continent == 'Asia') %>% .[1:3, ] %>% arrange(country)
-
-
-ggplot() +
-  geom_point(data = data, aes(x=gdpPercap, y= lifeExp, size = pop, color = continent), alpha = .5) +
-  geom_label_repel(data = label_data, aes(x=gdpPercap, y= lifeExp, label = country) )+
-  #scale_size(range = c(3,15))+
-  facet_wrap(~continent)+
-  guides(size = guide_legend(title = 'Population (M)')) +
-  theme_minimal() + 
-  theme(axis.text.x = element_text(angle = 45, hjust=1))
-
-data$continent %>% unique()
 
 ```
 
@@ -67,50 +48,17 @@ data$continent %>% unique()
 knitr::include_graphics('../src/reporter_assay_plot.png')
 ```
 
-- some hints: 
-- you will need to reshape the data, and calculate the average SU at each time point. (try using groupby and summarise)
-- the following geoms are required: `geom_line`, `geom_label`, `geom_label_repel`, `geom_vline` and `geom_errorbar`. You will have to change several theme settings, and scale at least one aesthtic for one of the geoms
+This is a bit a of a tough one,so some hints: 
+- you will need to reshape the data from wide to long, and calculate the mean, standard deviation, and number of observations at each time point-condition grouping. (try using groupby and summarise)
+    - the `n()` function gives the number of observations in a group
+- use the  summarized data to calculate standard error(see slides for formula )
+- the following geoms are required: `geom_line`, `geom_point`, `geom_label_repel`, `geom_vline` and `geom_errorbar`. You will have to change several theme settings, and scale at least one aesthetic for one of the geoms
 
-- groupby each time and condition, summarise and calculate mean, standard deviation `sd`, number of obersvations per group `n()`  
+- to change the point shapes, you will need to use `scale_shape_manual`. We have not directly covered how to do this, but for some real-life practice, try googling it.
 
-add a column to the data for standard error, sd/n
-
-
-- average value per time point
-- pivot to long form
-
-```{r}
+```{r ex_3}
 data <- read_tsv('../src/Reporter_assay_results.tsv.gz')
-ggplot(data) + 
-    geom_line(aes(x=Time, y=WildType))
 
-plot_data <- data %>% 
-    pivot_longer(cols = c(WildType, Mutant), names_to = 'type', values_to = 'obs') %>% 
-    group_by(Time, type) %>% 
-    summarise(avg_obs = mean(obs), 
-              std_obs  = sd(obs),
-              n_obs = n() ) %>% 
-    mutate(std_err =std_obs/sqrt(n_obs))
-
-label_data = data.frame(
-    x=8, 
-    y=12,
-    label_text = "Reaction Temperature\nDecreased"
-)
-
-ggplot() + 
-    geom_errorbar(data = plot_data, aes(x=Time, ymin = avg_obs -std_err, ymax = avg_obs + std_err),width = .5) +
-    geom_line(data = plot_data, aes(x=Time, y=avg_obs, color = type ))+
-    geom_point(data = plot_data,aes(x=Time, y=avg_obs, color = type, shape = type), size = 3) +
-    geom_label_repel(data=label_data, aes(x=x, y=y, label = label_text), nudge_x =8 ) +
-    geom_vline(xintercept = 8) + 
-    ylab("Scientific Units(SU)") + 
-    xlab("Time(hours)") + 
-    ggtitle('Enzymatic Activity of Protein X')+
-    theme_classic()
-
-
-?geom_vline
 ```
 
 
@@ -124,32 +72,12 @@ knitr::include_graphics('../src/dumbell_plot.png')
 
 - the are analgous to a dodged bar plot, where the height, or in this case width, corresponds to the number of cases 
 - the data for this plot is in the file '../src/health.csv.gz'
-couple hints: you will need to sort this data before plotting it. Remember how discrete axes are ordered in ggplot
+couple hints: you will need to sort this data before plotting it. Remember how discrete axes are ordered in ggplot with factors.
+- We have not directly covered how to change axis ticks, but look through the documentation of `scale_x_contionus` for some help
 
-```{r}
+```{r ex_4}
 library(tidyverse)
-data <- read_tsv( '../src/US_health.tsv.gz') %>% 
-    arrange(year, desc(percent)) %>% 
-    mutate(Area = factor(Area, levels = unique(Area)), 
-           year = as.character(year))
-
-
-
-format_percent <- function(x){
-     num  = x*100
-     paste(num, '%')
-    
-}
-
-ggplot(data) + 
-    geom_line(aes(x=percent, y=Area)) +
-    geom_point(aes(x=percent, y=Area, color = year)) +
-    scale_x_continuous(labels = format_percent)+
-    theme_classic() + 
-    theme(panel.grid.major.x = element_line(colour = 'black'))
-
-    
-
+data <- read_tsv( '../src/US_health.tsv.gz') 
 
 
 ```

@@ -22,6 +22,7 @@ library(tidyverse)
 ```
 
 ## Using multiple geoms in a plot
+
 - Up until now we have been using one `geom_` layer in a plot, which often does the trick; but sometimes, we want to include multiple geoms in the same plot
 
 - for example, fitting a line to some points; we want both the points and the fitted line
@@ -116,6 +117,7 @@ ggplot() +
     geom_label(data = top5_mpg,aes(x=qsec, y= mpg, label = name)) 
 
 ```
+
 - this works, but doesn't look super clean. If these points were more dense, the labels might hide them ; because the location of the labels need to be specified before hand, it can be difficult to use the vanilla `geom_text` or `geom_label`. 
 
 ## `ggrepel`
@@ -128,11 +130,13 @@ ggplot() +
     geom_point(data = mtcars, aes(x=qsec, y= mpg)) + 
     geom_label_repel(data = top5_mpg,aes(x=qsec, y= mpg, label = name))
 ```
+
 - the `_repel` labeling functions will automagically space them selves away from points, while simultaneously avoiding other elements in the plot.
 
 ## `ggrepel`
 
 - when the points get too far, lines will be drawn to show which label corresponds to which location
+
 ```{r}
 library(ggrepel)
  ggplot() + 

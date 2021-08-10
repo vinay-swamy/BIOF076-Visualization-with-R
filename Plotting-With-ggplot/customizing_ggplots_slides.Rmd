@@ -38,11 +38,17 @@ plot_pal <- function(cols){
 ```
 
 ## setting graphical parameters
+
 - up until now we have been using the default graphical parameters.
 - graphical parameters include axis names, legend size/orientation, plot titles, grid lines etc
 - all graphical parameters can be set with the `theme` function. 
 - lets take a look at the `theme` [documentation](https://ggplot2.tidyverse.org/reference/theme.html)
 - all the `theme_...` functions we've been using are preset configurations of a theme
+
+## An aside on theme's and graphical parameters
+
+- while there is a bit of consistency on how to use and change different graphical parameters, much of it will feel a little arbitrary, and there's no good way to learn how to change them with out trial and error/practice 
+
 
 ## Simple Theme modifiers
 - There are several functions that allow you to modify specific elements, designed for simplicity
@@ -60,6 +66,7 @@ ggplot(mpg) + # standard plot
 ```
 
 ## Simple Theme modifiers
+
 - change axis labels , and add a title 
 ```{r}
 data(mpg)
@@ -80,7 +87,8 @@ ggplot(mpg) +
 ## changing text with `theme`
 
 - we can see in the `theme` function there are multiple inputs for textual parts of the text like `plot.title`, or `axis.text.x`
-- there are various setting for text - font, size color etc; These are controlled by the `element_text` function, the output of which we assign to to specific graphical parameter, like `axis.text`. these parameters change everything about the text, except the text itself; setting the text is done with functions like `xlab` or `ggtitle` or populated directly from the data
+- there are various setting for text - font, size color etc; These are controlled by the `element_text` function, the output of which we assign to to specific graphical parameter, like `axis.text`. 
+- these parameters change everything about the text, except the text itself; setting the text is done with functions like `xlab` or `ggtitle` or populated directly from the data
 
 ## changing text with `theme`
 - the previous plot had squished text on the x axis 
@@ -136,8 +144,8 @@ ggplot(mpg) +
 ```
 
 ## guides
-- guides are an alternative  method to setting graphical parameters in theme. 
-- They were introduced to ggplot after themes, and are generally a more intuitive interface for setting graphical parameters, but lack the full range of parameters offered by `theme`
+- guides are an alternative method to setting graphical parameters in theme. 
+- They were introduced to ggplot after themes, and are generally an easier to use interface for setting graphical parameters, but lack the full range of parameters offered by `theme`
 
 ## guides
 - For example, what if we want to change the name of the legend in the graph below
@@ -154,6 +162,7 @@ ggplot(mpg) +
 ```
 
 ## guides
+
 - we have two options: 
 - option 1. change the name of the `class` column, or make a new column that has the name we want 
 
@@ -169,6 +178,7 @@ ggplot(mpg) +
 ```
 
 ## guides
+
 - or option 2, use the `guides` function. For guides we set a value for the aesthetic within the `geom` we want to change ,  in this case `fill`. 
 - Next we choose a guide for the graphical parameter associated with that aesthetic we want to change, IE `guide_legend`
 

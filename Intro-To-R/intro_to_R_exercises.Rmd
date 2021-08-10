@@ -3,25 +3,14 @@ title: "Intro to R exercises"
 output: html_notebook
 ---
 
-This is an R notebook. It's a useful way to run code interactively. the blocks marked by the ticks are called chunks. press the play button to the top right of the chunk to run code. The title of the chunk is the test in the bracket. I will try to refer to chunks by their title. 
+This is an R notebook. It's a useful way to run code interactively. The blocks marked by the backticks are called chunks. press the play button to the top right of the chunk to run code. The title of the chunk is the test in the bracket. I will try to refer to chunks by their titl
 
-```{r }
+Note that chunks are entirely generated based the specific backtick characters. Deleting these characters will interfere with running the chunk, and you may see the play button disappear. If you have trouble running a chunk try deleting the chunk, or the chunks above and below, and write code in new chhunks. The short cut for inderting a chunk is `ctrl-alt-i` on windows and `cmd-option-i` on mac. 
+
+
+```{r test_chunk }
 "Welcome to R"
-print('hello class')
 ```
-
-
-```{r}
-
-```
-
-
-
-
-```{r}
-example <- 'test'
-```
-
 
 These first few chunks are working with variables. Run the chunk below. You should see a variable in the environment panel called "examlpe", storing the character "test"
 
@@ -37,9 +26,10 @@ example <- test
 
 this is an example of an error message, and you're gonna see a lot of them this week. Learning how to diagnose a problem from an error message is a key programming skill. In this case, the interpreter thinks that `test` is another variable(because there are no quotes), and so is looking for a variable named test, but cant find one. 
 
-Sometimes, Rstudio is able to detect syntax errors, in this case a missing comma 
-```{r}
+Sometimes, Rstudio is able to detect syntax errors, in this case a missing comma. Older versions of Rstudio are worse at picking up on these errors 
 
+```{r}
+my_vec <- v(1 2)
 ```
 
 
@@ -48,21 +38,21 @@ Try these exercises ( dont type in the same line as the "```" ticks )
 Assign the number `5` to a variable named `x`
 
 ```{r ex_1}
-x <- 5
+
 ```
 
 Assign the word 'hello' to a variable named `greeting`
 
 ```{r}
 
-greeting <- 'hello'
+
 
 ```
 
 Make a vector containing the numbers 3, 4, 5, and 6 
 
 ```{r ex_2}
-number_vector <- c(3, 4, 5, 6)
+
 
 ```
 
@@ -70,11 +60,7 @@ Note at that the Environment section, vectors also display their length and asso
 
 Make 2 vectors, the first with numbers 2,5,7,2 and the second with 3,4,523, and then join them together 
 ```{r ex_3}
-first_vector <- c(2, 5, 7, 2)
-second_vector <- c(3, 4, 523)
 
-third_variable <-  c(first_vector, second_vector)
-third_variable
 ```
 
 
@@ -82,25 +68,18 @@ select the first element from the following vector
 
 ```{r ex_4}
 char_vec <- c('a','b','c','d', 'e')
-char_vec[1]
 
 ```
 
 select the last element from `char_vec`
 
 ```{r ex_5}
-char_vec[5]
+
 ```
 
 select the the 1st, 3rd, and 5th elements from `char_vec`
 
 ```{r ex_6}
-loc <- c(1, 3, 5)
-
-
-
-
-
 
 ```
 
@@ -108,15 +87,14 @@ loc <- c(1, 3, 5)
 select all values between the 2nd and 5th elements from `char_vec`
 
 ```{r ex_7}
-char_vec[2:5]
+
 ```
 
 
 Now, make a vector with the letter 'H', and the number 213
 
 ```{r ex_8}
-vec <- c('H', 213)
-vec
+
 ```
 
 Pay close attention to this variable in the Environment section
@@ -126,13 +104,12 @@ Pay close attention to this variable in the Environment section
 - all functions in R have documentation on how to use them to access this; use the `?` operator like so. A help window should be open on the right hand side of the screen. If you scroll to the bottom of the help section, there will always be an example of how to use it 
 
 ```{r example_3}
-
+?paste
 ```
 
 
 run this chunk to first clear the environment
 ```{r}
-example <- '12'
 rm(list = ls())
 ```
 
@@ -141,31 +118,28 @@ calculate the mean for this vector (try using the `mean` function)
 ```{r ex_9}
 vec <- c(23444, -12342, 23454, 64324, -45315)
 
-mean(x=vec)
-
 ```
 
 The vector below is randomly generated numeric vector of length between 1 and 100. Use `length` to find the length of `random_vector`. run it a couple times to see it change
 
 ```{r ex_10}
-x=rnorm(n=100)
+random_length_vector=rnorm(n=sample(1:1000, 1))
 
-length(x)
 ```
 
-use `paste` to concatente these two characters 
+use `paste` to concatenate these two characters 
 
 ```{r ex_11}
 char1 <- 'hello'
 char2 <- 'world'
 
-paste(char1, char2)
+
 ```
 
 Now, change the separator between the two characters from a space to `-`. try running `?paste` for help
 
 ```{r ex_12}
-paste(char1, char2, sep = '-')
+
 ```
 
 calculate the mean for each vector, and then add together using the `+` operator
@@ -175,57 +149,29 @@ v1 <- c(1,4,23)
 v2 <- c(4,56,23,12)
 v3 <- c(123,4, -40, -50, 34)
 
-mean(v1) + mean(v2) + mean(v3)
+
 ```
 
 now calculate the mean for each above vector, but use the `sum` function.(hint: you need to make a vector)
 
 ```{r ex_14}
 
-vector_of_means <- c( mean(v1) , mean(x = v2) , mean(x=v3))
-
-sum(vector_of_means)
-```
-
-
-
-```{r}
-
 
 ```
-
 
 
 ## Writing your own functions 
+
 write your own function that takes a number as an input, and adds the number `5` to it
 
 ```{r ex_15}
-add_five <- function(input_number){
-  result <- input_number + 5 
-  return(result)
-}
 
-
-add_five(input_number = 4)
-add_five(4)
 
 ```
 
 write your own function that takes a vector as input and returns the last element (hint: use the `length` function). Test it on  `v1`, `v2`, and `v3` defined earlier
 
 ```{r ex_16}
-v1 <- c(1,4,23)
-v2 <- c(4,56,23,12)
-v3 <- c(123,4, -40, -50, 34)
-
-get_last <- function(vec){
-  last_element <- length(vec)
-  return(vec[last_element])
-}
-
-get_last(v3)
-
-
 
 ```
 
@@ -233,30 +179,25 @@ get_last(v3)
 
 You can explore the values in list in the environment viewer. click the arrow on the left hand side to view values in the list
 
-```{r example_}
+```{r example_4}
 list_to_view <- list(a='v', 
                      b=c(1,4,6,7,5), 
                      x=c('c', 'd'))
 
 ```
 
-Decalre a list with two using two vectors below. when declaring the list, name the `a` vector condition_a, and the `b` vector condition_b
+Declare a list with two using two vectors below. when declaring the list, name the `a` vector condition_a, and the `b` vector condition_b
 
 ```{r ex_17}
 a <- c(0,1,2,3,4)
 b <- c(0,2,4,6,8)
-experiment_results <- list(
-  condition_a = a,
-  condition_b = b
-)
-experiment_results
+
 ```
-"
+
 using the `names` function, change the names of condition_a to "wild_type", and condition_b to "knock_out"
 
 ```{r ex_18}
-names(experiment_results) <- c("wild_type", "knock_out")
-experiment_results
+
 
 ```
 
@@ -264,8 +205,6 @@ change the last value in wild_type from 4 to -1 (hint: you will need to first ac
 
 ```{r ex_19}
 
-experiment_results[['wild_type']][5] #<- -1
-experiment_results$wild_type[5]
 
 ```
 
@@ -304,27 +243,21 @@ The autocomplete generally works pretty well and will save you a lot of time.
 - calculate the revenue per employee and store it in new columns
 
 ```{r ex_21}
-faang_data$revenue_per_employee <-  faang_data$revenue/ faang_data$n_employees
+
 ```
 
 - the `which.max` function returns the index for the maximum value in a vector. Use this to identify the company with the highest revenue and select its ceo
 
 ```{r ex_22}
 
-idx_highest_rev <- which.max(faang_data$revenue)
-
-faang_data[idx_highest_rev, 'ceo']
 
 ```
 
 - use the `paste` function to add the last names to the ceos missing last names. ( Mark zuckerberg, tim cook, and jeff bezos in case you do not know)
 
-```{r}
+```{r, ex_23}
 last_names <- c( 'zuckerberg', 'cook',  'bezos')
 
-faang_data$ceo[1:3] <-  paste(faang_data$ceo[1:3], last_names)
-
-faang_data
 ```
 
 
@@ -348,27 +281,58 @@ calculate_mean_faang('revenue', faang_data)
 
 ```
 
+## Factors
+
+To illustrate the memory saving properties of factors, run this chunk and look at how much memory the variables use
+
+```{r example_6}
+long_char_vec <- sample(letters, 1000000, replace = T)
+long_factor_vec <- as.factor(long_char_vec)
+```
+
+The vector below contains primate species names. Run the chunk to see data in the vector
+
+```{r example_7}
+species_vec <- sample(
+  c('Homo Sapiens','Macaca Fascicularis', 'Pan Troglodytes', 'Gorilla Gorilla'  ), 
+  50,
+  replace = T)
+species_vec
+
+```
+
+the `sort` function arranges vectors in order. For `numeric` data it is sorted from smallest to largest. For     `character`, it is sorted in Alphabetic order. try using `sort` on species vec
+
+```{r ex_24}
+
+```
+
+create a `factor` from `species_vec`, and use the `unique` function to set the levels 
+
+```{r, ex_25}
+
+```
+
+create a factor from `species_vec` and set the levels in a following order: 'Macaca Fascicularis','Homo Sapiens', 'Gorilla Gorilla', 'Pan Troglodytes'. You may need to store this ordering in a new vector
+
+```{r, ex_26}
+
+```
+
+
 - convert all the `factor` variables in `faang_data` to `character` using `as.character`. if you are unsure which variables are factors, run `str(faang_data)`  or use the variable explorer
 
-```{r ex_20}
+```{r ex_27}
 
 faang_data <- data.frame(name = c('Facebook', 'apple', 'amazon', 'netflix', 'google'), 
                          revenue = c(3000000000, 4000000000, 5000000000, 3000000000, 3000000000),
                          n_employees=c(2000, 8000, 10000, 5000, 12000),
                          ceo = c('mark', 'tim', 'jeff', 'reed hastings', 'sundar pichai' ),
-                         service = c('ads', 'tech', 'shipping', 'streaming', 'ads')
-                         
+                         service = c('ads', 'tech', 'shipping', 'streaming', 'ads'),
+                         stringsAsFactors = T
                          )
 
-faang_data$name <- as.character(faang_data$name)
-faang_data$ceo <- as.character(faang_data$ceo)
 
 ```
 
-
-```{r}
-while(T){
-  
-}
-```
 
