@@ -70,19 +70,49 @@ data <- read_tsv('../src/Reporter_assay_results.tsv.gz')
 knitr::include_graphics('../src/dumbell_plot.png')
 ```
 
-- the are analgous to a dodged bar plot, where the height, or in this case width, corresponds to the number of cases 
+- the are analogous to a dodged bar plot, where the height, or in this case width, corresponds to the number of cases 
 - the data for this plot is in the file '../src/health.csv.gz'
-couple hints: you will need to sort this data before plotting it. Remember how discrete axes are ordered in ggplot with factors.
-- We have not directly covered how to change axis ticks, but look through the documentation of `scale_x_contionus` for some help
+couple hints: 
+    - you will need to sort this data before plotting it. Remember how discrete axes are ordered in ggplot with factors.
+    - think about what geoms you will have to use( there is no `geom_dumbell`); it will use two geoms we have previously covered. 
+    - We have not directly covered how to change axis ticks, but look through the documentation of `scale_x_contionus` for some help
+    - the gridlines for the plot can be modified using the `theme` function. Read through the documentation of theme to see how 
+
 
 ```{r ex_4}
 library(tidyverse)
-data <- read_tsv( '../src/US_health.tsv.gz') 
+
 
 
 ```
 
 
+## Dot plot 
+
+- Dot plots can refer to a variety of plots, but the one we will be covering looks like this 
+```{r}
+knitr::include_graphics('../src/sc_dot_plot.jpg')
+```
+
+- This style of dot plot has four levels of information - two categorical variable(axes) and two continuous variables(color + point size). 
+- This particular visualization is generated using single-cell RNA-seq data. The X-axis is an expressed gene, the Y axis is a cell identity(cell type), size is percent expressing, or fraction of cells in each group expressing the gene above a certain threshold, and color is the level of gene expression.
+
+
+We are going to try and re-create this plot. Here are the general steps to transform the data :
+
+- read the data into R. The file path is '../src/pbmc_cell_expression.tsv.gz'
+- reshape the data from wide to long 
+- group the data per cell_type per gene_name and summarise to get:
+     - Average expression
+     - Whether the gene is expressed( is_expressed  = expression > 0)
+     - the number of cells in each group ( remember the  `n()` function gives you the size of groups)
+- add a column for percent_expressed ( percent_expressed = sum (is_expressed)/ group_size; recall that we can `sum` a logical to get number of `T` occurences)
+- From here the data is ready to plot. There is no `geom_dotplot`; you will have to use one of the geoms we have previously covered. 
+
+
+```{r ex_5}
+
+```
 
 
 

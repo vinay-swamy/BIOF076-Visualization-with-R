@@ -3,21 +3,18 @@ title: "Shiny exercises"
 output: html_notebook
 ---
 
-## your first Shiny App
 - this Notebook is just for instructions;
-- click the new folder button, and make new folder called 'shiny_app_01'
-- make a new Rscript (File >  new file > R Script), and name it app.R
-- load the following libraries: `shiny` and `ggplot2`
+- make a new Rscript (File >  new file > Shiny web app ), and name it basic_iris_app
+- make sure you load the following libraries: `shiny`, `ggplot2`, `DT`
+    - if you get a message saying no such library/package, install the packages with `install.packages`
+- reference the slides for syntax 
 
-- this is the boilerplate for your code. Copy and paste it into app.R 
-```{r}
+## A basic Shiny app 
 
-```
-- reference 'shiny_examples/basic_app.R' for syntax guidelines, and use the `?` help operator if you get stuck
+We will be making a basic app with using the Iris data set.
 
+After each step, makes sure the app runs successfully( if the app launches, and the screen doesn't turn grey, it probably works )
 
-## lets add some stuff
-After each step, makes sure the app runs successfully( if the app launches, and the screen doesnt turn grey, it works )
 - Add a title panel to the UI. 
 - Add a `mainPanel` to the UI, with a `plotOutput` inside. set the outputID to something informative
 - in the server, create a `renderPlot` assigned to your outputID in UI
@@ -25,7 +22,30 @@ After each step, makes sure the app runs successfully( if the app launches, and 
 - add a `selectInput` to the UI, making the label and id accordingly. Structure it so that you can choose from one of the three species within the iris data set
 - within the server function modify the `renderPlot` function you made above to use the value selected by the `selectInput`, and filter the data to only plot data from the selected species. Set the plot title as the selected species. Remember to read through the documentation for each function if you get stuck
 - create a `sliderInput` in UI, and use it to control the point size of the plot. 
-- add a DT::DToutput to UI and DT::renderDT to the server
+- add a datatable widget for exploring the dataset. Use these functions from the `DT` pacakge DT::DToutput to UI and DT::renderDT to the server
+
+
+## A more complicated App. 
+
+Next, we are going to make an app based around the scRNA-seq data we have been working with. We will be using all the plots we made in ex_5 of 'Advanced-Plotting-Libraries/patchwork_exercises.Rmd'
+Make a new app called 'scRNA-seq_browser'
+
+This exercises will rely heavily on conditional programming, so if you need to, review if statements in the slides `Intro-to-R/conditional_programming_slide.html'
+
+Again, like before, run each step once you write it. Theese steps will be a little more general this time
+
+- Use combinations of `fluidRow` and `column` to layout the UI for the elements below
+- Make a scatter plot using the UMAP1/2 coordinates
+    - add a UI element to allow you to select a column from the dataset to color by
+    - add functionality(in the server function) to change the coloring from discrete to continuous based on input 
+    column; ie if you select cell_type, it should be a discrete scale, and if you select a gene, it should be continuous
+- Add dot plot For cell type and gene expression. 
+    - add separate UI elements for selecting cell types and genes to plot
+    - add corresponding server code for transforming and filtering the raw data
+- Add a violin plot for gene expression'
+    - add separate UI elements for selecting cell types and genes to plot
+    - add corresponding server code for transforming and filtering the raw data
+- Add a `DT` datatable for viewing the raw data
 
 
 

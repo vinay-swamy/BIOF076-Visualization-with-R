@@ -4,7 +4,7 @@ author: "Vinay Swamy"
 date: "9/28/2020"
 output:
   ioslides_presentation: 
-    widescreen: true
+    widescreen: yes
 ---
 
 <style>
@@ -50,11 +50,91 @@ slides > slide {
 
 ## Whats a simple Shiny App look like?
 
+
+<!-- ```{r, echo = F} -->
+<!-- library(shiny) -->
+<!-- # Define UI for app that draws a histogram ---- -->
+<!-- ui <- fluidPage( -->
+<!--     # App title ---- -->
+<!--     titlePanel("Hello Shiny!"), -->
+<!--     # Sidebar layout with input and output definitions ---- -->
+<!--     sidebarLayout( -->
+<!--         # Sidebar panel for inputs ---- -->
+<!--         sidebarPanel( -->
+<!--             # Input: Slider for the number of bins ---- -->
+<!--             sliderInput(inputId = "bin_output", label = "Number of bins:", min = 1,max = 50, value = 30) -->
+<!--         ), -->
+<!--         # Main panel for displaying outputs ---- -->
+<!--         mainPanel( -->
+<!--             # Output: Histogram ---- -->
+<!--             plotOutput(outputId = "hist_out") -->
+<!--         ) -->
+<!--     ) -->
+<!-- ) -->
+<!-- server <- function(input, output) { -->
+<!--     output$hist_out <- renderPlot({  -->
+<!--         x    <- faithful$waiting -->
+<!--         bins <- seq(min(x), max(x), length.out = input$bin_output + 1) -->
+
+<!--         hist(x, breaks = bins, col = "#75AADB", border = "white", -->
+<!--              xlab = "Waiting time to next eruption (in mins)", -->
+<!--              main = "Histogram of waiting times") -->
+
+<!--     }) -->
+
+<!-- } -->
+
+<!-- shinyApp(ui = ui, server = server) -->
+<!-- ``` -->
+
+
 ## Whats a simple Shiny App look like?
+
+- this is the code for the app
+
+```{r, eval=F}
+library(shiny)
+# Define UI for app that draws a histogram ----
+ui <- fluidPage(
+    # App title ----
+    titlePanel("Hello Shiny!"),
+    # Sidebar layout with input and output definitions ----
+    sidebarLayout(
+        # Sidebar panel for inputs ----
+        sidebarPanel(
+            # Input: Slider for the number of bins ----
+            sliderInput(inputId = "bin_output", label = "Number of bins:", min = 1,max = 50, value = 30)
+        ),
+        # Main panel for displaying outputs ----
+        mainPanel(
+            # Output: Histogram ----
+            plotOutput(outputId = "hist_out")
+        )
+    )
+)
+server <- function(input, output) {
+    output$hist_out <- renderPlot({ 
+        x    <- faithful$waiting
+        bins <- seq(min(x), max(x), length.out = input$bin_output + 1)
+        
+        hist(x, breaks = bins, col = "#75AADB", border = "white",
+             xlab = "Waiting time to next eruption (in mins)",
+             main = "Histogram of waiting times")
+        
+    })
+    
+}
+
+shinyApp(ui = ui, server = server)
+```
+
 - `shinyApp(ui = ui, server = server)` is what actually runs the server and UI
 
 ## the UI 
+
 - the UI that we write is a function,  where each part of the UI is an argument
+- `fluidPage` defines the base UI( there are other ways to do this for more complicated apps, but we won't be covering them)
+
 ```{r eval = F}
 library(shiny)
 ui <- fluidPage(
@@ -77,19 +157,22 @@ ui <- fluidPage(
 ```
 
 ## the UI 
-- elements inside the UI can composed of smaller elements; in this case, `sidebarLayout` is composed of a `sidebarPanel` and a `mainPanel`
+- elements inside the UI can composed of smaller elements; in this case, `sidebarLayout` is composed of a `sidebarPanel` and a `mainPanel`. See the documentation for `sidebarLayout` for more info
 - be **VERY** careful with parentheses and commas inside the UI function. This is probably the most common error when writing a shiny app. Using this indent style , and always putting commas directly after parentheses - `),` vs `)  ,` - help mitigate this.
 
 ## UI elements
+
 - All *interactive* and *reactive* elements within the UI have an ID associated with it. 
-- Inputs are generally interactive, and outputs are reactive
+- Inputs are generally interactive; they provide a way for the user to control the app
+- outputs are reactive; they respond to inputs by the user and provide new outputs
+
 ```{r eval = F}
 sliderInput(inputId = "bins", label = "Number of bins:", min = 1,max = 50, value = 30)
 plotOutput(outputId = "distPlot")
 ```
 
 ## UI elements 
--  we can then access each element by its id in in the sever, and similarly set each output
+-  we can then access each element by its id in in the `server` function, and similarly set/get each output
 
 ## the server
 
@@ -219,12 +302,29 @@ shinyApp(ui = ui, server = server)
 - Open the file 'shiny_examples/basic_app.R'
 - A new shiny app template is available in Rstudio (File > New File > Shiny Web app)
 
+## Beyond `sidebarLayout`
 
-## more control over layout - columns
+- The `sidebarLayout` UI we have seen is a basic, preconfigured way for laying out apps
+- The next couple of slides will show you some alternative methods for layouts.
 
-- as opposed to a single column with `mainPanel`, you can designate multiple columns within `fluidPage`
-with the `column` function
-```
+## more control over layout - the grid system
+- the grid system gives you a little more control about where to put elements. 
+- The grid system is defined with `fluidRow` and `columns`
+- these *do not* work like coordinates ie we don't select row,columns like an index, but rather provide a way to divide up a page 
+- when we use the grid system, we *do not* call `sidebarLayout`
+
+## more control over layout - using columns 
+- `column` will create a create a vertical subregion of the UI
+- `column` has the parameter `width` which corresponds to how wide a column is.
+- the total width of a page is 12. A column must have a value between 1-12
+- when using `column` we *must* use at least 2 or more `columns`, and the total width must sum to 12
+- this caps the total number of columns at 12( each with width 1)
+
+## more control over layout - column example
+
+- here is an example code for a UI using `columns`
+
+```{r, eval = F}
 ui <- fluidPage(
     titlePanel('Example Shiny App'),
     column(5,
@@ -244,7 +344,154 @@ ui <- fluidPage(
     
 )
 ```
-- the first number in the column corresponds to the width; the width of one page is 12, so these columns each take up a quarter of the screen
+
+## more control over layout - column example
+
+
+<!-- ```{r, echo=FALSE} -->
+<!-- ui <- fluidPage( -->
+<!--     titlePanel('Example Shiny App'), -->
+<!--     column(5, -->
+<!--           dataTableOutput(outputId = 'table'),     -->
+
+<!--     ), -->
+<!--     column(2), -->
+<!--     column(5, -->
+<!--         actionButton(inputId = 'plot_button',label = 'Draw Plot' ), -->
+<!--         plotOutput(outputId = 'scatter'), -->
+<!--         selectizeInput(inputId = 'flower_to_plot',  -->
+<!--                     label = 'Pick a flower to visualiz',  -->
+<!--                     selected = "setosa", choices = c("setosa", "versicolor",  "virginica")), -->
+<!--         sliderInput(inputId = 'point_size', label = "Choose a point size",  -->
+<!--                     value = 3, min = 1, max = 10) -->
+<!--     ) -->
+
+<!-- ) -->
+<!-- server <- function(input, output, session){ -->
+
+<!-- } -->
+<!-- shinyApp(ui, server) -->
+<!-- ``` -->
+
+
+## more control over layout - rows 
+- the `fluidRow` function defines a horizontal subregion of the plot
+- unlike `column`, `fluidRows` do not have a predefined size; the size of the row is determined by the largest ui element within the row
+
+## more control over layout - `fluidRow` example
+
+-  here is a UI defined with fluid rows 
+
+```{r eval =FALSE}
+ui <- fluidPage(
+    titlePanel('Example Shiny App'),
+    fluidRow(
+          dataTableOutput(outputId = 'table'),    
+        
+    ),
+    fluidRow(),
+    fluidRow(
+        actionButton(inputId = 'plot_button',label = 'Draw Plot' ),
+        plotOutput(outputId = 'scatter'),
+        selectizeInput(inputId = 'flower_to_plot', 
+                    label = 'Pick a flower to visualiz', 
+                    selected = "setosa", choices = c("setosa", "versicolor",  "virginica")),
+        sliderInput(inputId = 'point_size', label = "Choose a point size", 
+                    value = 3, min = 1, max = 10)
+    )
+    
+)
+```
+
+## more control over layout - `fluidRow` example
+
+- and this is what it looks like 
+
+
+<!-- ```{r echo =FALSE} -->
+<!-- ui <- fluidPage( -->
+<!--     titlePanel('Example Shiny App'), -->
+<!--     fluidRow( -->
+<!--           dataTableOutput(outputId = 'table'),     -->
+
+<!--     ), -->
+<!--     fluidRow(), -->
+<!--     fluidRow( -->
+<!--         actionButton(inputId = 'plot_button',label = 'Draw Plot' ), -->
+<!--         plotOutput(outputId = 'scatter'), -->
+<!--         selectizeInput(inputId = 'flower_to_plot',  -->
+<!--                     label = 'Pick a flower to visualiz',  -->
+<!--                     selected = "setosa", choices = c("setosa", "versicolor",  "virginica")), -->
+<!--         sliderInput(inputId = 'point_size', label = "Choose a point size",  -->
+<!--                     value = 3, min = 1, max = 10) -->
+<!--     ) -->
+
+<!-- ) -->
+<!-- server <- function(input, output, session){ -->
+
+<!-- } -->
+<!-- shinyApp(ui, server) -->
+<!-- ``` -->
+
+
+## more control over layout - using both `fluidRow` and `column`
+
+-  we can nest calls of `column`  *inside* `fluidRow`:
+
+```
+fluidPage(
+    fluidRow(
+        column(6, 
+        ...
+        ),
+        column(6, 
+        ...
+        )
+    ),
+    fluidRow(
+        column(4, 
+        ...
+        ),
+        column(4, 
+        ...
+        ),
+        column(4, 
+        ...
+        )
+    ),
+)
+```
+- this defines two rows; the first row will be split into two pieces, with each piece having width 6. the second row will have 3 pieces with width 4
+- all the rules that normally apply to `column` also apply when it is called within `fluidRow`
+
+## more control over layout - using both `fluidRow` and `column`
+
+-  we can also nest `fluidRow` *inside* `column`:
+
+```
+fluidPage(
+    column(8
+        fluidRow(
+        ...
+        ),
+        fluidRow(
+        ...
+        )
+    ),
+    column(6
+        fluidRow(
+        ...
+        ),
+        fluidRow(
+        ...
+        ),
+        fluidRow(
+        ...
+        )
+    ),
+)
+```
+
 
 ## Handling Reactive values 
 
@@ -297,6 +544,93 @@ server <- function(input, output) {
 ```
 
 - the `observeEvent` function will only execute code once a reactive input value has been filled. Here we use it for the button, but it can be used for any reactive input.
+
+## obtaining reactive values
+- typically, its only possible to access reactive values, ie `input` values inside a  `renderFunction`. 
+- If you really need a reactive value outside the `render...` call, you can use the `isolate` function to access it 
+```
+server <- function(input, output) {
+   k <- isolate(input$flower_to_plot)
+   cat(k, file = stderr())
+    observeEvent(input$plot_button, {
+        output$scatter <- renderPlot({
+            data_to_plot <- iris %>%
+                filter(Species == input$flower_to_plot)
+            ggplot(data= data_to_plot) +
+                geom_point(aes(x=Petal.Width, y= Petal.Length), size = input$point_size) +
+                theme_minimal()
+        })
+    })
+    
+}
+```
+
+## Interactive plots with Plotly
+
+- To make full use of the interactivity available in shiny, we can use the interactive plotting library, `plotly`
+- the syntax for `plotly` is fairly different from ggplot, and is closer to `ggpubr`
+
+```{r}
+library(plotly)
+plot_ly(iris, x = ~Sepal.Width, y = ~Sepal.Length, type = 'scatter', mode = 'markers')
+```
+
+## Interactive plots with Plotly
+
+- an example with shiny 
+
+
+<!-- ```{r echo = F} -->
+<!-- ui <- fluidPage( -->
+<!--     selectInput("choice", "Choose", choices = names(iris), selected = 'Petal.Width'), -->
+<!--     plotlyOutput("graph") -->
+<!-- ) -->
+
+<!-- server <- function(input, output, session){ -->
+
+<!--     output$graph <- renderPlotly({ -->
+<!--         plot_ly(iris, x = ~get(input$choice), y = ~Sepal.Length, z= ~Sepal.Width,  mode = 'markers') -->
+<!--     }) -->
+<!-- } -->
+
+<!-- shinyApp(ui, server) -->
+<!-- ``` -->
+
+
+## Interactive plots with Plotly
+
+- the code to make it:
+
+```{r eval= F}
+ui <- fluidPage(
+    selectInput("choice", "Choose", choices = names(iris), selected = 'Petal.Width'),
+    plotlyOutput("graph")
+)
+
+server <- function(input, output, session){
+    
+    output$graph <- renderPlotly({
+        plot_ly(iris, x = ~get(input$choice), y = ~Sepal.Length, z= ~Sepal.Width,  mode = 'markers')
+    })
+}
+
+shinyApp(ui, server)
+```
+
+- note the `plotlyOutput` <> `renderPlotly` UI-server combo
+- the `get` function lets you get a variable named that is stored inside another variable
+- see the [plotly docs](https://plotly.com/r/) for more info
+
+
+## debugging shiny
+
+- Errors in Shiny are horrendously confusing. If the error is somewhat simple, the error message will generally include the line number that is causing the error
+- But more often than not, you will have no idea what is going on. 
+- If you are planning on using shiny quite a bit, I would invest time in learning how to use the debugger in Rstudio
+- In the short term, if you ever want to print out a variable inside a shiny app, use this command
+```
+cat(<varname>, file = stderr())
+```
 
 
 

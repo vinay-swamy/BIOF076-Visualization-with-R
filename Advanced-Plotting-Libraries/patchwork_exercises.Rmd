@@ -5,6 +5,8 @@ output: html_notebook
 
 Here are come plots to work with 
 
+## practice with simple plots 
+
 ```{r}
 library(ggplot2)
 p1 <- ggplot(mtcars) + 
@@ -48,10 +50,31 @@ p4 <- ggplot(mtcars) +
 
 
 ```{r ex_4}
-
+'../Advanced-Plotting-Libraries/useful_vis_exercises.Rmd'
 ```
 
 
+## A slightly more realistic example
+
+- we have made multiple plots using an scRNA-seq data set ('../src/pbmc_cell_expression.tsv.gz'). We are going to make a couple new plot, and  re-create previous ones we made and combine all of them together using patchwork
+
+For each of the plots, go to the notebook we worked on the plots and bring the code into here. Store each plot in a separate variable.
+Steps
+- load the data in. 
+- make a scatterplot using the UMAP columns in the data as the axes. Color the plot by celltype 
+- For all the plots below, log transform( data_log = log2(data + 1)) before plotting. 
+- make a dotplot like we did in '../Plotting-With-ggplot/ggplot2_basics_exercises.Rmd', transforming the data accordingly
+- make a Heatmap using `ComplexHeatmap`. Use the code from '../Advanced-Plotting-Libraries/learning_new_packages.Rmd' as a guide 
+  - you will need to use the `ggplotify` library to convert this heatmap to ggplot. Make sure you install and load the package before using it
+- make a raincloud plot for a gene(colored by cell type) like we did in '../Advanced-Plotting-Libraries/useful_vis_exercises.Rmd'
+- Create a color mapping between celltype and colors, so you can keep colors consistent across multiple plots. Use this along with `scale_*_manual`
+- clean up axis titles and legend labels( ie no underscores)
+- combine these all together with patchwork
+  - create a design vector so all plots are equally visible. 
+
+```{r ex_5}
+
+```
 
 
 
