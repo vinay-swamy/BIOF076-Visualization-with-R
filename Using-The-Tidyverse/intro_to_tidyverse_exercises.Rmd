@@ -136,7 +136,7 @@ data("economics")
 - make a box plot for the log scaled gene expression, coloring by gene 
 
 
-```{r}
+```{r ex_13}
 
 
 

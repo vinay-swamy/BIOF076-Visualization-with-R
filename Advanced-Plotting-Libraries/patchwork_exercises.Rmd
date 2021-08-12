@@ -48,9 +48,10 @@ p4 <- ggplot(mtcars) +
 
 ```
 
+- Add tag levels and globally change some theme parameters
 
 ```{r ex_4}
-'../Advanced-Plotting-Libraries/useful_vis_exercises.Rmd'
+
 ```
 
 
