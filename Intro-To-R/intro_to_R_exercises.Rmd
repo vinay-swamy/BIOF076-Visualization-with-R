@@ -3,9 +3,9 @@ title: "Intro to R exercises"
 output: html_notebook
 ---
 
-This is an R notebook. It's a useful way to run code interactively. The blocks marked by the backticks are called chunks. press the play button to the top right of the chunk to run code. The title of the chunk is the test in the bracket. I will try to refer to chunks by their titl
+This is an R notebook. It's a useful way to run code interactively. The blocks marked by the backticks are called chunks. press the play button to the top right of the chunk to run code. The title of the chunk is the test in the bracket. I will try to refer to chunks by their title
 
-Note that chunks are entirely generated based the specific backtick characters. Deleting these characters will interfere with running the chunk, and you may see the play button disappear. If you have trouble running a chunk try deleting the chunk, or the chunks above and below, and write code in new chhunks. The short cut for inderting a chunk is `ctrl-alt-i` on windows and `cmd-option-i` on mac. 
+Note that chunks are entirely generated based the specific backtick characters. Deleting these characters will interfere with running the chunk, and you may see the play button disappear. If you have trouble running a chunk try deleting the chunk, or the chunks above and below, and write code in new chhunks. The short cut for indenting a chunk is `ctrl-alt-i` on windows and `cmd-option-i` on mac. 
 
 
 ```{r test_chunk }

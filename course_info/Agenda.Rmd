@@ -1,7 +1,7 @@
 ---
 title: '**BIOF 076: Visualization with R**'
 author: " Instructor: Vinay Swamy"
-date: "July 26th-30th"
+date: "January 10th-14th"
 output: 
   pdf_document:
     default
@@ -32,18 +32,14 @@ Our engagement during this workshop will take several forms:
 * Communications: There will be a slack group created for the class.
  
 # Software and Materials 
-We will have one session to install all software before the course at **4pm** on **Friday, July 23rd**. Some of the main software we will be using:
+We will install all software at the beginning of the course. This will require administrative access on your computer. If you do not have this(ie, you have a government machine), the software you will need is listed below. 
 
 * Software
   + R language base system -  the core interpreter for the R language that runs the code we will write
   + Rstudio - an integrated development environment(IDE) that makes it significantly easier to write code
   + git - a version control system for writing code
   + GitHub - students will sign up for GitHub, an online repository for code. 
-  + GDAL - software for using maps in R
-* Materials
-  + A computer, ideally with administrative access. (you likely *do not* have administrative access on a government issued computer)
-  + Multiple screens(2 monitors, computer  +  tablet/phone etc)
-
+  
 # Schedule
 
 ```{r, echo=FALSE, include=F}
@@ -95,7 +91,7 @@ kbl(schedule, booktabs = T, longtable=T) %>%
 ```
 
 #### A note on the schedule 
-- We will try to cover presented in the schedule. However, it is very possible we will move slower than anticipated, and so any material we do not cover within the first 4 days will be covered on the final day(Friday) in lieu of the presentations
+- We will try to cover all material listed in the schedule. However, it is very possible we will move slower than anticipated, and so any material we do not cover within the first 4 days will be covered on the final day(Friday) in lieu of the presentations
 
 # Office Hours
 Office hours will be held at the end of each day from 3-4PM. 
