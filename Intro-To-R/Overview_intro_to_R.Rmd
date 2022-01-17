@@ -41,7 +41,7 @@ slides > slide {
 - Make sure you understand material to the best of your ability as we are covering it. Much of what we learn early on in the course is vital to material later in the course. 
 - Its best to ask questions out loud, but I'll do my best to monitor the chat as well.
 
-## Workship Final Project
+## Workshop Final Project
 
 - Ideally, you'll use what you learn in the course to help you with your own work, like
   - creating and assembling multiple plots into a figure for paper, 

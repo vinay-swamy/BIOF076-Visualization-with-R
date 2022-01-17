@@ -28,10 +28,19 @@ p4 <- ggplot(mtcars) +
   ggtitle('Plot 4')
 ```
 
+ + : add plots together in no specific arrangement
+ | : arrange plots side by side 
+ / : add plots on top of each other 
+plot_layout : specify rows/columns for plot, or use a design vector
+
 - add the plots together one by one, no orientation
 
 ```{r ex_1}
 
+library(patchwork)
+
+
+p1 + p2  +p3 + p4
 ```
 
 
@@ -39,19 +48,27 @@ p4 <- ggplot(mtcars) +
 - add plots, but make only one column of plots. 
 
 ```{r ex_2, fig.width=4, fig.height=10}
-
+p1 + p2  +p3 + p4 + plot_layout(ncol = 1)
+## OR 
+p1/p2/p3/p4
 ```
 
 - use a design vector and `plot_layout` to make plot 1 bigger than the rest of the plots 
 
 ```{r ex_3}
-
+des <- '
+AAB
+AAC
+AAD'
+p1 + p2  +p3 + p4 + plot_layout(design = des)
 ```
 
 - Add tag levels and globally change some theme parameters
 
 ```{r ex_4}
-
+p1 + p2  +p3 + p4 + plot_layout(design = des) + 
+  plot_annotation(tag_levels = 'A') &
+  theme(axis.text = element_text(angle=45))
 ```
 
 
@@ -64,17 +81,65 @@ Steps
 - load the data in. 
 - make a scatterplot using the UMAP columns in the data as the axes. Color the plot by celltype 
 - For all the plots below, log transform( data_log = log2(data + 1)) before plotting. 
-- make a dotplot like we did in '../Plotting-With-ggplot/ggplot2_basics_exercises.Rmd', transforming the data accordingly
-- make a Heatmap using `ComplexHeatmap`. Use the code from '../Advanced-Plotting-Libraries/learning_new_packages.Rmd' as a guide 
+- make a dotplot like we did in '../Plotting-With-ggplot/ggplot2_part2_exercises.Rmd', transforming the data accordingly
+- make a Heatmap of gene expression using `ComplexHeatmap`. Use the code from '../Advanced-Plotting-Libraries/learning_new_packages.Rmd' as a guide 
   - you will need to use the `ggplotify` library to convert this heatmap to ggplot. Make sure you install and load the package before using it
-- make a raincloud plot for a gene(colored by cell type) like we did in '../Advanced-Plotting-Libraries/useful_vis_exercises.Rmd'
+
 - Create a color mapping between celltype and colors, so you can keep colors consistent across multiple plots. Use this along with `scale_*_manual`
 - clean up axis titles and legend labels( ie no underscores)
 - combine these all together with patchwork
   - create a design vector so all plots are equally visible. 
 
-```{r ex_5}
+```{r, fig.width=1, fig.height=1 }
+p1
+```
 
+
+```{r ex_5, fig.width=7, fig.height=8}
+library(ComplexHeatmap)
+library(ggplotify)
+library(tidyverse)
+library(pals)
+library(patchwork)
+sc_data <- read_tsv('../src/pbmc_cell_expression.tsv.gz')
+
+color_names <- unique(sc_data$cell_type)
+color_map <- pals::alphabet2(9)
+names(color_map) <- color_names
+
+sc_umap <-  ggplot(sc_data) +
+  geom_point(aes(x=UMAP_1, y=UMAP_2, color = cell_type)) + 
+  scale_color_manual(values = color_map)
+
+sc_data_long <- read_tsv('../src/pbmc_cell_expression.tsv.gz') %>% 
+    select(-barcode, -cell_type_relabeled, -patient_id, -UMAP_1, -UMAP_2) %>% 
+    pivot_longer(cols = -cell_type, 
+                 names_to = 'gene_name',
+                 values_to = 'gene_exp'
+                 ) %>% 
+    mutate(is_expressed = gene_exp > 0) %>% 
+    group_by(gene_name, cell_type) %>% 
+    summarise(avg_exp = mean(gene_exp), 
+              percent_expressed = sum(is_expressed) / n() *100
+              )
+sc_dot_plot <- ggplot(sc_data_long) + 
+    geom_point(aes(x=gene_name, y=cell_type, 
+                   size = percent_expressed, 
+                   color = avg_exp
+                   )) +
+    xlab('Gene Name') + 
+    ylab('Cell Type') + 
+    guides(color = guide_legend('Average Expression') ,
+           size = guide_legend('% Expressing')) + 
+    theme(axis.text.x = element_text(angle = 45, hjust =1))
+
+sc_heatmap <-  as.ggplot(Heatmap(sc_data[,7:16]))
+
+des <- '
+AC
+BC
+'
+sc_umap + sc_dot_plot + sc_heatmap + plot_layout(design = des)
 ```
 
 

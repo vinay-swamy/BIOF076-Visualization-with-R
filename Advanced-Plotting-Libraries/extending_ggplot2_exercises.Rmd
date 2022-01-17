@@ -29,6 +29,10 @@ gapminder_summarized <- gapminder_ss %>%
 
 ```{r ex_1}
 
+ggplot(gapminder_summarized) + 
+    geom_col_pattern(aes(x=continent, y=avg_lifespan, pattern = gender, 
+                         fill = continent ), position = 'dodge')
+
 ```
 
 
@@ -48,14 +52,20 @@ install.packages('ggpubr')
 ```{r ex_3}
 
 library(ggpubr)
-data <- read_tsv('../src/Reporter_assay_results.tsv.gz') 
+data <- read_tsv('../src/Reporter_assay_results.tsv.gz') %>% 
+    pivot_longer(cols = c(WildType, Mutant) )
+
+ggline(data=data,x='Time', y='value', add='mean_se', color = 'name', 
+       shape = 'name',ylab = 'Scientific Units (SU)' )
 
 ```
 
 filter the data to the last time point, and make a boxplot with `ggboxplot`. Include a test for a statistically significant change in the data on the plot. 
 
 ```{r ex_4}
-
+data_filtered <- filter(data, Time == 24)
+ggboxplot(data = data_filtered, x= 'name', y='value') + 
+    stat_compare_means(label = 'p.signif')
 ```
 
 
@@ -77,7 +87,18 @@ library(gapminder)
 library(ggplot2)
 library(gganimate)
 library(ggsci)
-
+#install.packages('gifski')
+gapminder
+plot <- ggplot(gapminder) + 
+  geom_point(aes(x=gdpPercap, 
+                 y = lifeExp, 
+                 color = continent,
+                 size = pop), alpha = .5) + 
+  scale_size(range = c(0, 15)) + 
+  guides(size = guide_legend(title = 'Population (M)'),
+         color = guide_legend(title = 'Continent')) + 
+    transition_reveal(year)
+anim_save(filename = 'gapminder_bubble.gif',plot) 
 
 
 ```
@@ -111,10 +132,12 @@ library(ggspatial)
 
 md_covid_cases <- read_tsv('../src/MD_COVID_cases_by_zip.tsv.gz')
 md_county_to_zip <- read_tsv('../src/maryland_zipcode_to_county.tsv.gz')
-
 unzip('maryland.zip')
 shp_file = list.files(recursive = T, full.names = T) %>% {.[grepl("Maryland_Physical_Boundaries_-_County_Boundaries_(Generalized).shp", . , fixed = T)]}
-md_shape <- read_sf(shp_file)
+md_shape <- read_sf(shp_file[1])
+
+ggplot(md_shape) + 
+    geom_sf(aes(geometry = geometry))
 ```
 
 Were going to take this data and make plot of covid cases per county in maryland 
@@ -128,7 +151,24 @@ As a starting point, this is the general workflow.
 - use ggspatial to plot the per-county covid cases. use the `viridis`( `scale_*_viridis_c`) palette for shading
 
 ```{r ex_6}
+data_pre_processed <-  md_covid_cases %>% 
+    pivot_longer(cols = -c(OBJECTID, ZIP_CODE), 
+                 names_to = 'date', 
+                 values_to = 'n_cases') %>% 
+    filter(date == '4_30_2020') %>% 
+    rename(zip_code = ZIP_CODE) %>% 
+    inner_join(md_county_to_zip) %>% 
+    group_by(county) %>% 
+    summarise(total_cases = sum(n_cases, na.rm = T))
 
+md_shape_with_coviddata <-  md_shape %>% 
+    mutate(county = tolower(county)) %>% 
+    left_join(data_pre_processed) %>% 
+    mutate(total_cases = replace(total_cases, is.na(total_cases), 0))
+
+
+ggplot(md_shape_with_coviddata ) + 
+    geom_sf(aes(geometry = geometry, fill = total_cases))
 
 ```
 

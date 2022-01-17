@@ -6,7 +6,7 @@ output: html_notebook
 We're going to practice using some of the functions in the `dplyr` library. First, lets load the `tidyverse` packages
 
 ```{r  ex_1}
-
+library(tidyverse)
 ```
 
 You will be using the pipe function all lot; I recommend setting a key board short cut for it. Go to Tools > modify keyboard search cuts > search for "pipe"  >  click to change the command. I find `alt + 2` or `option + 2` work well.
@@ -30,65 +30,71 @@ starwars
 
 
 ```{r ex_2}
-
+?select
 ```
 
 Select the `name` column from the `starwars` dataset. Store this in a variable 
 
 ```{r ex_3}
-
+name_select <-  select(starwars, name)
 ```
 
 now `pull` the `name` column from the dataset. store this in a variable
 
 ```{r ex_4}
-
+name_pull <- pull(starwars, name )
 ```
 
 Notice the differences in the returned data. use the `class` function to examine both outputs 
 
 ```{r ex_5}
-
+class(name_pull)
+class(name_select)
 ```
 select the name and height columns 
 ```{r ex_6}
 
-
+    
+select(starwars, name, height)
 ```
 
- Using pipes to add to the previous command,  add a column with the height in inches.  the height column is currently in cm and  1 cm is 0.393701 inches 
+ Using pipes to add to the previous command,  add a column with the height in inches. the height column is currently in cm and  1 cm is 0.393701 inches 
 ```{r ex_7}
-
+select(starwars, name, height) %>%
+    mutate(height_inches = height * .393701)
 ```
 
 adding to the same pipe command, rename the height colunmn to height_cm
 
 ```{r ex_8}
-
+select(starwars, name, height) %>%
+    mutate(height_inches = height * .393701) %>% 
+    rename(height_cm = height)
+    
 ```
 
 
 filter the starwars dataframe to get every person who has blue eyes 
 
 ```{r ex_9}
-
+filter(starwars, eye_color == 'blue')
 ```
 
 filter the starwars dataframe to get rows whose homeworld is either Tatooine or Naboo	
 hint: use %in%
 
 ```{r ex_10}
-
-
+starwars %>% filter(homeworld %in% c('Tatooine', 'Naboo'))
+filter(starwars, homeworld %in% c('Tatooine', 'Naboo'))
 ```
 
 use groupby and summarise to calculate the avergae height for each eye_color, sex group
 
 ```{r ex_11}
-
+starwars %>% 
+    group_by(eye_color, sex) %>% 
+    summarise(avg_height = mean(height))
 ```
-
-
 
 
 ## Example - GTF file
@@ -103,8 +109,17 @@ steps:
     - add a column for the CDS length (the largest end - smallest start  = length)
 
 ```{r ex_12}
+gtf <- read_tsv('../src/gtf_example.tsv.gz')
 
+gtf %>% 
+    filter( type == 'CDS') %>% 
+    group_by(transcript_id) %>% 
+    summarise(smallest_start = min(start), 
+              largest_end = max(end)) %>% 
+    mutate(length = largest_end - smallest_start) %>% 
+    arrange(desc(length))
 
+args(read)
 ```
 
 
@@ -115,6 +130,12 @@ practice going from wide to long format using the pivot_longer function, using t
 
 ```{r}
 data("economics")
+economics
+
+pivot_longer(economics, 
+             cols = c(pop, pce))
+
+
 ```
 
 ## Tying it all together
@@ -135,12 +156,25 @@ data("economics")
 
 - make a box plot for the log scaled gene expression, coloring by gene 
 
-
 ```{r ex_13}
+gene_expression <- read_tsv('../src/tx_expression_subset.tsv.gz')
+
+gene_exp_long <- gene_expression %>% pivot_longer(-transcript_id)
+tx2gene <-  gtf %>% select(transcript_id, gene_name) %>% distinct %>% 
+    filter(!is.na(transcript_id)) %>% 
+    filter( gene_name %in% c('DCX' , 'GRM3' , 'MYO7A'))
 
 
+gene_exp_summarized <- inner_join(tx2gene, gene_exp_long) %>% 
+    group_by(gene_name, name) %>% 
+    summarise(total_exp = sum(value)) %>% 
+    mutate(log2exp = log(total_exp + 1))
 
 
+ggplot(gene_exp_summarized) + 
+    geom_boxplot(aes(x=gene_name, y=log2exp, fill = gene_name))
+
+?readxl::read_xlsx
 ```
  
 

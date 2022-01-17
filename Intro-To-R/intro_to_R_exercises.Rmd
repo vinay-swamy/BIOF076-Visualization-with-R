@@ -7,6 +7,15 @@ This is an R notebook. It's a useful way to run code interactively. The blocks m
 
 Note that chunks are entirely generated based the specific backtick characters. Deleting these characters will interfere with running the chunk, and you may see the play button disappear. If you have trouble running a chunk try deleting the chunk, or the chunks above and below, and write code in new chhunks. The short cut for indenting a chunk is `ctrl-alt-i` on windows and `cmd-option-i` on mac. 
 
+```{r}
+
+```
+
+```{r}
+
+
+```
+
 
 ```{r test_chunk }
 "Welcome to R"
@@ -38,6 +47,10 @@ Try these exercises ( dont type in the same line as the "```" ticks )
 Assign the number `5` to a variable named `x`
 
 ```{r ex_1}
+vec_1 <- c(1, 2)
+vec_2 <- c(3,4)
+
+c(vec_1, vec_2)
 
 ```
 
@@ -45,14 +58,14 @@ Assign the word 'hello' to a variable named `greeting`
 
 ```{r}
 
-
+greeting = 'hello'
 
 ```
 
 Make a vector containing the numbers 3, 4, 5, and 6 
 
 ```{r ex_2}
-
+my_vec <- c(3, 4, 5, 6)
 
 ```
 
@@ -60,7 +73,9 @@ Note at that the Environment section, vectors also display their length and asso
 
 Make 2 vectors, the first with numbers 2,5,7,2 and the second with 3,4,523, and then join them together 
 ```{r ex_3}
-
+first_vec <- c(2, 5, 7, 2)
+second_vec <- c(3, 4 ,523)
+joined_vec <-  c(first_vec, second_vec)
 ```
 
 
@@ -68,33 +83,40 @@ select the first element from the following vector
 
 ```{r ex_4}
 char_vec <- c('a','b','c','d', 'e')
+char_vec[1]
+
 
 ```
 
 select the last element from `char_vec`
 
 ```{r ex_5}
-
+char_vec[5]
 ```
 
 select the the 1st, 3rd, and 5th elements from `char_vec`
 
 ```{r ex_6}
+locations <- c(1, 3, 5)
 
+char_vec[locations]
 ```
-
 
 select all values between the 2nd and 5th elements from `char_vec`
 
 ```{r ex_7}
+char_vec
 
+char_vec[2]
+char_vec[locations]
+char_vec[3:5]
 ```
 
 
 Now, make a vector with the letter 'H', and the number 213
 
 ```{r ex_8}
-
+var <- c('H', '213')
 ```
 
 Pay close attention to this variable in the Environment section
@@ -117,7 +139,7 @@ calculate the mean for this vector (try using the `mean` function)
 
 ```{r ex_9}
 vec <- c(23444, -12342, 23454, 64324, -45315)
-
+mean_vec <- mean(vec)
 ```
 
 The vector below is randomly generated numeric vector of length between 1 and 100. Use `length` to find the length of `random_vector`. run it a couple times to see it change
@@ -132,14 +154,14 @@ use `paste` to concatenate these two characters
 ```{r ex_11}
 char1 <- 'hello'
 char2 <- 'world'
-
+paste(char1, char2)
 
 ```
 
 Now, change the separator between the two characters from a space to `-`. try running `?paste` for help
 
 ```{r ex_12}
-
+paste(char1, char2, sep ='-')
 ```
 
 calculate the mean for each vector, and then add together using the `+` operator
@@ -149,7 +171,8 @@ v1 <- c(1,4,23)
 v2 <- c(4,56,23,12)
 v3 <- c(123,4, -40, -50, 34)
 
-
+sum(c(mean(v1) , mean(v2) , mean(v3)))
+mean(v1) + mean(v2) + mean(v3)
 ```
 
 now calculate the mean for each above vector, but use the `sum` function.(hint: you need to make a vector)
@@ -165,6 +188,12 @@ now calculate the mean for each above vector, but use the `sum` function.(hint: 
 write your own function that takes a number as an input, and adds the number `5` to it
 
 ```{r ex_15}
+add_5 <- function(number){
+    res <- number + 5
+    print(res)
+
+    return(res)
+}
 
 
 ```
@@ -172,6 +201,14 @@ write your own function that takes a number as an input, and adds the number `5`
 write your own function that takes a vector as input and returns the last element (hint: use the `length` function). Test it on  `v1`, `v2`, and `v3` defined earlier
 
 ```{r ex_16}
+length(v1)
+get_last <- function(x){
+  last_position = length(x)
+  result <- x[last_position]
+  return(result)
+}
+
+get_last(v3)
 
 ```
 
@@ -192,20 +229,25 @@ Declare a list with two using two vectors below. when declaring the list, name t
 a <- c(0,1,2,3,4)
 b <- c(0,2,4,6,8)
 
+
+experiment_list <- list( condition_a = a, condition_b = b )
+### OR
+experiment_list <- list(a, b)
+names(experiment_list) <-c('condition_a', 'condition_b')
 ```
 
 using the `names` function, change the names of condition_a to "wild_type", and condition_b to "knock_out"
 
 ```{r ex_18}
 
-
+names(experiment_list) <-c('wild_type', 'knock_out')
 ```
 
 change the last value in wild_type from 4 to -1 (hint: you will need to first access wild_type within the list, and then acces the first element within wild_type)
 
 ```{r ex_19}
-
-
+experiment_list[['wild_type']][5] <- 1
+experiment_list$wild_type[5] <- 1
 ```
 
 
@@ -243,21 +285,23 @@ The autocomplete generally works pretty well and will save you a lot of time.
 - calculate the revenue per employee and store it in new columns
 
 ```{r ex_21}
-
+faang_data$rev_per_employee <-  faang_data$revenue / faang_data$n_employees
 ```
 
 - the `which.max` function returns the index for the maximum value in a vector. Use this to identify the company with the highest revenue and select its ceo
 
 ```{r ex_22}
+highest_rev <- which.max(faang_data$revenue)
 
-
+faang_data[highest_rev,'ceo']
 ```
 
 - use the `paste` function to add the last names to the ceos missing last names. ( Mark zuckerberg, tim cook, and jeff bezos in case you do not know)
 
 ```{r, ex_23}
 last_names <- c( 'zuckerberg', 'cook',  'bezos')
-
+faang_data_with_lastnames <- faang_data
+faang_data_with_lastnames$ceo[1:3] <- paste(faang_data$ceo[1:3], last_names )
 ```
 
 
@@ -301,22 +345,25 @@ species_vec
 
 ```
 
-the `sort` function arranges vectors in order. For `numeric` data it is sorted from smallest to largest. For     `character`, it is sorted in Alphabetic order. try using `sort` on species vec
+the `sort` function arranges vectors in order. For `numeric` data it is sorted from smallest to largest. For `character`, it is sorted in Alphabetic order. try using `sort` on species vec
 
 ```{r ex_24}
-
+sort(species_vec)
 ```
 
-create a `factor` from `species_vec`, and use the `unique` function to set the levels 
+create a `factor` from `species_vec`, and use the `unique` function to set the levels
 
 ```{r, ex_25}
-
+#unique(sort(species_vec))
+speices_factor = factor(x = species_vec, 
+       levels = c('Homo Sapiens','Macaca Fascicularis', 'Pan Troglodytes', 'Gorilla Gorilla')
+    )
 ```
 
 create a factor from `species_vec` and set the levels in a following order: 'Macaca Fascicularis','Homo Sapiens', 'Gorilla Gorilla', 'Pan Troglodytes'. You may need to store this ordering in a new vector
 
 ```{r, ex_26}
-
+sort(speices_factor)
 ```
 
 
@@ -332,7 +379,9 @@ faang_data <- data.frame(name = c('Facebook', 'apple', 'amazon', 'netflix', 'goo
                          stringsAsFactors = T
                          )
 
-
+faang_data$name <- as.character(faang_data$name)
+faang_data$ceo <- as.character(faang_data$ceo)
+faang_data$service <- as.character(faang_data$service)
 ```
 
 

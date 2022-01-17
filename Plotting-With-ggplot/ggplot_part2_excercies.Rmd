@@ -17,6 +17,10 @@ knitr::include_graphics('../src/example_vio_box.png')
 data("ToothGrowth") 
 ToothGrowth
 
+ggplot(ToothGrowth) + 
+    geom_violin(aes(x=supp, y= len, fill = supp), color = 'white') + 
+    geom_boxplot(aes(x=supp, y=len),width=.2, fill='black', color  = 'white') + 
+    theme_classic()
 ```
 
 ## faceting plots 
@@ -31,8 +35,15 @@ library(ggrepel)
 install.packages('ggrepel')
 
 data <- read_tsv('../src/gapminder_2007.tsv.gz') 
-
-
+ggplot(data) + 
+  geom_point(aes(x=gdpPercap, 
+                 y = lifeExp, 
+                 color = continent,
+                 size = pop), alpha = .5) + 
+  scale_size(range = c(0, 15)) + 
+  guides(size = guide_legend(title = 'Population (M)'),
+         color = guide_legend(title = 'Continent')) + 
+    facet_wrap(~ continent)
 
 ```
 
@@ -57,7 +68,34 @@ This is a bit a of a tough one,so some hints:
 - to change the point shapes, you will need to use `scale_shape_manual`. We have not directly covered how to do this, but for some real-life practice, try googling it.
 
 ```{r ex_3}
-data <- read_tsv('../src/Reporter_assay_results.tsv.gz')
+
+data <- read_tsv('../src/Reporter_assay_results.tsv.gz') %>% 
+    pivot_longer(cols = c(WildType,Mutant), names_to = 'condition', values_to = 'value') %>% 
+    group_by(Time, condition) %>% 
+    summarise(avg_val = mean(value), 
+              std_dev = sd(value), 
+              n_obs = n()) %>% 
+    mutate(std_err = std_dev / sqrt(n_obs))
+
+shape_map <- c("Mutant" = 16,"WildType" = 18)
+label_df <- data.frame(x=13,
+           y= 12, 
+           label = "Reaction temp decreased")
+ggplot() + 
+    geom_vline(xintercept = 8, color  ='red')+
+    geom_errorbar(data = data, aes(x =Time, ymin = avg_val - std_err, ymax = avg_val  + std_err ), 
+                  width = .4)+
+    geom_point(data = data, aes(x=Time, y=avg_val, color = condition, shape = condition), size = 3) + 
+    geom_line(data = data, aes(x=Time, y=avg_val, color = condition)) +
+    geom_label(data = label_df, aes(x=x, y=y, label=label)) + 
+    scale_shape_manual(values=shape_map) + 
+    ggtitle('Enzymatic Activity') + 
+    ylab('Scientific Units (SU)') + 
+    guides(color = guide_legend(title = 'Type') ,
+           shape = guide_legend(title = 'Type')
+           ) + 
+    theme_classic()
+
 
 ```
 
@@ -81,7 +119,23 @@ couple hints:
 
 ```{r ex_4}
 library(tidyverse)
+db_data <- read_csv('../src/health.csv.gz') %>% 
+    pivot_longer(cols = c(pct_2013, pct_2014),
+                 names_to = 'year', 
+                 values_to = 'price') %>% 
+    arrange(desc(price) ) %>% 
+    mutate(Area =  factor(Area, levels = unique(Area)) )
 
+
+col_map = c('pct_2013' = 'blue', 'pct_2014' = 'red')
+
+ggplot(db_data) + 
+    geom_line(aes(x=price, y=Area), color = 'red') + 
+    geom_point(aes(x=price, y =Area, color =  year)) + 
+    scale_color_manual(values = col_map) + 
+    theme_classic() + 
+    theme(panel.grid.major.x = element_line(color = 'black')) +
+    scale_x_continuous(labels = scales::percent)
 
 
 ```
@@ -111,6 +165,28 @@ We are going to try and re-create this plot. Here are the general steps to trans
 
 
 ```{r ex_5}
+sc_data <- read_tsv('../src/pbmc_cell_expression.tsv.gz') %>% 
+    select(-barcode, -cell_type_relabeled, -patient_id, -UMAP_1, -UMAP_2) %>% 
+    pivot_longer(cols = -cell_type, 
+                 names_to = 'gene_name',
+                 values_to = 'gene_exp'
+                 ) %>% 
+    mutate(is_expressed = gene_exp > 0) %>% 
+    group_by(gene_name, cell_type) %>% 
+    summarise(avg_exp = mean(gene_exp), 
+              percent_expressed = sum(is_expressed) / n() *100
+              )
+ggplot(sc_data) + 
+    geom_point(aes(x=gene_name, y=cell_type, 
+                   size = percent_expressed, 
+                   color = avg_exp
+                   )) +
+    xlab('Gene Name') + 
+    ylab('Cell Type') + 
+    guides(color = guide_legend('Average Expression') ,
+           size = guide_legend('% Expressing')) + 
+    theme(axis.text.x = element_text(angle = 45, hjust =1))
+
 
 ```
 

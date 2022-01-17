@@ -7,6 +7,8 @@ output: html_notebook
 We're going to work with one of the plots we made earlier 
 
 
+
+
 ```{r example_1}
 library(ggplot2)
 ggplot(mpg) + 
@@ -17,12 +19,23 @@ ggplot(mpg) +
 Assign descriptive axis labels and a plot title to the plot
 ```{r ex_1}
 
-
+ggplot(mpg) + 
+  geom_bar(aes(x=manufacturer, fill = class)) + 
+  xlab('Car Manfucaturer') + 
+  ylab('Number of Cars') +
+  ggtitle('Cars by Manufacturer') 
 ```
 
 fix the labels similar to how it was done in the example
 
 ```{r ex_2}
+
+ggplot(mpg) + 
+  geom_bar(aes(x=manufacturer, fill = class)) + 
+  xlab('Car Manfucaturer') + 
+  ylab('Number of Cars') +
+  ggtitle('Cars by Manufacturer')  + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 ```
 
@@ -30,7 +43,13 @@ fix the labels similar to how it was done in the example
 change the y axis title so it is parallel to the x axis title 
 
 ```{r ex_3}
-
+ggplot(mpg) + 
+  geom_bar(aes(x=manufacturer, fill = class)) + 
+  xlab('Car Manfucaturer') + 
+  ylab('Number of Cars') +
+  ggtitle('Cars by Manufacturer')  + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1) ,
+        axis.title.y = element_text(angle = 0))
 ```
 
 change the font of the title to Palantino, the color to red
@@ -77,7 +96,7 @@ library(patchwork)
 library(ggplot2)
 library(tibble)
 source('../src/plot_pal.R')
-plot_pal(pals::plasma(100))
+plot_pal(pals::alphabet(26))
 
 ```
 
@@ -86,12 +105,37 @@ pick a palette and use the appriate `scale_..._discrete` function to color your 
 
 ```{r ex_7}
 
+pal <- pals::brewer.set3(4)
+names(pal) <- NULL
+ggplot(storms) + 
+    geom_violin(aes(x=status, y=pressure, fill = status)) + 
+    scale_fill_discrete(type = pal)+
+    xlab('storm type') + 
+    ylab('air pressure')
 ```
 
 now pick colors from different palettes, and use them as part of a `scale_...manual`. 
 
 ```{r ex_8}
- 
+transposed_ge <-  gene_expression %>% 
+  select(-transcript_id) %>%  t() %>% as.data.frame
+colnames(transposed_ge) <- gene_expression$transcript_id
+write_csv(transposed_ge, 'gene_expression_transposed.csv')
+
+## Method 1
+pal <- pals::
+names(pal) <- NULL
+unique(storms$status)
+names(pal) <- c("tropical depression", "tropical storm","hurricane")
+
+##Method 2
+pal2 <- c('tropical depression'='red', 'tropical storm'='blue','hurricane'='green')
+          
+ggplot(storms) + 
+    geom_violin(aes(x=status, y=pressure, fill = status)) + 
+    scale_fill_manual(values = pal2)+
+    xlab('storm type') + 
+    ylab('air pressure')
 
 ```
 
@@ -124,11 +168,32 @@ library(ggplot2)
 
 data <- read_tsv('../src/gapminder_2007.tsv.gz')
 
+plot <-  ggplot(data) + 
+  geom_point(aes(x=gdpPercap, 
+                 y = lifeExp, 
+                 color = continent,
+                 size = pop), alpha = .5) + 
+  scale_size(range = c(0, 15)) + 
+  guides(size = guide_legend(title = 'Population (M)'),
+         color = guide_legend(title = 'Continent'))
 
 
+ggsave('/Users/vinayswamy/Desktop/bubble.png', 
+       plot = plot)
+```
 
+
+```{r}
+knitr::include_graphics('bubble.png')
 ```
 
 
 
+```{r}
+p <- ggplot(mpg, aes(displ, hwy, size = hwy)) +
+   geom_point()
+p
+p + scale_size("Highway mpg")
+p + scale_size(range = c(0, 10))
+```
 

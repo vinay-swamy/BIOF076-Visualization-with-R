@@ -33,9 +33,23 @@ DOCS: https://krassowski.github.io/complex-upset/articles/Examples_R.html
 
 ```{r ex_1}
 library(ComplexUpset)
+data <- read_tsv('../src/pbmc_cell_expression.tsv.gz')
+data_m1 <-  data %>% 
+    mutate(LYZ_exp  = LYZ > 0, 
+           FTL_exp = FTL >0, 
+           PF4_exp = PF4 > 0
+           )
 
+upset(data = data_m1, intersect= c('LYZ_exp', 'FTL_exp', 'PF4_exp'))
 ```
 
+```{r}
+data_ss <- data[, 7:16]
+
+data_m2 <- data_ss > 0
+?upset
+upset(as.data.frame(data_m2), intersect = colnames(data_m2), min_size =)
+```
 
 
 ## making alluvial plots 
@@ -49,9 +63,16 @@ DOCS: https://cran.r-project.org/web/packages/ggalluvial/vignettes/ggalluvial.ht
 - a common step in single cell data is computationally labeling cells with their associated cell type. The data has the output of two labeling tools, in columns `cell_type` and `cell_type_relabeled`. 
 - make an alluvial plot, where the first column is `cell_type` and the second column is `cell_type_relabeled`, to visualize the in cell label from tool to tool 
 
-```{r ex_3}
+```{r ex_3, fig.height=8}
 library(ggalluvial)
- 
+
+data
+ggplot(data = data,
+       aes(axis1 = cell_type, axis2 = cell_type_relabeled)) +
+  geom_alluvium(fill = 'blue') +
+  geom_stratum() +
+  geom_text(stat = "stratum", aes(label = after_stat(stratum))) +
+  theme_minimal() 
 
 ```
 
@@ -72,6 +93,18 @@ DOCS: https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.ht
 ```{r ex_5}
 library(ggridges)
 
+sc_data_summarized <- data %>% 
+    select(-barcode, -cell_type_relabeled, -UMAP_1, -UMAP_2, -patient_id) %>% 
+    pivot_longer(cols = -cell_type, 
+                 names_to = 'gene_name', 
+                 values_to ='exp') 
+sc_data_1_gene <- sc_data_summarized %>% filter(gene_name == 'FTL')
+
+ggplot(sc_data_summarized, aes(x = exp, y = cell_type, fill = stat(x))) +
+  geom_density_ridges_gradient() + 
+    facet_wrap(~gene_name)
+data("lincoln_weather")
+
 
 ```
 
@@ -91,7 +124,13 @@ DOCS: https://erocoar.github.io/gghalves/
 - Hint: you will need to use the `coord_flip` function to get the plot to be horizontal. use `?coord_flip` to see its usage
 
 ```{r ex_6}
-
+library(gghalves)
+sc_data_summarized
+ggplot(sc_data_summarized, aes(x = cell_type, y = exp, fill = cell_type, color = cell_type)) +
+  geom_half_violin(side = 'r') + 
+  geom_half_point(range_scale=.5, side = 'l', alpha = .3, shape=16) + 
+    coord_flip() + 
+    facet_wrap(~gene_name)
 ```
 
 
